@@ -6,7 +6,7 @@ package
 	{
 		private const SPAWN_PLAYER:Array = [2];
 		
-		private var player:FlxSprite;
+		private var player:Cake;
 		private var level:FlxTilemap;
 		
 		override public function create():void {
@@ -17,6 +17,7 @@ package
 			
 			player = groupFromSpawn(SPAWN_PLAYER,Cake,level).members[0];
 			add(player);
+			add(player.components);
 			
 			FlxG.worldBounds = new FlxRect(0, 0, level.width,level.height);
 			FlxG.camera.bounds = FlxG.worldBounds;
@@ -28,7 +29,7 @@ package
 			FlxG.collide(player,level);
 		}
 		
-		private function groupFromSpawn(_spawn:Array,_class:Class,_map:FlxTilemap):FlxGroup {
+		private function groupFromSpawn(_spawn:Array,_class:Class,_map:FlxTilemap,_hide:Boolean=true):FlxGroup {
 			var _group:FlxGroup = new FlxGroup();
 			for (var i:uint = 0; i <_spawn.length; i++) {
 				var _array:Array = level.getTileInstances(_spawn[i]);
@@ -36,6 +37,9 @@ package
 					for (var j:uint = 0; j < _array.length; j++) {
 						var _point:FlxPoint = pointForTile(_array[j],_map);
 						_group.add(new _class(_point.x,_point.y));
+						if (_hide) {
+							_map.setTileByIndex(_array[j],0);
+						}
 					}
 				}
 			}
