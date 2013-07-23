@@ -36,6 +36,7 @@ package
 			player = groupFromSpawn(SPAWN_PLAYER,Cake,level).members[0];
 			add(player);
 			add(player.components);
+			add(player.balloon);
 			
 			FlxG.worldBounds = new FlxRect(0, 0, level.width,level.height);
 			FlxG.camera.bounds = FlxG.worldBounds;
