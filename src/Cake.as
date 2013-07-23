@@ -6,9 +6,9 @@ package
 	
 	public class Cake extends FlxSprite
 	{
-		private const MOVE_ACCEL:Number = 666;
-		private const MOVE_VEL_X_GROUND:Number = 44;
-		private const MOVE_VEL_X_AIR:Number = 22;
+		private const MOVE_ACCEL:Number = 222;
+		private const MOVE_ACCEL_X_GROUND:Number = 1222;
+		private const MOVE_ACCEL_X_AIR:Number = 222;
 		private const MOVE_VEL_Y:Number = 333;
 		private const MAX_VEL:Number = 888;
 		
@@ -41,9 +41,11 @@ package
 			super.update();
 			
 			if (FlxG.keys.pressed("LEFT")) {
-				velocity.x -= (usingBalloon() && !onGround()) ? MOVE_VEL_X_AIR : MOVE_VEL_X_GROUND;
+				acceleration.x = (usingBalloon() && !onGround()) ? -MOVE_ACCEL_X_AIR : -MOVE_ACCEL_X_GROUND;
 			} else if (FlxG.keys.pressed("RIGHT")) {
-				velocity.x += (usingBalloon() && !onGround()) ? MOVE_VEL_X_AIR : MOVE_VEL_X_GROUND;
+				acceleration.x = (usingBalloon() && !onGround()) ? MOVE_ACCEL_X_AIR : MOVE_ACCEL_X_GROUND;
+			} else {
+				acceleration.x = 0;
 			}
 			
 			if (FlxG.keys.pressed("SPACE") && onGround()) {
