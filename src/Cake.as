@@ -6,11 +6,15 @@ package
 	
 	public class Cake extends FlxSprite
 	{
+		private const W:Number = 32;
+		private const H:Number = 32;
+		
 		private const MOVE_ACCEL:Number = 222;
-		private const MOVE_ACCEL_X_GROUND:Number = 1222;
+		private const MOVE_ACCEL_X_GROUND:Number = 444;
 		private const MOVE_ACCEL_X_AIR:Number = 222;
-		private const MOVE_VEL_Y:Number = 333;
-		private const MAX_VEL:Number = 888;
+		private const MOVE_VEL_Y:Number = Math.pow(Glob.GRAV_ACCEL*4*32,0.5);
+		private const MAX_VEL_X:Number = 444;
+		private const MAX_VEL_Y:Number = 888;
 		
 		private var eyes:FlxSprite;
 		
@@ -19,14 +23,14 @@ package
 		public function Cake(_x:Number=0,_y:Number=0,_simpleGraphic:Class=null)
 		{
 			super(_x,_y);
-			loadGraphic(Glob.cakeSheet,true,true,32,32,true);
+			loadGraphic(Glob.cakeSheet,true,true,W,H,true);
 			
 			components = new FlxGroup;
 			
 			//acceleration.y = Glob.GRAV_ACCEL;
 			drag.x = MOVE_ACCEL;
-			maxVelocity.x = MAX_VEL/2.2;
-			maxVelocity.y = MAX_VEL;
+			maxVelocity.x = MAX_VEL_X;
+			//maxVelocity.y = MAX_VEL_Y;
 			
 			eyes = new FlxSprite(x,y);
 			eyes.loadGraphic(Glob.cakeEyesSheet,true,true,width,height,true);

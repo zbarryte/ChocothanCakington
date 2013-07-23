@@ -15,6 +15,8 @@ package
 		private var presentsTotal:uint;
 		private var presentsCollectedDisplay:FlxText;
 		
+		private var HUD:FlxGroup;
+		
 		override public function create():void {
 			FlxG.bgColor = 0xff002222;
 			
@@ -40,9 +42,12 @@ package
 			FlxG.camera.follow(player,FlxCamera.STYLE_PLATFORMER);
 			
 			// HUD
+			HUD = new FlxGroup;
 			presentsCollectedDisplay = new FlxText(0,0,100,"You've collected " + presentsCollected + " of " + presentsTotal + " presents!",true);
 			presentsCollectedDisplay.scrollFactor = new FlxPoint(0,0);
-			add(presentsCollectedDisplay);
+			HUD.add(presentsCollectedDisplay);
+			
+			add(HUD);
 		}
 		
 		override public function update():void {
