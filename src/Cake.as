@@ -29,7 +29,7 @@ package
 		private var eyes:FlxSprite;
 		
 		public var components:FlxGroup;
-								
+										
 		public function Cake(_x:Number=0,_y:Number=0,_simpleGraphic:Class=null)
 		{
 			super(_x,_y);
@@ -40,7 +40,7 @@ package
 			acceleration.y = Glob.GRAV_ACCEL;
 			drag.x = MOVE_ACCEL;
 			maxVelocity.x = MAX_VEL_X;
-			//maxVelocity.y = MAX_VEL_Y;
+			maxVelocity.y = MAX_VEL_Y;
 			
 			eyes = new FlxSprite(x,y);
 			eyes.loadGraphic(Glob.cakeEyesSheet,true,true,width,height,true);
@@ -55,6 +55,7 @@ package
 			//balloon.maxVelocity.x = MAX_VEL_X/22.22;
 			//balloon.maxVelocity.y = MAX_VEL_Y/22.22;
 			balloon.visible = false;
+			balloon.drag = drag;
 			
 			balloonString = new FlxSprite(x,y,Glob.balloonStringSheet);
 			components.add(balloonString);
@@ -89,32 +90,38 @@ package
 			if (justUsedBalloon()) {
 				balloon.x = x;
 				balloon.y = y;
+				balloon.velocity.x = velocity.x;
 				balloon.visible = true;
 				balloonString.visible = true;
 				wasUsingBalloon = true;
 			} else if (usingBalloon()) {
 				
-				balloon.acceleration.y = -Glob.GRAV_ACCEL/22.2;
+				balloon.acceleration = new FlxPoint(0,Glob.GRAV_ACCEL/222.2);
 				var _balloonTiePoint:FlxPoint = new FlxPoint(balloon.x+width/2.0,balloon.y+balloon.height);
 				var _cakeTiePoint:FlxPoint = new FlxPoint(x+width/2.0,y);
 				var _distToBalloon:Number = Math.pow(Math.pow(_balloonTiePoint.x-_cakeTiePoint.x,2) + Math.pow(_balloonTiePoint.y-_cakeTiePoint.y,2),0.5);
 				var _dirToBalloon:FlxPoint = new FlxPoint((_balloonTiePoint.x-_cakeTiePoint.x)/_distToBalloon,(_balloonTiePoint.y-_cakeTiePoint.y)/_distToBalloon);
 				
+				
 				if (_distToBalloon >= stringLength) {
 					
+					
+					/*
 					velocity.x = 0;
 					velocity.y = 0;
 					balloon.velocity.x = 0;
 					balloon.velocity.y = 0;
+					*/
+					acceleration.x += 0.22*(_distToBalloon - stringLength)*_dirToBalloon.x*Glob.GRAV_ACCEL;
+					acceleration.y += 0.22*(_distToBalloon - stringLength)*_dirToBalloon.y*Glob.GRAV_ACCEL;
+					velocity.y = (velocity.y > -maxVelocity.y/8) ? velocity.y : -maxVelocity.y/8;
 					
-					acceleration.x += (_distToBalloon - stringLength)*_dirToBalloon.x*Glob.GRAV_ACCEL;
-					acceleration.y += (_distToBalloon - stringLength)*_dirToBalloon.y*Glob.GRAV_ACCEL;
-					
-					balloon.acceleration.x -= _dirToBalloon.x*Glob.GRAV_ACCEL;
-					balloon.acceleration.y -= _dirToBalloon.y*Glob.GRAV_ACCEL;
-					
+					balloon.acceleration.x -= 0.22*(_distToBalloon - stringLength)*_dirToBalloon.x*Glob.GRAV_ACCEL;
+					balloon.acceleration.y -= 0.22*(_distToBalloon - stringLength)*_dirToBalloon.y*Glob.GRAV_ACCEL;
+					balloon.velocity.y = (balloon.velocity.y < maxVelocity.y/22) ? balloon.velocity.y : maxVelocity.y/22;
 				}
 			} else if (justStoppedUsingBalloon()) {
+				balloon.velocity = new FlxPoint(0,0);
 				balloon.visible = false;
 				balloonString.visible = false;
 				wasUsingBalloon = false;
@@ -174,7 +181,7 @@ package
 		}
 		
 		private function usingBalloon():Boolean {
-			return (!onGround() && Glob.pressed(KEY_JUMP) && (velocity.y > 0 || balloon.velocity.y < 0));
+			return (!onGround() && Glob.pressed(KEY_JUMP) && (velocity.y > 0 || balloon.velocity.y > 0));
 		}
 		private function justUsedBalloon():Boolean {
 			return usingBalloon() && !wasUsingBalloon;
