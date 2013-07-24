@@ -63,7 +63,7 @@ package
 			
 			super.update();
 			
-			// Right/Left motion
+			// handle left/right motion
 			if (Glob.pressedAfter(KEY_LEFT,KEY_RIGHT)) {
 				acceleration.x = -MOVE_ACCEL_X_GROUND;
 			} else if (Glob.pressedAfter(KEY_RIGHT,KEY_LEFT)) {
@@ -72,46 +72,14 @@ package
 				acceleration.x = 0;
 			}
 			
-			// Jump
+			// handle jumping
 			if (Glob.justPressed(KEY_JUMP) && onGround()) {
 				velocity.y = -MOVE_VEL_Y;
 			} else if (Glob.justReleased(KEY_JUMP) && velocity.y < 0) {
 				velocity.y = 0;
 			}
 			
-			/*
-			if (FlxG.keys.pressed("LEFT")) {
-				acceleration.x = (usingBalloon() && !onGround()) ? -MOVE_ACCEL_X_AIR : -MOVE_ACCEL_X_GROUND;
-			} else if (FlxG.keys.pressed("RIGHT")) {
-				acceleration.x = (usingBalloon() && !onGround()) ? MOVE_ACCEL_X_AIR : MOVE_ACCEL_X_GROUND;
-			} else {
-				acceleration.x = 0;
-			}
-			
-			if (FlxG.keys.pressed("SPACE") && onGround()) {
-				velocity.y -= MOVE_VEL_Y;
-			}
-			
-			if (usingBalloon() && velocity.y >= 0) {
-				acceleration.y = Glob.GRAV_ACCEL/22;
-			} else {
-				acceleration.y = Glob.GRAV_ACCEL;
-			}
-			*/
-			
-			/*
-			// manual physics adjustments
-			var _xPrev:Number = x;
-			x = x + velocity.x*FlxG.elapsed + 0.5*(acceleration.x + drag.x)*Math.pow(FlxG.elapsed,2);
-			velocity.x = (_xPrev-x)/FlxG.elapsed;
-			velocity.x = (velocity.x < maxVelocity.x) ? velocity.x : maxVelocity.x;
-			
-			var _yPrev:Number = y;
-			y = y + velocity.y*FlxG.elapsed + 0.5*(acceleration.y + drag.y)*Math.pow(FlxG.elapsed,2);
-			velocity.y = (_yPrev-y)/FlxG.elapsed;
-			velocity.y = (velocity.y < maxVelocity.y) ? velocity.y : maxVelocity.y;
-			*/
-			
+			// center components on body
 			for (var i:uint = 0; i < components.length; i++) {
 				components.members[i].x = x;
 				components.members[i].y = y;
@@ -140,6 +108,7 @@ package
 				acceleration.y = Glob.GRAV_ACCEL - 880*_dir.y;
 				acceleration.x -= 880*_dir.x;
 				
+				
 				// is the cake still attached?
 				if (Math.pow(_connectPoint.x+_balloonBasePoint.x,2) + Math.pow(_connectPoint.y+_balloonBasePoint.y,2) > Math.pow(stringLength,2)) {
 					x = _balloonBasePoint.x+_dir.x*stringLength-width/2.0;
@@ -147,7 +116,7 @@ package
 				}
 				
 				//balloon.acceleration.y = Glob.GRAV_ACCEL/222.222 + 880*_dir.y;
-				//balloon.acceleration.x = 0 + 880*_dir.x;
+				balloon.acceleration.x = 0 + 880*_dir.x;
 			} else {
 				balloon.visible = false;
 				balloonString.visible = false;

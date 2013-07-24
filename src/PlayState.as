@@ -54,6 +54,7 @@ package
 		override public function update():void {
 			super.update();
 			FlxG.collide(player,level);
+			FlxG.collide(player.balloon,level);
 			
 			var _present:Present = presentOverlappedByPlayer();
 			if (_present) {
