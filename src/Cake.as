@@ -52,8 +52,8 @@ package
 			balloon = new FlxSprite(x,y);
 			balloon.loadGraphic(Glob.balloonSheet,true,true,32,32,true);
 			balloon.acceleration.y = Glob.GRAV_ACCEL/222.222;
-			//balloon.maxVelocity.x = MAX_VEL_X/22.22;
-			//balloon.maxVelocity.y = MAX_VEL_Y/22.22;
+			balloon.maxVelocity.x = MAX_VEL_X/2.2;
+			balloon.maxVelocity.y = MAX_VEL_Y/22.22;
 			balloon.visible = false;
 			balloon.drag = drag;
 			
@@ -88,15 +88,18 @@ package
 			
 			// Handle Balloon Use
 			if (justUsedBalloon()) {
+				//velocity.x = 0;
+				//velocity.y = 0;
 				balloon.x = x;
-				balloon.y = y;
+				balloon.y = y;//-stringLength;
 				balloon.velocity.x = velocity.x;
 				balloon.visible = true;
 				balloonString.visible = true;
 				wasUsingBalloon = true;
 			} else if (usingBalloon()) {
 				
-				balloon.acceleration = new FlxPoint(0,Glob.GRAV_ACCEL/222.2);
+				//balloon.acceleration.y = Glob.GRAV_ACCEL/222.2;
+				
 				var _balloonTiePoint:FlxPoint = new FlxPoint(balloon.x+width/2.0,balloon.y+balloon.height);
 				var _cakeTiePoint:FlxPoint = new FlxPoint(x+width/2.0,y);
 				var _distToBalloon:Number = Math.pow(Math.pow(_balloonTiePoint.x-_cakeTiePoint.x,2) + Math.pow(_balloonTiePoint.y-_cakeTiePoint.y,2),0.5);
@@ -105,6 +108,10 @@ package
 				
 				if (_distToBalloon >= stringLength) {
 					
+					var _theta:Number = Math.atan(_dirToBalloon.x/_dirToBalloon.y)*180.0/Math.PI;
+										
+					//acceleration.x = 0.5*Glob.GRAV_ACCEL*Math.cos(2*_theta);
+					//acceleration.y = -Glob.GRAV_ACCEL*Math.pow(Math.sin(_theta),2.0);
 					
 					/*
 					velocity.x = 0;
@@ -112,6 +119,8 @@ package
 					balloon.velocity.x = 0;
 					balloon.velocity.y = 0;
 					*/
+					
+					
 					acceleration.x += 0.22*(_distToBalloon - stringLength)*_dirToBalloon.x*Glob.GRAV_ACCEL;
 					acceleration.y += 0.22*(_distToBalloon - stringLength)*_dirToBalloon.y*Glob.GRAV_ACCEL;
 					velocity.y = (velocity.y > -maxVelocity.y/8) ? velocity.y : -maxVelocity.y/8;
@@ -119,6 +128,7 @@ package
 					balloon.acceleration.x -= 0.22*(_distToBalloon - stringLength)*_dirToBalloon.x*Glob.GRAV_ACCEL;
 					balloon.acceleration.y -= 0.22*(_distToBalloon - stringLength)*_dirToBalloon.y*Glob.GRAV_ACCEL;
 					balloon.velocity.y = (balloon.velocity.y < maxVelocity.y/22) ? balloon.velocity.y : maxVelocity.y/22;
+					
 				}
 			} else if (justStoppedUsingBalloon()) {
 				balloon.velocity = new FlxPoint(0,0);
