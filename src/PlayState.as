@@ -28,7 +28,7 @@ package
 			presentsCollected = 0;
 			
 			// Level
-			level = new FlxTilemap().loadMap(new Glob.levelCSV,Glob.tilesetLevelSheet,32,32);
+			level = new FlxTilemap().loadMap(new Glob.level001CSV,Glob.tilesetLevelSheet,32,32);
 			add(level);
 			
 			// Flag

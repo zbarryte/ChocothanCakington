@@ -28,7 +28,8 @@ package
 		
 		// Level
 		[Embed("assets/tileset_level.png")] public static var tilesetLevelSheet:Class;
-		[Embed("assets/mapCSV_level_000.csv", mimeType = 'application/octet-stream')] public static const levelCSV:Class;
+		[Embed("assets/mapCSV_level_000.csv", mimeType = 'application/octet-stream')] public static const level000CSV:Class;
+		[Embed("assets/mapCSV_level_001.csv", mimeType = 'application/octet-stream')] public static const level001CSV:Class;
 		
 		// Key presses
 		public static function pressed(_keys:Array):Boolean {
