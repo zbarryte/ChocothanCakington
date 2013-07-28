@@ -6,10 +6,12 @@ package
 	{
 		private const SPAWN_PLAYER:Array = [2];
 		private const SPAWN_PRESENT:Array = [3];
+		private const SPAWN_FLAG:Array = [4];
 		
 		private var player:Cake;
 		private var presentGroup:FlxGroup;
 		private var level:FlxTilemap;
+		private var flag:FlxSprite;
 		
 		private var presentsCollected:uint;
 		private var presentsTotal:uint;
@@ -26,6 +28,10 @@ package
 			// Level
 			level = new FlxTilemap().loadMap(new Glob.levelCSV,Glob.tilesetLevelSheet,32,32);
 			add(level);
+			
+			// Flag
+			flag = groupFromSpawn(SPAWN_FLAG,Flag,level).members[0];
+			add(flag);
 			
 			// Presents
 			presentGroup = groupFromSpawn(SPAWN_PRESENT,Present,level);
@@ -59,6 +65,10 @@ package
 			var _present:Present = presentOverlappedByPlayer();
 			if (_present) {
 				removePresent(_present);
+			}
+			
+			if (player.overlaps(flag)) {
+				completeLevel();
 			}
 		}
 		
@@ -107,6 +117,11 @@ package
 			presentGroup.remove(_present,true);
 			presentsCollected ++;
 			presentsCollectedDisplay.text = "You've collected " + presentsCollected + " of " + presentsTotal + " presents!";
+		}
+		
+		private function completeLevel():void {//AtFlag(_flag:Flag):void {
+			//FlxG.switchState(new ScoreState(presentsCollected/presentsTotal));
+			FlxG.switchState(new MapState());
 		}
 	}
 }

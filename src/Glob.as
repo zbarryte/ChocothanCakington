@@ -16,8 +16,14 @@ package
 		[Embed("assets/sprite_balloon.png")] public static var balloonSheet:Class;
 		[Embed("assets/sprite_balloon_string.png")] public static var balloonStringSheet:Class;
 		
-		// Present sprites
+		// Present sprite
 		[Embed("assets/sprite_present.png")] public static var presentSheet:Class;
+		
+		// Flag sprite
+		[Embed("assets/sprite_flag.png")] public static var flagSheet:Class;
+		
+		// Button sprite
+		[Embed("assets/sprite_button.png")] public static var buttonSheet:Class;
 		
 		// Level
 		[Embed("assets/tileset_level.png")] public static var tilesetLevelSheet:Class;

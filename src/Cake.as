@@ -9,11 +9,10 @@ package
 		private const W:Number = 32;
 		private const H:Number = 32;
 		
-		private const MOVE_ACCEL:Number = 222;
-		private const MOVE_ACCEL_X_GROUND:Number = 444;
-		private const MOVE_ACCEL_X_AIR:Number = 222;
+		private const MOVE_DECEL:Number = 444;
+		private const MOVE_ACCEL_X:Number = 444;
 		private const MOVE_VEL_Y:Number = Math.pow(Glob.GRAV_ACCEL*10*32,0.5);
-		private const MAX_VEL_X:Number = 444;
+		private const MAX_VEL_X:Number = 222;
 		private const MAX_VEL_Y:Number = 888;
 		
 		private const KEY_RIGHT:Array = ["RIGHT"];
@@ -38,7 +37,7 @@ package
 			components = new FlxGroup;
 			
 			acceleration.y = Glob.GRAV_ACCEL;
-			drag.x = MOVE_ACCEL;
+			drag.x = MOVE_DECEL;
 			maxVelocity.x = MAX_VEL_X;
 			maxVelocity.y = MAX_VEL_Y;
 			
@@ -58,7 +57,7 @@ package
 			balloon.drag = drag;
 			
 			balloonString = new FlxSprite(x,y,Glob.balloonStringSheet);
-			components.add(balloonString);
+			//components.add(balloonString);
 			balloonString.visible = false;
 		}
 		
@@ -72,14 +71,14 @@ package
 			
 			// handle left/right motion
 			if (Glob.pressedAfter(KEY_LEFT,KEY_RIGHT)) {
-				acceleration.x = -MOVE_ACCEL_X_GROUND;
+				acceleration.x = -MOVE_ACCEL_X;
 			} else if (Glob.pressedAfter(KEY_RIGHT,KEY_LEFT)) {
-				acceleration.x = MOVE_ACCEL_X_GROUND;
+				acceleration.x = MOVE_ACCEL_X;
 			}
 			// handle jumping
 			if (Glob.justPressed(KEY_JUMP) && onGround()) {
 				velocity.y = -MOVE_VEL_Y;
-			} else if (Glob.justReleased(KEY_JUMP) && velocity.y < 0) {
+			} else if (Glob.justReleased(KEY_JUMP) && velocity.y < 0 && !wasUsingBalloon) {
 				velocity.y = 0;
 			}
 			// center some components
@@ -88,97 +87,53 @@ package
 			
 			// Handle Balloon Use
 			if (justUsedBalloon()) {
-				//velocity.x = 0;
-				//velocity.y = 0;
 				balloon.x = x;
-				balloon.y = y;//-stringLength;
+				balloon.y = y - balloon.height/2.0 - stringLength;
 				balloon.velocity.x = velocity.x;
 				balloon.visible = true;
 				balloonString.visible = true;
 				wasUsingBalloon = true;
+				balloon.acceleration.y = Glob.GRAV_ACCEL/22.22;
 			} else if (usingBalloon()) {
-				
-				//balloon.acceleration.y = Glob.GRAV_ACCEL/222.2;
-				
-				var _balloonTiePoint:FlxPoint = new FlxPoint(balloon.x+width/2.0,balloon.y+balloon.height);
+									
+				var _balloonTiePoint:FlxPoint = new FlxPoint(balloon.x+width/2.0,balloon.y+balloon.height/2.0);
 				var _cakeTiePoint:FlxPoint = new FlxPoint(x+width/2.0,y);
 				var _distToBalloon:Number = Math.pow(Math.pow(_balloonTiePoint.x-_cakeTiePoint.x,2) + Math.pow(_balloonTiePoint.y-_cakeTiePoint.y,2),0.5);
 				var _dirToBalloon:FlxPoint = new FlxPoint((_balloonTiePoint.x-_cakeTiePoint.x)/_distToBalloon,(_balloonTiePoint.y-_cakeTiePoint.y)/_distToBalloon);
 				
+				var _theta:Number = -Math.atan(_dirToBalloon.x/_dirToBalloon.y)*180.0/Math.PI;
+				balloon.angle = _theta;
+				FlxG.log(_theta);
 				
-				if (_distToBalloon >= stringLength) {
-					
-					var _theta:Number = Math.atan(_dirToBalloon.x/_dirToBalloon.y)*180.0/Math.PI;
-										
-					//acceleration.x = 0.5*Glob.GRAV_ACCEL*Math.cos(2*_theta);
-					//acceleration.y = -Glob.GRAV_ACCEL*Math.pow(Math.sin(_theta),2.0);
-					
+				acceleration.x -= Math.abs(_distToBalloon - stringLength)*0.5*Glob.GRAV_ACCEL*Math.sin(_theta);// + (_distToBalloon - stringLength)*_dirToBalloon.x*Glob.GRAV_ACCEL;
+				acceleration.y -= Math.abs(_distToBalloon - stringLength)*Glob.GRAV_ACCEL*Math.pow(Math.sin(_theta),2.0);// + (_distToBalloon - stringLength)*_dirToBalloon.y*Glob.GRAV_ACCEL;
+				
+				//if (_distToBalloon >= stringLength) {
 					/*
-					velocity.x = 0;
-					velocity.y = 0;
-					balloon.velocity.x = 0;
-					balloon.velocity.y = 0;
+					acceleration.x = 0.5*Glob.GRAV_ACCEL*Math.sin(_theta);
+					acceleration.y = Glob.GRAV_ACCEL*Math.pow(Math.sin(_theta),2.0);
 					*/
 					
-					
+					/*
 					acceleration.x += 0.22*(_distToBalloon - stringLength)*_dirToBalloon.x*Glob.GRAV_ACCEL;
 					acceleration.y += 0.22*(_distToBalloon - stringLength)*_dirToBalloon.y*Glob.GRAV_ACCEL;
-					velocity.y = (velocity.y > -maxVelocity.y/8) ? velocity.y : -maxVelocity.y/8;
+					//velocity.y = (velocity.y > -maxVelocity.y/8) ? velocity.y : -maxVelocity.y/8;
 					
-					balloon.acceleration.x -= 0.22*(_distToBalloon - stringLength)*_dirToBalloon.x*Glob.GRAV_ACCEL;
-					balloon.acceleration.y -= 0.22*(_distToBalloon - stringLength)*_dirToBalloon.y*Glob.GRAV_ACCEL;
-					balloon.velocity.y = (balloon.velocity.y < maxVelocity.y/22) ? balloon.velocity.y : maxVelocity.y/22;
+					balloon.acceleration.x -= 0.022*(_distToBalloon - stringLength)*_dirToBalloon.x*Glob.GRAV_ACCEL;
+					balloon.acceleration.y -= 0.022*(_distToBalloon - stringLength)*_dirToBalloon.y*Glob.GRAV_ACCEL;
+					//balloon.velocity.y = (balloon.velocity.y < maxVelocity.y/22) ? balloon.velocity.y : maxVelocity.y/22;
+					*/
 					
-				}
+				//}
 			} else if (justStoppedUsingBalloon()) {
 				balloon.velocity = new FlxPoint(0,0);
 				balloon.visible = false;
 				balloonString.visible = false;
 				wasUsingBalloon = false;
+				balloon.acceleration.y = 0;
 			}
 			
-			/*
-			// Balloon stuff (maybe should model like a mass-spring system?  kind of cheating it for now)
-			if (usingBalloon()) {
-				var _connectPoint:FlxPoint = new FlxPoint(x+width/2.0,y);
-				if (justUsedBalloon()) {
-					balloon.x = _connectPoint.x-balloon.width/2.0;
-					balloon.y = _connectPoint.y-stringLength-balloon.height;
-					balloon.velocity.x = 0;
-					balloon.velocity.y = 0;
-					wasUsingBalloon = true;
-				}
-				
-				var _balloonBasePoint:FlxPoint = new FlxPoint(balloon.x+width/2.0,balloon.y+balloon.height);
-				balloonString.x = _balloonBasePoint.x;
-				balloonString.y = _balloonBasePoint.y;
-				
-				var _dirMag:Number = Math.pow(Math.pow(_balloonBasePoint.x-_connectPoint.x,2) + Math.pow(_balloonBasePoint.y-_connectPoint.y,2),0.5);
-				var _dir:FlxPoint = new FlxPoint(-(_balloonBasePoint.x-_connectPoint.x)/_dirMag,-(_balloonBasePoint.y-_connectPoint.y)/_dirMag);
-				
-				balloon.visible = true;
-				balloonString.visible = true;
-				acceleration.y = Glob.GRAV_ACCEL - 880*_dir.y;
-				acceleration.x -= 880*_dir.x;
-				
-				
-				// is the cake still attached?
-				if (Math.pow(_connectPoint.x+_balloonBasePoint.x,2) + Math.pow(_connectPoint.y+_balloonBasePoint.y,2) > Math.pow(stringLength,2)) {
-					x = _balloonBasePoint.x+_dir.x*stringLength-width/2.0;
-					y = _balloonBasePoint.y+_dir.y*stringLength;
-				}
-				
-				//balloon.acceleration.y = Glob.GRAV_ACCEL/222.222 + 880*_dir.y;
-				balloon.acceleration.x = 0 + 880*_dir.x;
-			} else {
-				balloon.visible = false;
-				balloonString.visible = false;
-				wasUsingBalloon = false;
-				acceleration.y = Glob.GRAV_ACCEL;
-				balloon.acceleration.y = Glob.GRAV_ACCEL/222.222;
-				balloon.acceleration.x = 0;
-			}
-			*/
+			
 		}
 		
 		override protected function updateMotion():void {
