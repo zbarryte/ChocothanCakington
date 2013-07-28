@@ -19,6 +19,8 @@ package
 		
 		private var HUD:FlxGroup;
 		
+		private var pauseGroup:PauseGroup;
+		
 		override public function create():void {
 			FlxG.bgColor = 0xff002222;
 			
@@ -55,20 +57,27 @@ package
 			HUD.add(presentsCollectedDisplay);
 			
 			add(HUD);
+			
+			pauseGroup = new PauseGroup();
+			add(pauseGroup);
 		}
 		
 		override public function update():void {
-			super.update();
-			FlxG.collide(player,level);
-			//FlxG.collide(player.balloon,level);
-			
-			var _present:Present = presentOverlappedByPlayer();
-			if (_present) {
-				removePresent(_present);
-			}
-			
-			if (player.overlaps(flag)) {
-				completeLevel();
+			if (!pauseGroup.isOn()) {
+				super.update();
+				FlxG.collide(player,level);
+				//FlxG.collide(player.balloon,level);
+				
+				var _present:Present = presentOverlappedByPlayer();
+				if (_present) {
+					removePresent(_present);
+				}
+				
+				if (player.overlaps(flag)) {
+					completeLevel();
+				}
+			} else {
+				pauseGroup.update();
 			}
 		}
 		

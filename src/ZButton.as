@@ -32,6 +32,9 @@ package
 			switchState(_startState);
 			
 			label = new FlxText(x,y,W,name);
+			
+			label.scrollFactor = new FlxPoint(0,0);
+			scrollFactor = new FlxPoint(0,0);
 		}
 		
 		public function switchState(_state:String):void {

@@ -9,6 +9,7 @@ package
 		
 		// Environmental constants
 		public static const GRAV_ACCEL:Number = 888;
+		public static const CENT:FlxPoint = new FlxPoint(FlxG.width/2.0,FlxG.height/2.0);
 		
 		// Player sprite
 		[Embed("assets/sprite_cake.png")] public static var cakeSheet:Class;
