@@ -12,9 +12,11 @@ package
 			
 			toggle();
 			
-			add(new ZButton(Glob.CENT.x-ZButton.W/2.0,Glob.CENT.y-ZButton.H-ZGroup.SPACING,Glob.buttonSheet,continueReaction,"continue",ZButton.CURSED));
-			add(new ZButton(Glob.CENT.x-ZButton.W/2.0,Glob.CENT.y,Glob.buttonSheet,restartReaction,"restart"));
-			add(new ZButton(Glob.CENT.x-ZButton.W/2.0,Glob.CENT.y+ZButton.H+ZGroup.SPACING,Glob.buttonSheet,exitToMenuReaction,"exit to menu"));
+			spacing = -22;
+			
+			add(new ZButton(Glob.CENT.x-ZButton.W/2.0,Glob.CENT.y-ZButton.H-spacing,Glob.buttonCakeMiddleSheet,continueReaction,"continue",ZButton.CURSED));
+			add(new ZButton(Glob.CENT.x-ZButton.W/2.0,Glob.CENT.y,Glob.buttonCakeMiddleSheet,restartReaction,"restart"));
+			add(new ZButton(Glob.CENT.x-ZButton.W/2.0,Glob.CENT.y+ZButton.H+spacing,Glob.buttonCakeBottomSheet,exitToMenuReaction,"exit to menu"));
 		}
 		
 		// Button Reactions
@@ -47,6 +49,12 @@ package
 			}
 			if (Glob.justPressed(PAUSE_KEY)) {
 				reset();
+			}
+		}
+		
+		override public function draw():void {
+			for (var i:uint = length-1; i >= 0; i--) {
+				members[i].draw();
 			}
 		}
 	}

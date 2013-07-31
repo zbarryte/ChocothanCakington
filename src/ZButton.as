@@ -8,7 +8,7 @@ package
 		public static const H:Number = 50;
 		
 		public var name:String; // can be used for debugging
-		public var callback:Function; // called when button is selected
+		private var callback:Function; // called when button is selected
 		private var label:FlxText; // appears on button
 		
 		private var state:String;
@@ -31,13 +31,13 @@ package
 			
 			switchState(_startState);
 			
-			label = new FlxText(x,y,W,name);
+			label = new FlxText(x+width/4.0,y+height/4.0,W,name);
 			
 			label.scrollFactor = new FlxPoint(0,0);
 			scrollFactor = new FlxPoint(0,0);
 		}
 		
-		public function switchState(_state:String):void {
+		private function switchState(_state:String):void {
 			state = _state;
 			play(state);
 			//FlxG.log(name + " in state: " + state);
@@ -45,6 +45,20 @@ package
 		
 		public function stateIs(_state:String):Boolean {
 			return (state == _state);
+		}
+		
+		public function curse():void {
+			label.color = 0xff0000;
+			switchState(CURSED);
+		}
+		
+		public function uncurse():void {
+			label.color = 0xffffff;
+			switchState(UNCURSED);
+		}
+		
+		public function select():void {
+			switchState(SELECTED);
 		}
 		
 		override public function update():void {

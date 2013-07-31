@@ -5,7 +5,7 @@ package
 	public class ZGroup extends FlxGroup
 	{
 		private var buttonIndex:int; // current button
-		public static const SPACING:uint = 5; // spacing between buttons
+		protected var spacing:int = 5; // spacing between buttons
 		
 		// Controls
 		private const SELECT_BUTTON_KEY:Array = ["SPACE"];
@@ -21,31 +21,31 @@ package
 		public function curseFoward():void {
 			// uncurse current button
 			var _buttonIndexNext:uint = (buttonIndex + 1 < length) ? buttonIndex + 1 : 0;
-			members[buttonIndex].switchState(ZButton.UNCURSED);
+			members[buttonIndex].uncurse();
 			// curse new button
 			buttonIndex = _buttonIndexNext;
-			members[buttonIndex].switchState(ZButton.CURSED);
+			members[buttonIndex].curse();
 			
 		}
 		
 		public function curseBack():void {
 			// uncurse current button
 			var _buttonIndexNext:uint = (buttonIndex - 1 >= 0) ? buttonIndex - 1 : length - 1;
-			members[buttonIndex].switchState(ZButton.UNCURSED);
+			members[buttonIndex].uncurse();
 			// curse new button
 			buttonIndex = _buttonIndexNext;
-			members[buttonIndex].switchState(ZButton.CURSED);
+			members[buttonIndex].curse();
 		}
 		
 		public function select():void {
-			members[buttonIndex].switchState(ZButton.SELECTED);
+			members[buttonIndex].select();
 		}
 		
 		public function reset():void {
-			members[buttonIndex].switchState(ZButton.UNCURSED);
+			members[buttonIndex].uncurse();
 			
 			buttonIndex = 0;
-			members[buttonIndex].switchState(ZButton.CURSED);
+			members[buttonIndex].curse();
 		}
 		
 		override public function update():void {

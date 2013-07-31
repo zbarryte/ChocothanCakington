@@ -25,7 +25,8 @@ package
 		
 		private var wasUsingBalloon:Boolean;
 		
-		private var eyes:FlxSprite;
+		//private var eyes:FlxSprite;
+		private var eyes:ZComponent;
 		
 		public var components:FlxGroup;
 										
@@ -41,11 +42,14 @@ package
 			maxVelocity.x = MAX_VEL_X;
 			maxVelocity.y = MAX_VEL_Y;
 			
-			eyes = new FlxSprite(x,y);
+			/*eyes = new FlxSprite(x,y);
 			eyes.loadGraphic(Glob.cakeEyesSheet,true,true,width,height,true);
 			eyes.addAnimation("blink",[0,1],2,true);
 			//eyes.play("blink");
 			eyes.frame = 1;
+			components.add(eyes);
+			*/
+			eyes = new ZComponent(this,32,0,Glob.cakeEyesSheet);
 			components.add(eyes);
 			
 			balloon = new FlxSprite(x,y);
@@ -65,6 +69,12 @@ package
 			
 			super.update();
 			
+			if (FlxG.keys.pressed("M")) {
+				angle += 1;
+			} else if (FlxG.keys.pressed("N")) {
+				angle -= 1;
+			}
+			
 			// reset acceleration
 			acceleration = new FlxPoint(0,Glob.GRAV_ACCEL);
 			balloon.acceleration = new FlxPoint(0,0);
@@ -81,10 +91,10 @@ package
 			} else if (Glob.justReleased(KEY_JUMP) && velocity.y < 0 && !wasUsingBalloon) {
 				velocity.y = 0;
 			}
-			// center some components
+			/*// center some components
 			eyes.x = x;
 			eyes.y = y;
-			
+			*/
 			// Handle Balloon Use
 			if (justUsedBalloon()) {
 				balloon.x = x;

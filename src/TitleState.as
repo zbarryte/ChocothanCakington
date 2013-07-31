@@ -3,14 +3,20 @@ package
 	import org.flixel.*;
 	
 	public class TitleState extends FlxState
-	{
+	{	
 		override public function create():void {
-			add(new FlxText(FlxG.width/2.0,FlxG.height/2.0,100,"Title State \n press any key"));
+			
+			Glob.titleMusic.play();
+			
+			add(new FlxSprite(0,0,Glob.titleSheet));
+			
+			add(new FlxText(3*FlxG.width/4.0,3*FlxG.height/4.0,100,"press any key"));
 		}
 		
 		override public function update():void {
 			super.update();
 			if (FlxG.keys.any()) {
+				Glob.titleMusic.stop();
 				FlxG.switchState(new MenuState());
 			}
 		}

@@ -17,12 +17,18 @@ package
 		private var presentsTotal:uint;
 		private var presentsCollectedDisplay:FlxText;
 		
+		private var timeDisplay:FlxText;
+		
 		private var HUD:FlxGroup;
 		
 		private var pauseGroup:PauseGroup;
 		
+		private var timeRemaining:Number;
+		
 		override public function create():void {
 			FlxG.bgColor = 0xff002222;
+						
+			timeRemaining = 600;
 			
 			// Info
 			presentsCollected = 0;
@@ -52,14 +58,19 @@ package
 			
 			// HUD
 			HUD = new FlxGroup;
-			presentsCollectedDisplay = new FlxText(0,0,100,"You've collected " + presentsCollected + " of " + presentsTotal + " presents!",true);
+			presentsCollectedDisplay = new FlxText(0,0,100,"You've collected " + presentsCollected + " of " + presentsTotal + " presents!");
 			presentsCollectedDisplay.scrollFactor = new FlxPoint(0,0);
 			HUD.add(presentsCollectedDisplay);
+			timeDisplay = new FlxText(FlxG.width-100,0,100,""+int(timeRemaining)+"");
+			timeDisplay.scrollFactor = new FlxPoint(0,0);
+			HUD.add(timeDisplay);
 			
 			add(HUD);
 			
 			pauseGroup = new PauseGroup();
 			add(pauseGroup);
+			
+			add(new ZText(10,10,"hello world"));
 		}
 		
 		override public function update():void {
@@ -71,6 +82,12 @@ package
 				var _present:Present = presentOverlappedByPlayer();
 				if (_present) {
 					removePresent(_present);
+				}
+				
+				timeRemaining -= FlxG.elapsed;
+				timeDisplay.text = ""+int(timeRemaining)+"";
+				if (timeRemaining < 0) {
+					playerDies();
 				}
 				
 				if (player.overlaps(flag)) {
@@ -131,6 +148,10 @@ package
 		private function completeLevel():void {//AtFlag(_flag:Flag):void {
 			//FlxG.switchState(new ScoreState(presentsCollected/presentsTotal));
 			FlxG.switchState(new MapState());
+		}
+		
+		private function playerDies():void {
+			FlxG.switchState(new PlayState());
 		}
 	}
 }

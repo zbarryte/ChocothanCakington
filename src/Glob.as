@@ -12,24 +12,36 @@ package
 		public static const CENT:FlxPoint = new FlxPoint(FlxG.width/2.0,FlxG.height/2.0);
 		
 		// Player sprite
-		[Embed("assets/sprite_cake.png")] public static var cakeSheet:Class;
-		[Embed("assets/sprite_cake_eyes.png")] public static var cakeEyesSheet:Class;
-		[Embed("assets/sprite_balloon.png")] public static var balloonSheet:Class;
-		[Embed("assets/sprite_balloon_string.png")] public static var balloonStringSheet:Class;
+		[Embed("assets/sprite_cake.png")] public static const cakeSheet:Class;
+		[Embed("assets/sprite_cake_eyes.png")] public static const cakeEyesSheet:Class;
+		[Embed("assets/sprite_balloon.png")] public static const balloonSheet:Class;
+		[Embed("assets/sprite_balloon_string.png")] public static const balloonStringSheet:Class;
 		
 		// Present sprite
-		[Embed("assets/sprite_present.png")] public static var presentSheet:Class;
+		[Embed("assets/sprite_present.png")] public static const presentSheet:Class;
 		
 		// Flag sprite
-		[Embed("assets/sprite_flag.png")] public static var flagSheet:Class;
+		[Embed("assets/sprite_flag.png")] public static const flagSheet:Class;
 		
 		// Button sprite
-		[Embed("assets/sprite_button.png")] public static var buttonSheet:Class;
+		[Embed("assets/button_menu.png")] public static const buttonSheet:Class;
+		[Embed("assets/button_cake_middle.png")] public static const buttonCakeMiddleSheet:Class;
+		[Embed("assets/button_cake_bottom.png")] public static const buttonCakeBottomSheet:Class;
 		
 		// Level
-		[Embed("assets/tileset_level.png")] public static var tilesetLevelSheet:Class;
+		[Embed("assets/tileset_level.png")] public static const tilesetLevelSheet:Class;
 		[Embed("assets/mapCSV_level_000.csv", mimeType = 'application/octet-stream')] public static const level000CSV:Class;
 		[Embed("assets/mapCSV_level_001.csv", mimeType = 'application/octet-stream')] public static const level001CSV:Class;
+		
+		// Titles
+		[Embed("assets/title-01.png")] public static const titleSheet:Class;
+		
+		// Letters
+		[Embed("assets/alphabet.png")] public static const alphabetSheet:Class;
+		
+		// Sounds
+		[Embed("assets/title.mp3")] public static const titleMP3:Class;
+		public static const titleMusic:FlxSound = new FlxSound().loadEmbedded(titleMP3,true);
 		
 		// Key presses
 		public static function pressed(_keys:Array):Boolean {
