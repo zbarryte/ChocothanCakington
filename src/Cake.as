@@ -6,8 +6,11 @@ package
 	
 	public class Cake extends FlxSprite
 	{
-		private const W:Number = 32;
-		private const H:Number = 32;
+		private var blinkTimer:Number = 0;
+		private var blinkPeriod:Number = 2.2;
+		
+		private const W:Number = 48;
+		private const H:Number = 8;
 		
 		private const MOVE_DECEL:Number = 444;
 		private const MOVE_ACCEL_X:Number = 444;
@@ -27,15 +30,21 @@ package
 		
 		//private var eyes:FlxSprite;
 		private var eyes:ZComponent;
+		private var feet:ZComponent;
 		
 		public var components:FlxGroup;
 										
 		public function Cake(_x:Number=0,_y:Number=0,_simpleGraphic:Class=null)
-		{
-			super(_x,_y);
-			loadGraphic(Glob.cakeSheet,true,true,W,H,true);
-			
+		{	
 			components = new FlxGroup;
+			
+			feet = new ZComponent(this,8,H,Glob.cakeFeetSheet,0,32,16);
+			feet.addAnimation("walk",[0,1,2,1,3,4,5],22,false);
+			feet.addAnimation("idle",[0]);
+			components.add(feet);
+			
+			super(_x,_y);
+			loadGraphic(Glob.cakeBaseSheet,true,true,W,H,true);
 			
 			acceleration.y = Glob.GRAV_ACCEL;
 			drag.x = MOVE_DECEL;
@@ -49,7 +58,13 @@ package
 			eyes.frame = 1;
 			components.add(eyes);
 			*/
-			eyes = new ZComponent(this,32,0,Glob.cakeEyesSheet);
+			var head:ZComponent = new ZComponent(this,3,-16,Glob.cakeHeadSheet,0,42,16);
+			components.add(head);
+			
+			eyes = new ZComponent(head,0,0,Glob.cakeEyesSheet,0,42,16);
+			eyes.addAnimation("blink",[1,2,3,4,0,4,3,2,1],22,false);
+			eyes.frame = 1;
+			//eyes.play("blink");
 			components.add(eyes);
 			
 			balloon = new FlxSprite(x,y);
@@ -69,11 +84,20 @@ package
 			
 			super.update();
 			
-			if (FlxG.keys.pressed("M")) {
-				angle += 1;
-			} else if (FlxG.keys.pressed("N")) {
-				angle -= 1;
+			
+			if (velocity.x != 0 && onGround()) {
+				feet.play("walk");
+			} else {
+				feet.play("idle");
 			}
+			
+			// blink?
+			blinkTimer += FlxG.elapsed;
+			if (blinkTimer >= blinkPeriod) {
+				eyes.play("blink");
+				blinkTimer = 0;
+			}
+			
 			
 			// reset acceleration
 			acceleration = new FlxPoint(0,Glob.GRAV_ACCEL);
@@ -150,6 +174,19 @@ package
 			// in case I'd like to mess with this to add tension, it's defined in FlxObject
 			super.updateMotion();
 		}
+		
+		/*
+		override public function overlaps(ObjectOrGroup:FlxBasic, InScreenSpace:Boolean=false, Camera:FlxCamera=null):Boolean {
+			for (var i:uint = 0; i < components.length; i++) {
+				if (components.members[i].overlaps(ObjectOrGroup,InScreenSpace,Camera)) {
+					return true;
+				}
+			}
+			
+			return (super.overlaps(ObjectOrGroup,InScreenSpace,Camera));
+		}
+		*/
+		
 		
 		private function onGround():Boolean {
 			return isTouching(FlxObject.DOWN);
