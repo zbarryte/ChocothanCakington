@@ -31,6 +31,9 @@ package
 		[Embed("assets/button_cake_middle.png")] public static const buttonCakeMiddleSheet:Class;
 		[Embed("assets/button_cake_bottom.png")] public static const buttonCakeBottomSheet:Class;
 		
+		[Embed("assets/sprite_cursor.png")] public static const cursorSheet:Class;
+		[Embed("assets/button_exit_hint.png")] public static const exitHintSheet:Class;
+		
 		// Level
 		[Embed("assets/tileset_level.png")] public static const tilesetLevelSheet:Class;
 		[Embed("assets/mapCSV_level_000.csv", mimeType = 'application/octet-stream')] public static const level000CSV:Class;

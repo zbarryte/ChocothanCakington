@@ -2,7 +2,7 @@ package
 {
 	import org.flixel.*;
 	
-	public class MapState extends FlxState
+	public class MapState extends ZState
 	{
 		private const BACK_KEY:Array = ["ESCAPE"];
 		private const FORWARD_KEY:Array = ["ENTER","SPACE"];

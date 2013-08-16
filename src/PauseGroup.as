@@ -14,9 +14,11 @@ package
 			
 			spacing = -22;
 			
+			/*
 			add(new ZButton(Glob.CENT.x-ZButton.W/2.0,Glob.CENT.y-ZButton.H-spacing,Glob.buttonCakeMiddleSheet,continueReaction,"continue",ZButton.CURSED));
 			add(new ZButton(Glob.CENT.x-ZButton.W/2.0,Glob.CENT.y,Glob.buttonCakeMiddleSheet,restartReaction,"restart"));
 			add(new ZButton(Glob.CENT.x-ZButton.W/2.0,Glob.CENT.y+ZButton.H+spacing,Glob.buttonCakeBottomSheet,exitToMenuReaction,"exit to menu"));
+			*/
 		}
 		
 		// Button Reactions

@@ -2,7 +2,7 @@ package
 {
 	import org.flixel.*;
 	
-	public class PlayState extends FlxState
+	public class PlayState extends ZState
 	{
 		private const SPAWN_PLAYER:Array = [2];
 		private const SPAWN_PRESENT:Array = [3];
@@ -63,6 +63,7 @@ package
 			HUD.add(presentsCollectedDisplay);
 			timeDisplay = new FlxText(FlxG.width-100,0,100,""+int(timeRemaining)+"");
 			timeDisplay.scrollFactor = new FlxPoint(0,0);
+			timeDisplay.size = 10;
 			HUD.add(timeDisplay);
 			
 			add(HUD);
@@ -70,7 +71,7 @@ package
 			pauseGroup = new PauseGroup();
 			add(pauseGroup);
 			
-			add(new ZText(10,10,"hello world"));
+			//add(new ZText(10,10,"hello world"));
 		}
 		
 		override public function update():void {

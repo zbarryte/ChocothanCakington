@@ -1,8 +1,9 @@
 package
 {
 	import org.flixel.*;
+	import org.osmf.events.TimeEvent;
 	
-	public class MenuState extends FlxState
+	public class MenuState extends ZState
 	{
 		private const BACK_KEY:Array = ["ESCAPE"];
 		private const SELECT_KEY:Array = ["SPACE","ENTER"];
@@ -10,37 +11,124 @@ package
 		private const CURSE_BACK_KEY:Array = ["UP","LEFT"];
 		
 		private var buttonGroup:ZGroup;
+		private var cursor:FlxSprite;
+		
+		private var cursorTime:Number = 0;
+		private const CURSOR_PERIOD:Number = 0.33;
+		private var cursorDir:int = 1;
+		private var cursorSize:Number = 0.022;
+		
+		private var exitHint:FlxSprite;
+		private var selectHint:FlxSprite;
+		
+		public function MenuState(_prev:ZState=null) {
+			super(_prev);
+		}
 		
 		override public function create():void {
-			add(new FlxText(FlxG.width/2.0,FlxG.height/2.0,100,"Menu State"));
 			
-			var _spacing:Number = 100;
-			buttonGroup = new ZGroup();
-			buttonGroup.add(new ZButton(FlxG.width/2.0,0*_spacing,Glob.buttonSheet,playReaction,"play",ZButton.CURSED));
-			buttonGroup.add(new ZButton(FlxG.width/2.0,1*_spacing,Glob.buttonSheet,optionsReaction,"options"));
-			buttonGroup.add(new ZButton(FlxG.width/2.0,2*_spacing,Glob.buttonSheet,controlsReaction,"controls"));
+			// color background
+			FlxG.bgColor = 0xff222222;
+			
+			// set up data array to build buttons
+			var buttonDataArray:Array = new Array(new Array(startReaction,"start"),
+												  new Array(optionsReaction,"options"),
+												  new Array(controlsReaction,"controls"),
+												  new Array(creditsReaction,"credits"));
+			// pick the start point for the button group
+			buttonGroup = new ZGroup(Glob.CENT.x-ZButton.W/2.0,FlxG.height/(buttonDataArray.length + 1),ZButton.H);
+			
+			// build the buttons using the data
+			for (var i:uint = 0; i < buttonDataArray.length; i++) {
+				
+				// create the button
+				var startButton:ZButton = new ZTextButton(buttonDataArray[i][0],buttonDataArray[i][1]);
+				
+				// add the button to the button group
+				buttonGroup.addButton(startButton);
+			}
+			
+			// add the button group to the state
 			add(buttonGroup);
+			
+			// create the cursor and add it to the state
+			cursor = new FlxSprite();
+			cursor.loadGraphic(Glob.cursorSheet);
+			resetCursor();
+			add(cursor);
+			
+			// create and add the exit button
+			exitHint = new FlxSprite();
+			exitHint.loadGraphic(Glob.exitHintSheet);
+			exitHint.x = 0;
+			exitHint.y = FlxG.height - exitHint.height;
+			add(exitHint);
+			add(new FlxText(exitHint.x+8,exitHint.y+4,exitHint.width,"[Esc]"));
+			add(new FlxText(exitHint.x+8,exitHint.y+16,exitHint.width,"back"));
+			
+			// create and add the exit button
+			selectHint = new FlxSprite();
+			selectHint.loadGraphic(Glob.exitHintSheet);
+			selectHint.scale.x *= -1;
+			selectHint.x = FlxG.width - selectHint.width;
+			selectHint.y = FlxG.height - selectHint.height;
+			add(selectHint);
+			add(new FlxText(selectHint.x+8,selectHint.y+4,exitHint.width,"[Space]"));
+			add(new FlxText(selectHint.x+8,selectHint.y+16,exitHint.width,"select"));
 		}
 		
 		override public function update():void {
+			
 			super.update();
 			if (Glob.justPressed(BACK_KEY)) {
-				FlxG.switchState(new TitleState());
+				goBack();
+				//FlxG.switchState(new TitleState());
+			} else if (Glob.justPressed(CURSE_FORWARD_KEY)) {
+				buttonGroup.curseFoward();
+				resetCursor();
+			} else if (Glob.justPressed(CURSE_BACK_KEY)) {
+				buttonGroup.curseBack();
+				resetCursor();
+			} else if (Glob.justPressed(SELECT_KEY)) {
+				buttonGroup.select();
 			}
-			if (Glob.justPressed(SELECT_KEY)) {
-				
-			}	
+			
+			pulseCursor();
+		}
+		
+		// Cursor Stuff
+		private function pulseCursor():void {
+			cursorTime += FlxG.elapsed;
+			cursor.scale.x += cursorDir*cursorSize;
+			cursor.scale.y -= cursorDir*cursorSize;
+			cursor.x += cursorDir*1.22;
+			if (cursorTime >= CURSOR_PERIOD) {
+				cursorTime = 0;
+				cursorDir *= -1;
+			}
+		}
+		public function resetCursor():void {
+			cursorTime = 0;
+			cursorDir = 1;
+			cursor.scale.x = 1;
+			cursor.scale.y = 1;
+			cursor.x = buttonGroup.x-ZButton.W/3.5;
+			cursor.y = buttonGroup.getCursed().y - cursor.height/2.0 + ZButton.H/2.0;
 		}
 		
 		// Button Reactions
-		private function playReaction():void {
-			FlxG.switchState(new MapState());
+		private function startReaction():void {
+			goForwardToState(MapState);
 		}
 		private function optionsReaction():void {
-			FlxG.log("options pressed");
+			//FlxG.switchState(new OptionsState());
+			goForwardToState(OptionsState);
 		}
 		private function controlsReaction():void {
-			FlxG.log("control pressed");
+			goForwardToState(ControlsState);
+		}
+		private function creditsReaction():void {
+			goForwardToState(CreditsState);
 		}
 	}
 }

@@ -4,17 +4,23 @@ package
 	
 	public class ZGroup extends FlxGroup
 	{
-		private var buttonIndex:int; // current button
-		protected var spacing:int = 5; // spacing between buttons
+		public var x:Number;
+		public var y:Number;
+		protected var spacing:int;
 		
-		// Controls
+		private var buttonIndex:int;
+
+		/*
 		private const SELECT_BUTTON_KEY:Array = ["SPACE"];
 		private const CURSE_FORWARD_KEY:Array = ["DOWN","RIGHT"];
 		private const CURSE_BACK_KEY:Array = ["UP","LEFT"];
+		*/
 		
-		public function ZGroup(MaxSize:uint=0)
-		{	
-			super(MaxSize);
+		public function ZGroup(_x:Number=0,_y:Number=0,_spacing:int=0,_maxSize:uint=0) {
+			super(_maxSize);
+			x = _x;
+			y = _y;
+			spacing = _spacing;
 			buttonIndex = 0;
 		}
 		
@@ -25,7 +31,6 @@ package
 			// curse new button
 			buttonIndex = _buttonIndexNext;
 			members[buttonIndex].curse();
-			
 		}
 		
 		public function curseBack():void {
@@ -39,6 +44,7 @@ package
 		
 		public function select():void {
 			members[buttonIndex].select();
+			members[buttonIndex].curse();
 		}
 		
 		public function reset():void {
@@ -48,6 +54,26 @@ package
 			members[buttonIndex].curse();
 		}
 		
+		public function getCursed():ZButton {
+			return members[buttonIndex];
+		}
+		
+		public function addButton(_button:ZButton):void {
+			
+			// curse first button
+			if (length<=0) {
+				_button.curse();
+			} else {
+				_button.uncurse();
+			}
+			// position buttons
+			_button.setXY(x,y);
+			
+			y += spacing;
+			super.add(_button);
+		}
+		
+		/*
 		override public function update():void {
 			super.update();
 			if (Glob.justPressed(CURSE_FORWARD_KEY)) {
@@ -58,6 +84,7 @@ package
 				select();
 			}
 		}
+		*/
 		
 	}
 }

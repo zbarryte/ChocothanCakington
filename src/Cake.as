@@ -115,10 +115,6 @@ package
 			} else if (Glob.justReleased(KEY_JUMP) && velocity.y < 0 && !wasUsingBalloon) {
 				velocity.y = 0;
 			}
-			/*// center some components
-			eyes.x = x;
-			eyes.y = y;
-			*/
 			// Handle Balloon Use
 			if (justUsedBalloon()) {
 				balloon.x = x;
@@ -137,7 +133,7 @@ package
 				
 				var _theta:Number = -Math.atan(_dirToBalloon.x/_dirToBalloon.y)*180.0/Math.PI;
 				balloon.angle = _theta;
-				FlxG.log(_theta);
+				//FlxG.log(_theta);
 				
 				acceleration.x -= Math.abs(_distToBalloon - stringLength)*0.5*Glob.GRAV_ACCEL*Math.sin(_theta);// + (_distToBalloon - stringLength)*_dirToBalloon.x*Glob.GRAV_ACCEL;
 				acceleration.y -= Math.abs(_distToBalloon - stringLength)*Glob.GRAV_ACCEL*Math.pow(Math.sin(_theta),2.0);// + (_distToBalloon - stringLength)*_dirToBalloon.y*Glob.GRAV_ACCEL;
@@ -175,7 +171,7 @@ package
 			super.updateMotion();
 		}
 		
-		/*
+		
 		override public function overlaps(ObjectOrGroup:FlxBasic, InScreenSpace:Boolean=false, Camera:FlxCamera=null):Boolean {
 			for (var i:uint = 0; i < components.length; i++) {
 				if (components.members[i].overlaps(ObjectOrGroup,InScreenSpace,Camera)) {
@@ -185,7 +181,7 @@ package
 			
 			return (super.overlaps(ObjectOrGroup,InScreenSpace,Camera));
 		}
-		*/
+		
 		
 		
 		private function onGround():Boolean {
