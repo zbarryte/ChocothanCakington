@@ -8,16 +8,18 @@ package
 		private const FORWARD_KEY:Array = ["ENTER","SPACE"];
 		
 		override public function create():void {
+			super.create();
+		}
+		
+		override public function createObjects():void {
 			add(new FlxText(FlxG.width/2.0,FlxG.height/2.0,100,"Map State, continue with SPACE or ENTER"));
 		}
 		
-		override public function update():void {
-			super.update();
+		override protected function updateControls():void {
 			if (Glob.justPressed(BACK_KEY)) {
-				FlxG.switchState(new MenuState());
-			}
-			if (Glob.justPressed(FORWARD_KEY)) {
-				FlxG.switchState(new PlayState());
+				goBack();
+			} else if (Glob.justPressed(FORWARD_KEY)) {
+				goTo(PlayState);
 			}
 		}
 	}

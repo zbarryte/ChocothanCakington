@@ -25,6 +25,7 @@ package
 			// color background
 			FlxG.bgColor = 0xff222222;
 			super.create();
+			resetCursor();
 		}
 		
 		override public function createObjects():void {

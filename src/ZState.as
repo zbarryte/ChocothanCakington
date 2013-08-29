@@ -23,6 +23,8 @@ package
 		}
 		
 		override public function create():void {
+			resume();
+			if (prev!=null) {prev.pause();}
 			if (!areObjectsCreated) {
 				createObjects();
 				areObjectsCreated = true;
@@ -44,27 +46,39 @@ package
 		}
 		
 		protected function updateAnimations():void {
-			// implemented by children
+			// implemented by children, for animating objects
 		}
 		
 		protected function updateControls():void {
-			// implemented by children
+			// implemented by children, for listening to controls
 		}
 		
 		protected function goBack():void {
-			//prev.revive();
 			add(new ZTimedEvent(transBackTime,function():void{FlxG.switchState(prev);},false));
+		}
+		
+		protected function goBackRefreshed():void {
+			var _class:Class = FlxU.getClass(FlxU.getClassName(prev));
+			var _state:ZState = new _class(prev.prev);
+			add(new ZTimedEvent(transBackTime,function():void{FlxG.switchState(_state);},false));
 		}
 		
 		protected function goTo(_class:Class):void {
 			var _state:ZState = new _class();
 			_state.prev = this;
-			//_state.create();
-			add(new ZTimedEvent(transToTime,function():void{/*add(_state);*/FlxG.switchState(_state);},false));
+			add(new ZTimedEvent(transToTime,function():void{FlxG.switchState(_state);},false));
 		}
 		
 		override public function destroy():void {
-			// implmented by children
+			// do nothing
+		}
+		
+		public function pause():void {
+			isPlaying = false;
+		}
+		
+		public function resume():void {
+			isPlaying = true;
 		}
 	}
 }

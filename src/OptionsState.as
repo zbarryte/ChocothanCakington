@@ -6,7 +6,7 @@ package
 	{
 		private const ESCAPE_KEY:Array = ["ESCAPE"];
 		
-		override public function create():void {
+		override public function createObjects():void {
 			add(new FlxText(Glob.CENT.x,Glob.CENT.y,100,"Options State Alpha"));
 		}
 		
