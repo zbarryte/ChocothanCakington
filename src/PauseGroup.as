@@ -2,7 +2,7 @@ package
 {
 	import org.flixel.*;
 	
-	public class PauseGroup extends ZGroup
+	public class PauseGroup extends ZButtonGroup
 	{	
 		private const PAUSE_KEY:Array = ["ENTER"];
 		
@@ -26,10 +26,10 @@ package
 			toggle();
 		}
 		private function restartReaction():void {
-			FlxG.switchState(new PlayState());
+			FlxG.switchState(new StPlay());
 		}
 		private function exitToMenuReaction():void {
-			FlxG.switchState(new MapState());
+			FlxG.switchState(new StMap());
 		}
 		
 		public function isOn():Boolean {
