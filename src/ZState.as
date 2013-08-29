@@ -4,39 +4,67 @@ package
 	
 	public class ZState extends FlxState
 	{
-		protected var prev:ZState; // previous state
+		public var prev:ZState; // previous state
 		protected var isControllable:Boolean; // can the state be controlled?
+		protected var isPlaying:Boolean; // is the state playing?
 		protected var transToTime:Number; // time to transition to the next state
 		protected var transBackTime:Number; // time to transition to the previous state
-
-		public function ZState(_prev:ZState=null)
+		protected var areObjectsCreated:Boolean; // have we created objects?
+		
+		public function ZState()
 		{
 			super();
-			prev = _prev;
-			isControllable = true;
+			
 			transToTime = 0;
 			transBackTime = 0;
+			isControllable = true;
+			isPlaying = true;
+			areObjectsCreated = false;
+		}
+		
+		override public function create():void {
+			if (!areObjectsCreated) {
+				createObjects();
+				areObjectsCreated = true;
+			}
+		}
+		
+		public function createObjects():void {
+			// implemented by children, for creating objects
 		}
 		
 		override public function update():void {
-			if (isControllable) {
-				detectControls();
+			if (isPlaying) {
+				super.update();
+				updateAnimations();
+				if (isControllable) {
+					updateControls();
+				}
 			}
-			super.update();
 		}
 		
-		protected function detectControls():void {
+		protected function updateAnimations():void {
+			// implemented by children
+		}
+		
+		protected function updateControls():void {
 			// implemented by children
 		}
 		
 		protected function goBack():void {
-			isControllable = false;
-			add(new ZTimedEvent(transBackTime,function():void{FlxG.switchState(prev);}));
+			//prev.revive();
+			add(new ZTimedEvent(transBackTime,function():void{FlxG.switchState(prev);},false));
 		}
 		
-		protected function goForwardToState(_class:Class):void {
-			var state:ZState = new _class(this);
-			add(new ZTimedEvent(transToTime,function():void{FlxG.switchState(state);}));
+		protected function goTo(_class:Class):void {
+			var _state:ZState = new _class();
+			_state.prev = this;
+			//_state.create();
+			add(new ZTimedEvent(transToTime,function():void{/*add(_state);*/FlxG.switchState(_state);},false));
+		}
+		
+		override public function destroy():void {
+			// implmented by children
 		}
 	}
 }

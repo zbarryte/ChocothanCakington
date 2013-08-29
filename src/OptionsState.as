@@ -10,7 +10,7 @@ package
 			add(new FlxText(Glob.CENT.x,Glob.CENT.y,100,"Options State Alpha"));
 		}
 		
-		override protected function detectControls():void {
+		override protected function updateControls():void {
 			if (Glob.justPressed(ESCAPE_KEY)) {
 				goBack();
 			}

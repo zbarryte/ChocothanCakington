@@ -13,11 +13,17 @@ package
 		
 		override public function create():void {
 			
-			// set up ZState vars
-			transToTime = 0.22;
+			FlxG.bgColor = 0xff881111;
 			
 			// begin music
 			Glob.titleMusic.play();
+			
+			super.create();
+		}
+		
+		override public function createObjects():void {
+			// set up ZState vars
+			transToTime = 0.22;
 			
 			// set up prompt
 			var promptW:Number = 100;
@@ -34,10 +40,10 @@ package
 			super.update();
 		}
 		
-		override protected function detectControls():void {
-			if (FlxG.keys.any()) {
+		override protected function updateControls():void {
+			if (FlxG.keys.justPressed("SPACE")) {
 				Glob.titleMusic.stop();
-				goForwardToState(MenuState);
+				goTo(MenuState);
 			}
 		}
 		

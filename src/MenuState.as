@@ -21,14 +21,13 @@ package
 		private var exitHint:FlxSprite;
 		private var selectHint:FlxSprite;
 		
-		public function MenuState(_prev:ZState=null) {
-			super(_prev);
-		}
-		
 		override public function create():void {
-			
 			// color background
 			FlxG.bgColor = 0xff222222;
+			super.create();
+		}
+		
+		override public function createObjects():void {
 			
 			// set up data array to build buttons
 			var buttonDataArray:Array = new Array(new Array(startReaction,"start"),
@@ -118,17 +117,16 @@ package
 		
 		// Button Reactions
 		private function startReaction():void {
-			goForwardToState(MapState);
+			goTo(MapState);
 		}
 		private function optionsReaction():void {
-			//FlxG.switchState(new OptionsState());
-			goForwardToState(OptionsState);
+			goTo(OptionsState);
 		}
 		private function controlsReaction():void {
-			goForwardToState(ControlsState);
+			goTo(ControlsState);
 		}
 		private function creditsReaction():void {
-			goForwardToState(CreditsState);
+			goTo(CreditsState);
 		}
 	}
 }

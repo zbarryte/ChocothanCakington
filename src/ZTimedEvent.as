@@ -6,17 +6,24 @@ package
 	{
 		protected var time:Number; // the amount of time elapsed, in seconds
 		protected var period:Number; // the amount of time to complete 1 cycle, in seconds
-		protected var event:Function; // the event fired each cycle
+		protected var event:Function; // the event fired each period
+		protected var pulse:Function // fired each cycle
+		protected var resetPulse:Function // resets the pulse 
 		protected var isLooped:Boolean; // does the cycle repeat?
 		protected var isPlaying:Boolean; // is the cycle progressing?
 		
-		public function ZTimedEvent(_period:Number,_event:Function,_pulseItems:Array=null,_isAutomatic:Boolean=true,_isLooped:Boolean=true)
+		public function ZTimedEvent(_period:Number,_event:Function,_isLooped:Boolean=true,_isAutomatic:Boolean=true,_pulse:Function=null,_resetPulse:Function=null)
 		{
 			time = 0;
 			period = _period;
 			event = _event;
+			pulse = _pulse;
+			resetPulse = _resetPulse;
 			isLooped = _isLooped;
 			isPlaying = _isAutomatic;
+			
+			// reset
+			if (resetPulse!=null) {resetPulse();}
 			
 			super();
 		}
@@ -36,13 +43,17 @@ package
 			isPlaying = false;
 			// restart the timer
 			time = 0;
+			// reset
+			if (resetPulse!=null) {resetPulse();}
 		}
 		
 		override public function update():void {
 			// start timing if playing
 			if (isPlaying) {
 				time += FlxG.elapsed;
-				// every cycle...
+				// every cycle
+				if (pulse!=null) {pulse();}
+				// every period...
 				if (time >= period) {
 					// restart the timer and fire the event
 					time = 0;
