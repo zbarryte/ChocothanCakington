@@ -26,8 +26,11 @@ package
 		private var timeRemaining:Number;
 		
 		override public function create():void {
-			FlxG.bgColor = 0xff002222;
-						
+			FlxG.bgColor = 0xff000000;
+			super.create();
+		}
+		
+		override public function createObjects():void {
 			timeRemaining = 600;
 			
 			// Info
@@ -74,6 +77,35 @@ package
 			//add(new ZText(10,10,"hello world"));
 		}
 		
+		override protected function updateAnimations():void {
+			FlxG.collide(player,level);
+			//FlxG.collide(player.balloon,level);
+			
+			var _present:Present = presentOverlappedByPlayer();
+			if (_present) {
+				removePresent(_present);
+			}
+			
+			timeRemaining -= FlxG.elapsed;
+			timeDisplay.text = ""+int(timeRemaining)+"";
+			if (timeRemaining < 0) {
+				playerDies();
+			}
+			
+			if (player.overlaps(flag)) {
+				completeLevel();
+			}
+		}
+		
+		override protected function updateControls():void {
+			
+		}
+		
+		override protected function updatePause():void {
+			pauseGroup.update();
+		}
+		
+		/*
 		override public function update():void {
 			if (!pauseGroup.isOn()) {
 				super.update();
@@ -97,7 +129,7 @@ package
 			} else {
 				pauseGroup.update();
 			}
-		}
+		}*/
 		
 		private function groupFromSpawn(_spawn:Array,_class:Class,_map:FlxTilemap,_hide:Boolean=true):FlxGroup {
 			var _group:FlxGroup = new FlxGroup();
@@ -146,13 +178,12 @@ package
 			presentsCollectedDisplay.text = "You've collected " + presentsCollected + " of " + presentsTotal + " presents!";
 		}
 		
-		private function completeLevel():void {//AtFlag(_flag:Flag):void {
-			//FlxG.switchState(new ScoreState(presentsCollected/presentsTotal));
-			FlxG.switchState(new MapState());
+		private function completeLevel():void {
+			goBack();
 		}
 		
 		private function playerDies():void {
-			FlxG.switchState(new PlayState());
+			refresh();
 		}
 	}
 }

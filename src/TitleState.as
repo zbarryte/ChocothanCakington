@@ -4,6 +4,8 @@ package
 	
 	public class TitleState extends ZState
 	{	
+		private const SELECT_KEY:Array = ["SPACE"];
+		
 		private var prompt:FlxText;
 		private var promptTime:Number = 0;
 		private const PROMPT_PERIOD:Number = 0.44;
@@ -28,7 +30,7 @@ package
 			// set up prompt
 			var promptW:Number = 100;
 			var promptAlignH:Number = 100;
-			prompt = new FlxText(Glob.CENT.x-promptW/2.0,Glob.CENT.y+promptAlignH,promptW,"press any key");
+			prompt = new FlxText(Glob.CENT.x-promptW/2.0,Glob.CENT.y+promptAlignH,promptW,"press space bar");
 			prompt.alignment = "center";
 			prompt.scale.x = 2;
 			prompt.scale.y = 2;
@@ -41,7 +43,7 @@ package
 		}
 		
 		override protected function updateControls():void {
-			if (FlxG.keys.justPressed("SPACE")) {
+			if (Glob.justPressed(SELECT_KEY)) {
 				Glob.titleMusic.stop();
 				goTo(MenuState);
 			}

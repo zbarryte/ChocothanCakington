@@ -12,6 +12,7 @@ package
 		
 		private var buttonGroup:ZGroup;
 		private var cursor:FlxSprite;
+		private var cursorTimer:ZTimedEvent;
 		
 		private var cursorTime:Number = 0;
 		private const CURSOR_PERIOD:Number = 0.33;
@@ -51,11 +52,36 @@ package
 			// add the button group to the state
 			add(buttonGroup);
 			
+			/*
 			// create the cursor and add it to the state
 			cursor = new FlxSprite();
 			cursor.loadGraphic(Glob.cursorSheet);
 			resetCursor();
+			add(cursor);*/
+			
+			cursor = new FlxSprite();
+			cursor.loadGraphic(Glob.cursorSheet);
 			add(cursor);
+			cursorTimer = 
+				new ZTimedEvent(CURSOR_PERIOD,
+								function():void {
+									cursorDir *= -1;
+								},
+								true,
+								true,
+								function():void {
+									cursor.scale.x += cursorDir*cursorSize;
+									cursor.scale.y -= cursorDir*cursorSize;
+									cursor.x += cursorDir*1.22;
+								},
+								function():void {
+									cursorDir = 1;
+									cursor.scale.x = 1;
+									cursor.scale.y = 1;
+									cursor.x = buttonGroup.x-ZButton.W/3.5;
+									cursor.y = buttonGroup.getCursed().y - cursor.height/2.0 + ZButton.H/2.0;
+								});
+			add(cursorTimer);
 			
 			// create and add the exit button
 			exitHint = new FlxSprite();
@@ -77,12 +103,13 @@ package
 			add(new FlxText(selectHint.x+8,selectHint.y+16,exitHint.width,"select"));
 		}
 		
-		override public function update():void {
-			
-			super.update();
+		override protected function updateAnimations():void {
+			//pulseCursor();
+		}
+		
+		override protected function updateControls():void {
 			if (Glob.justPressed(BACK_KEY)) {
 				goBack();
-				//FlxG.switchState(new TitleState());
 			} else if (Glob.justPressed(CURSE_FORWARD_KEY)) {
 				buttonGroup.curseFoward();
 				resetCursor();
@@ -92,10 +119,13 @@ package
 			} else if (Glob.justPressed(SELECT_KEY)) {
 				buttonGroup.select();
 			}
-			
-			pulseCursor();
 		}
 		
+		override protected function updatePause():void {
+			
+		}
+		
+		/*
 		// Cursor Stuff
 		private function pulseCursor():void {
 			cursorTime += FlxG.elapsed;
@@ -106,14 +136,17 @@ package
 				cursorTime = 0;
 				cursorDir *= -1;
 			}
-		}
+		}*/
 		public function resetCursor():void {
+			/*
 			cursorTime = 0;
 			cursorDir = 1;
 			cursor.scale.x = 1;
 			cursor.scale.y = 1;
 			cursor.x = buttonGroup.x-ZButton.W/3.5;
-			cursor.y = buttonGroup.getCursed().y - cursor.height/2.0 + ZButton.H/2.0;
+			cursor.y = buttonGroup.getCursed().y - cursor.height/2.0 + ZButton.H/2.0;*/
+			cursorTimer.stop();
+			cursorTimer.start();
 		}
 		
 		// Button Reactions

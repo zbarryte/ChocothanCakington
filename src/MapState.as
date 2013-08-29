@@ -8,6 +8,7 @@ package
 		private const FORWARD_KEY:Array = ["ENTER","SPACE"];
 		
 		override public function create():void {
+			FlxG.bgColor = 0xff333333;
 			super.create();
 		}
 		

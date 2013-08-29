@@ -9,6 +9,7 @@ package
 		protected var isPlaying:Boolean; // is the state playing?
 		protected var transToTime:Number; // time to transition to the next state
 		protected var transBackTime:Number; // time to transition to the previous state
+		protected var transResetTime:Number;
 		protected var areObjectsCreated:Boolean; // have we created objects?
 		
 		public function ZState()
@@ -17,6 +18,7 @@ package
 			
 			transToTime = 0;
 			transBackTime = 0;
+			transResetTime = 0;
 			isControllable = true;
 			isPlaying = true;
 			areObjectsCreated = false;
@@ -42,6 +44,8 @@ package
 				if (isControllable) {
 					updateControls();
 				}
+			} else {
+				updatePause();
 			}
 		}
 		
@@ -53,20 +57,30 @@ package
 			// implemented by children, for listening to controls
 		}
 		
+		protected function updatePause():void {
+			
+		}
+		
 		protected function goBack():void {
-			add(new ZTimedEvent(transBackTime,function():void{FlxG.switchState(prev);},false));
+			if (prev != null) {
+				add(new ZTimedEvent(transBackTime,function():void{actuallyDestroy(); FlxG.switchState(prev);},false));
+			}
 		}
 		
 		protected function goBackRefreshed():void {
-			var _class:Class = FlxU.getClass(FlxU.getClassName(prev));
-			var _state:ZState = new _class(prev.prev);
-			add(new ZTimedEvent(transBackTime,function():void{FlxG.switchState(_state);},false));
+			prev.refresh();
+			goBack();
 		}
 		
 		protected function goTo(_class:Class):void {
 			var _state:ZState = new _class();
 			_state.prev = this;
 			add(new ZTimedEvent(transToTime,function():void{FlxG.switchState(_state);},false));
+		}
+		
+		protected function refresh():void {
+			var _class:Class = FlxU.getClass(FlxU.getClassName(this));
+			goTo(_class);
 		}
 		
 		override public function destroy():void {
@@ -79,6 +93,10 @@ package
 		
 		public function resume():void {
 			isPlaying = true;
+		}
+		
+		public function actuallyDestroy():void {
+			super.destroy();
 		}
 	}
 }
