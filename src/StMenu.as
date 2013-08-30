@@ -56,8 +56,9 @@ package
 			var curs:FlxSprite = new FlxSprite(0,0,Glob.cursorSheet);
 			cursor.add(curs);
 			add(cursor);
+			cursor.alpha = 0.5;
 			cursorTimer = 
-				new ZTimedEvent(CURSOR_PERIOD,
+				new ZTimedEvent(CURSOR_PERIOD*22,
 								function():void {
 									cursorDir *= -1;
 								},
