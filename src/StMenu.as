@@ -53,9 +53,7 @@ package
 			add(buttonGroup);
 			
 			cursor = new ZNode();
-			cursor.alpha = 0;
-			var curs:ZNode = new ZNode();
-			curs.loadGraphic(Glob.cursorSheet);
+			var curs:FlxSprite = new FlxSprite(0,0,Glob.cursorSheet);
 			cursor.add(curs);
 			add(cursor);
 			cursorTimer = 
@@ -68,14 +66,16 @@ package
 								function():void {
 									cursor.scale.x += cursorDir*cursorSize;
 									cursor.scale.y -= cursorDir*cursorSize;
-									cursor.xOffset += cursorDir*1.22;
+									cursor.angle -= cursorDir*2;
+									cursor.x += cursorDir*1.22;
 								},
 								function():void {
 									cursorDir = 1;
 									cursor.scale.x = 1;
 									cursor.scale.y = 1;
-									cursor.xOffset = buttonGroup.x-ZButton.W/3.5;
-									cursor.yOffset = buttonGroup.getCursed().y - cursor.height/2.0 + ZButton.H/2.0;
+									cursor.angle = 0;
+									cursor.x = buttonGroup.x-ZButton.W/3.5;
+									cursor.y = buttonGroup.getCursed().y - cursor.height/2.0 + ZButton.H/2.0;
 								});
 			add(cursorTimer);
 			

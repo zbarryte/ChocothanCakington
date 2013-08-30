@@ -1,51 +1,45 @@
 package
 {
 	import org.flixel.*;
+	import org.flixel.system.debug.VCR;
 	
 	public class ZNode extends FlxSprite
 	{
-		public var parent:ZNode;
 		public var children:FlxGroup;
 		
-		public var xOffset:Number;
-		public var yOffset:Number;
-		public var angleOffset:Number;
-		
-		public function ZNode(_x:Number=0,_y:Number=0,_angle:Number=0)
+		public function ZNode(_x:Number=0,_y:Number=0,_simpleGraphic:Class=null)
 		{
-			super(_x,_y);
-			parent = null;
-			xOffset = _x;
-			yOffset = _y;
-			angleOffset = _angle;
+			super(_x,_y,_simpleGraphic);
 			children = new FlxGroup();
 		}
 		
-		public function add(_node:ZNode):void {
-			_node.parent = this;
-			children.add(_node);
-		}
-		
-		override public function update():void {
-			if (parent != null) {
-				angle = parent.angle + angleOffset;
-				var theta:Number = -angle*Math.PI/180.0;
-				x = parent.x + Math.cos(theta)*xOffset + Math.sin(theta)*yOffset;
-				y = parent.y - Math.sin(theta)*xOffset + Math.cos(theta)*yOffset;
-				scale = parent.scale;
-				
-			} else {
-				angle = angleOffset;
-				x = xOffset;
-				y = yOffset;
-			}
-			children.update();
-			super.update();
+		public function add(_spr:FlxSprite):void {
+			children.add(_spr);
 		}
 		
 		override public function draw():void {
 			super.draw();
-			children.draw();
+			for (var i:uint = 0; i < children.length; i++) {
+				var _child:FlxSprite = children.members[i];
+				// preserve child's property values
+				var _oldAngle:Number = _child.angle;
+				var _oldX:Number = _child.x;
+				var _oldY:Number = _child.y;
+				var _oldScale:FlxPoint = _child.scale;
+				// change child's property values temporarily
+				var _theta:Number = -_child.angle*Math.PI/180.0;
+				_child.x = x - width/2.0 + Math.cos(_theta)*_child.x + Math.sin(_theta)*_child.y;
+				_child.y = y - height/2.0 - Math.sin(_theta)*_child.x + Math.cos(_theta)*_child.y;
+				_child.angle += angle;
+				_child.scale = scale;
+				// draw child
+				_child.draw();
+				// reset child property values
+				_child.angle = _oldAngle;
+				_child.x = _oldX;
+				_child.y = _oldY;
+				_child.scale = _oldScale;
+			}
 		}
 	}
 }
