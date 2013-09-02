@@ -4,41 +4,57 @@ package
 	
 	public class Glob
 	{
+		// debug
+		public static const DEBUG_ON:Boolean = true;
+		// for loading saved data
 		private static var save:FlxSave;
-		private static var tmp:Boolean = true;
 		private static var loaded:Boolean = false;
-		
-		public static function get sound():Boolean {
-			if (loaded) {
-				FlxG.log("get loaded");
-				return save.data.sound;
-			} else {
-				return tmp;
-			}
-		}
-		
-		public static function set sound(_sound:Boolean):void {
-			if (loaded) {
-				FlxG.log("set loaded");
-				save.data.sound = _sound;
-				save.flush();
-			}
-			else {
-				tmp = _sound;
-			}
-		}
-		
 		public static function load():void {
 			save = new FlxSave();
 			loaded = save.bind("saveData");
-			if (loaded && save.data.sound == null) {
-				save.data.sound = tmp;
+			if (loaded && save.data.soundOn == null) {
+				save.data.soundOn = soundOnTmp;
+			}
+			if (loaded && save.data.musicOn == null) {
+				save.data.musicOn = musicOnTmp;
 			}
 		}
-		
-		// Internal
-		public static const DEBUG_ON:Boolean = true;
-		public static var soundOn:Boolean = sound;
+		// saving sound on
+		private static var soundOnTmp:Boolean = false;
+		public static function get soundOn():Boolean {
+			if (loaded) {
+				return save.data.soundOn;
+			} else {
+				return soundOnTmp;
+			}
+		}
+		public static function set soundOn(_soundOn:Boolean):void {
+			if (loaded) {
+				save.data.soundOn = _soundOn;
+				save.flush();
+			}
+			else {
+				soundOnTmp = _soundOn;
+			}
+		}
+		// saving music on
+		private static var musicOnTmp:Boolean = true;
+		public static function get musicOn():Boolean {
+			if (loaded) {
+				return save.data.musicOn;
+			} else {
+				return musicOnTmp;
+			}
+		}
+		public static function set musicOn(_musicOn:Boolean):void {
+			if (loaded) {
+				save.data.musicOn = _musicOn;
+				save.flush();
+			}
+			else {
+				soundOnTmp = _musicOn;
+			}
+		}
 		
 		// Environmental constants
 		public static const GRAV_ACCEL:Number = 888;
@@ -69,12 +85,24 @@ package
 		[Embed("assets/button_exit_hint.png")] public static const exitHintSheet:Class;
 		
 		// Level
+		public static var levelNum:uint = 0;
 		[Embed("assets/tileset_level.png")] public static const tilesetLevelSheet:Class;
 		[Embed("assets/mapCSV_level_000.csv", mimeType = 'application/octet-stream')] public static const level000CSV:Class;
 		[Embed("assets/mapCSV_level_001.csv", mimeType = 'application/octet-stream')] public static const level001CSV:Class;
+		public static function get level():Class {
+			var _class:Class;
+			if (levelNum == 0) {
+				_class = level000CSV;
+			} else if (levelNum == 1) {
+				_class = level001CSV;
+			}
+			return _class;
+		}
 		
 		// Titles
 		[Embed("assets/title-01.png")] public static const titleSheet:Class;
+		[Embed("assets/spr_controls.png")] public static const controlsSheet:Class;
+		[Embed("assets/spr_credits.png")] public static const creditsSheet:Class;
 		
 		// Letters
 		[Embed("assets/alphabet.png")] public static const alphabetSheet:Class;

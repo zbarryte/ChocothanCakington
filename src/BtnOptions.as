@@ -11,19 +11,29 @@ package
 		protected const ALIGNMENT:String = "center";
 		
 		public var text:FlxText;
-		public var spr:FlxSprite;
+		public var spr:ZNode;
+		public var toggleBool:Function;
+		public var sprText:FlxText;
 		
-		public function BtnOptions(_callback:Function=null,_label:String=null)
-		{
+		public function BtnOptions(_callback:Function=null,_label:String=null,_toggleBool:Function=null)
+		{	
+			toggleBool = _toggleBool;
 			super(_callback);
 			// add a text Label
 			text = new FlxText(0,0,ZButton.W,_label);
 			text.alignment = ALIGNMENT;
 			add(text);
 			// add a sprite
-			spr = new FlxSprite(text.width,0).loadGraphic(Glob.btnToggleSheet,true);
-			toggleSprite();
+			spr = new ZNode(text.width,0);
+			spr.loadGraphic(Glob.btnToggleSheet,true);
+			//toggleSprite();
 			add(spr);
+			// add text to sprite node
+			sprText = new FlxText(spr.width/2.0,spr.height/2.0,spr.width,onOrOff());
+			sprText.alignment = "center";
+			sprText.size = 12;
+			spr.add(sprText);
+			toggleSprite();
 		}
 		
 		override public function curse():void {
@@ -38,6 +48,7 @@ package
 		}
 		
 		override public function select():void {
+			super.select();
 			toggle();
 		}
 		
@@ -50,20 +61,18 @@ package
 		}
 		
 		public function toggle():void {
-			//Glob.soundOn = !Glob.soundOn;
-			Glob.sound = !Glob.sound;
 			toggleSprite();
-			//Glob.sound = Glob.soundOn;
 			
 		}
 		
-		private function sprToggleFrame():uint {
-			return (Glob.sound) ? 0 : 1;
+		private function toggleSprite():void {
+			//FlxG.log(toggleBool());
+			spr.frame = (toggleBool()) ? 1 : 0;
+			sprText.text = onOrOff();
 		}
 		
-		private function toggleSprite():void {
-			spr.frame = sprToggleFrame();
-			FlxG.log(spr.frame);
+		private function onOrOff():String {
+			return (toggleBool()) ? "On" : "Off";
 		}
 	}
 }

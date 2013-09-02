@@ -26,8 +26,6 @@ package
 			// color background
 			FlxG.bgColor = 0xff222222;
 			super.create();
-			//cursor.restart();
-			//buttonGroup.restart();
 			pulseSelectedEvent.reset();
 		}
 		
@@ -35,8 +33,8 @@ package
 			
 			// set up data array to build buttons
 			var buttonDataArray:Array = new Array(
-				new Array(soundReaction,"sound"),
-				new Array(musicReaction,"music")
+				new Array(soundReaction,"sound",function():Boolean{return Glob.soundOn}),
+				new Array(musicReaction,"music",function():Boolean{return Glob.musicOn})
 				);
 			// pick the start point for the button group
 			buttonGroup = new ZButtonGroup(Glob.CENT.x-ZButton.W/2.0,FlxG.height/(buttonDataArray.length + 1),ZButton.H);
@@ -45,7 +43,7 @@ package
 			for (var i:uint = 0; i < buttonDataArray.length; i++) {
 				
 				// create the button
-				var startButton:ZButton = new BtnOptions(buttonDataArray[i][0],buttonDataArray[i][1]);
+				var startButton:ZButton = new BtnOptions(buttonDataArray[i][0],buttonDataArray[i][1],buttonDataArray[i][2]);
 				
 				// add the button to the button group
 				buttonGroup.addButton(startButton);
@@ -121,11 +119,10 @@ package
 		
 		// Button Reactions
 		private function soundReaction():void {
-			//goTo(StMap);
-			
+			Glob.soundOn = !Glob.soundOn;
 		}
 		private function musicReaction():void {
-			//goTo(StOptions);
+			Glob.musicOn = !Glob.musicOn;
 		}
 	}
 }
