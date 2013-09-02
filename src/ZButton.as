@@ -2,13 +2,10 @@ package
 {
 	import org.flixel.*;
 	
-	public class ZButton extends FlxGroup
+	public class ZButton extends ZNode
 	{
 		public static const W:Number = 222;
 		public static const H:Number = 44;
-		
-		public var x:Number;
-		public var y:Number;
 		
 		private var callback:Function; // called when button is selected
 		
@@ -18,9 +15,9 @@ package
 		public static const CURSED:String = "CURSED";
 		public static const SELECTED:String = "SELECTED";
 		
-		public function ZButton(_callback:Function=null,_state:String=ZButton.UNCURSED,_maxSize:uint=0)
+		public function ZButton(_callback:Function=null,_state:String=ZButton.UNCURSED)
 		{
-			super(_maxSize);
+			super();
 			callback = _callback;
 			switchState(_state);
 		}
@@ -44,13 +41,11 @@ package
 			callback();
 		}
 		
-		public function setXY(_x:Number,_y:Number):void {
-			for (var i:uint = 0; i < length; i++) {
-				members[i].x = _x;
-				members[i].y = _y;
-				x = _x;
-				y = _y;
-			}
+		public function pulse(dir:int):void {
+			// implemented by children
+		}
+		public function resetPulse():void {
+			// implemented by children
 		}
 		
 	}

@@ -4,8 +4,41 @@ package
 	
 	public class Glob
 	{
+		private static var save:FlxSave;
+		private static var tmp:Boolean = true;
+		private static var loaded:Boolean = false;
+		
+		public static function get sound():Boolean {
+			if (loaded) {
+				FlxG.log("get loaded");
+				return save.data.sound;
+			} else {
+				return tmp;
+			}
+		}
+		
+		public static function set sound(_sound:Boolean):void {
+			if (loaded) {
+				FlxG.log("set loaded");
+				save.data.sound = _sound;
+				save.flush();
+			}
+			else {
+				tmp = _sound;
+			}
+		}
+		
+		public static function load():void {
+			save = new FlxSave();
+			loaded = save.bind("saveData");
+			if (loaded && save.data.sound == null) {
+				save.data.sound = tmp;
+			}
+		}
+		
 		// Internal
 		public static const DEBUG_ON:Boolean = true;
+		public static var soundOn:Boolean = sound;
 		
 		// Environmental constants
 		public static const GRAV_ACCEL:Number = 888;
@@ -30,6 +63,7 @@ package
 		[Embed("assets/button_menu.png")] public static const buttonSheet:Class;
 		[Embed("assets/button_cake_middle.png")] public static const buttonCakeMiddleSheet:Class;
 		[Embed("assets/button_cake_bottom.png")] public static const buttonCakeBottomSheet:Class;
+		[Embed("assets/btn_toggle.png")] public static const btnToggleSheet:Class;
 		
 		[Embed("assets/sprite_cursor.png")] public static const cursorSheet:Class;
 		[Embed("assets/button_exit_hint.png")] public static const exitHintSheet:Class;

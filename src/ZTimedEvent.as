@@ -11,10 +11,12 @@ package
 		protected var resetPulse:Function // resets the pulse 
 		protected var isLooped:Boolean; // does the cycle repeat?
 		protected var isPlaying:Boolean; // is the cycle progressing?
+		protected var direction:int; // the direction of the cycle, +/- 1
 		
 		public function ZTimedEvent(_period:Number,_event:Function,_isLooped:Boolean=true,_isAutomatic:Boolean=true,_pulse:Function=null,_resetPulse:Function=null)
 		{
 			time = 0;
+			direction = 1;
 			period = _period;
 			event = _event;
 			pulse = _pulse;
@@ -28,23 +30,22 @@ package
 			super();
 		}
 		
-		public static function stallOthersEvent(_period:Number,_event:Function,_time:Number=0):void {
-			if (_time < _period) {
-				ZTimedEvent.stallOthersEvent(_period,_event,_time++);
-			}
-			_event();
-		}
-		
 		public function start():void {
 			isPlaying = true;
 		}
 		
 		public function stop():void {
 			isPlaying = false;
-			// restart the timer
+			// restart the timer and dir
 			time = 0;
+			direction = 1;
 			// reset
 			if (resetPulse!=null) {resetPulse();}
+		}
+		
+		public function reset():void {
+			stop();
+			start();
 		}
 		
 		override public function update():void {
@@ -52,11 +53,12 @@ package
 			if (isPlaying) {
 				time += FlxG.elapsed;
 				// every cycle
-				if (pulse!=null) {pulse();}
+				if (pulse!=null) {pulse(direction);}
 				// every period...
 				if (time >= period) {
 					// restart the timer and fire the event
 					time = 0;
+					direction *= -1;
 					event();
 					// stop non-looping events after the first cycle
 					if (!isLooped) {

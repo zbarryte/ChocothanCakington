@@ -39,24 +39,24 @@ package
 		public function toggle():void {
 			visible = !visible;
 		}
-		
+		/*
 		override public function reset():void {
 			super.reset();
 			toggle();
-		}
+		}*/
 		
 		override public function update():void {
 			if (isOn()) {
 				super.update();
 			}
 			if (Glob.justPressed(PAUSE_KEY)) {
-				reset();
+				//reset();
 			}
 		}
 		
 		override public function draw():void {
 			for (var i:uint = length-1; i >= 0; i--) {
-				members[i].draw();
+				//members[i].draw();
 			}
 		}
 	}

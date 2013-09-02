@@ -19,8 +19,13 @@ package
 			children.add(_spr);
 		}
 		
+		override public function loadGraphic(_graphic:Class,_animated:Boolean=false,_reverse:Boolean=false,_width:uint=0,_height:uint=0,_unique:Boolean=false):FlxSprite {
+			graphic = _graphic;
+			return super.loadGraphic(_graphic,_animated,_reverse,_width,_height,_unique);
+		}
+		
 		override public function draw():void {
-			if (graphic) {super.draw();}
+			if (graphic) {super.draw()}
 			for (var i:uint = 0; i < children.length; i++) {
 				var _child:FlxSprite = children.members[i];
 				// preserve child's property values
@@ -47,7 +52,6 @@ package
 				_child.scale = _oldScale;
 				_child.color = _oldColor;
 				_child.alpha = _oldAlpha;
-				
 			}
 		}
 	}
