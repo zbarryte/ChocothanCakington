@@ -31,7 +31,7 @@ package
 			lvlGrp = new ZLevelGroup();
 			add(lvlGrp);
 			
-			var _level:Level = lvlGrp.getCursed();
+			var _level:Level = currentLevel;
 			marker = new ZNode(_level.x,_level.y);
 			marker.loadGraphic(Glob.mapMarkerSheet,true,false,64,64);
 			marker.addAnimation("IDLE",[0,1],5,true);
@@ -77,7 +77,7 @@ package
 			var _distSq:Number;
 			var _distSqNew:Number;
 			
-			var _cur:Level = currentLevel();
+			var _cur:Level = currentLevel;
 			if (_cur.next) {
 				_distSq = Math.pow(_pos.x-_cur.next.x,2.0) + Math.pow(_pos.y-_cur.next.y,2.0);
 				_distSqNew = Math.pow(_posNew.x-_cur.next.x,2.0) + Math.pow(_posNew.y-_cur.next.y,2.0);
@@ -135,8 +135,8 @@ package
 			//FlxG.log(marker.x + ',' + marker.y);
 		}
 		
-		private function currentLevel():Level {
-			return lvlGrp.getCursed();
+		private function get currentLevel():Level {
+			return lvlGrp.currentLevel;
 		}
 		
 		override protected function updateControls():void {

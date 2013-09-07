@@ -11,10 +11,15 @@ package
 			super();
 			
 			for (var i:uint = 0; i < Glob.levels.length; i++) {
-				add(new Level(Glob.CENT.x + _spacing*i, Glob.CENT.y + _spacing*i,Glob.mapNodeSheet));
+				var _lvl:Level = new Level(Glob.CENT.x + _spacing*i, Glob.CENT.y + _spacing*i,Glob.mapNodeSheet);
+				_lvl.uncurse();
+				add(_lvl);
 			}
 			
 			linkLevelNodes();
+			
+			// curse the current node
+			currentLevel.curse();
 		}
 		
 		private function linkLevelNodes():void {
@@ -32,12 +37,8 @@ package
 			}
 		}
 		
-		public function getCursed():Level {
+		public function get currentLevel():Level {
 			return children.members[Glob.levelNum];
-		}
-		
-		public function selectNextOrPrevious(nextOrPrevious:Function):void {
-			nextOrPrevious();
 		}
 		
 		public static function next():void {

@@ -85,7 +85,7 @@ package
 			// position buttons
 			//_button.x = x;
 			_button.y = spacing*children.length;
-			super.add(_button);
+			/*super.*/add(_button);
 		}
 	}
 }

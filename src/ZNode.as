@@ -40,8 +40,9 @@ package
 				_child.x = x - width/2.0 + Math.cos(_theta)*_child.x + Math.sin(_theta)*_child.y;
 				_child.y = y - height/2.0 - Math.sin(_theta)*_child.x + Math.cos(_theta)*_child.y;
 				_child.angle += angle;
-				_child.scale = scale;
-				_child.color = color;
+				_child.scale.x = scale.x*_child.scale.x;
+				_child.scale.y = scale.y*_child.scale.y;
+				_child.color = color*_child.color;
 				_child.alpha = alpha;
 				// draw child
 				_child.draw();
