@@ -99,7 +99,7 @@ package
 			add(pulseSelectedEvent);
 			//add(cursor.pulseEvent(PERIOD));
 			
-			var spawnBalloonsEvent:ZTimedEvent = new ZTimedEvent(0.22,spawnMultipleBalloons);
+			var spawnBalloonsEvent:ZTimedEvent = new ZTimedEvent(0.11,spawnMultipleBalloons);
 			add(spawnBalloonsEvent);
 		}
 		
@@ -157,10 +157,16 @@ package
 			_balloon.loadGraphic(Glob.menuBalloonSheet,true,false,32,64);
 			_balloon.x = Math.random()*(FlxG.width - _balloon.width);
 			_balloon.y = FlxG.height; // + some buffer distance?
-			_balloon.addAnimation("IDLE",[0,1,2,3,4,5],5,true);
+			var _speed:Number = -44 -Math.random()*44;
+			_balloon.addAnimation("IDLE",[0,1,2,3,4,5],-_speed/10,true);
 			_balloon.play("IDLE");
-			_balloon.velocity.y = -44 -Math.random()*44;
+			_balloon.velocity.y = _speed;
+			_balloon.velocity.x = -1*Math.random()*2;
+			var _scale:Number = -_speed/88;
+			_balloon.scale.x = _scale;
+			_balloon.scale.y = _scale;
 			_balloon.color = Math.random()*0xffffff;
+			_balloon.alpha = 0.77;
 			balloons.add(_balloon);
 		}
 		
