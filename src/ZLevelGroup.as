@@ -3,19 +3,13 @@ package
 	import org.flixel.*;
 	
 	public class ZLevelGroup extends ZNode
-	{		
-		//public var previous:Function;
-		//public var next:Function;
-		
+	{				
 		public function ZLevelGroup()
 		{	
-			var _spacing:Number = 111;
-			
-			
 			super();
 			
 			for (var i:uint = 0; i < Glob.levels.length; i++) {
-				var _lvl:Level = new Level(Glob.CENT.x + _spacing*i, Glob.CENT.y + _spacing*i,Glob.mapNodeSheet);
+				var _lvl:Level = new Level(Glob.levelNodeX(i),Glob.levelNodeY(i),Glob.mapNodeSheet);
 				_lvl.uncurse();
 				add(_lvl);
 			}

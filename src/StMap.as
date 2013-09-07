@@ -83,7 +83,7 @@ package
 				_distSqNew = Math.pow(_posNew.x-_cur.next.x,2.0) + Math.pow(_posNew.y-_cur.next.y,2.0);
 				if (_distSqNew < _distSq) {
 					nextOrPrevious = lvlGrp.next;
-					return _cur.next;
+					_lvl = _cur.next;
 				}
 			}
 			
@@ -92,11 +92,11 @@ package
 				_distSqNew = Math.pow(_posNew.x-_cur.previous.x,2.0) + Math.pow(_posNew.y-_cur.previous.y,2.0);
 				if (_distSqNew < _distSq) {
 					nextOrPrevious = lvlGrp.previous;
-					return _cur.previous;
+					_lvl = _cur.previous;
 				}
 			}
 			
-			nextOrPrevious = null;
+			//nextOrPrevious = null;
 			return _lvl;
 		}
 		
@@ -107,23 +107,29 @@ package
 				var _dist:Number = Math.pow(Math.pow(marker.x-target.x,2.0) + Math.pow(marker.y-target.y,2.0),0.5);
 				markerDirActual = new FlxPoint((-marker.x+target.x)/_dist,(-marker.y+target.y)/_dist);
 			}
-			marker.x += 5*markerDirActual.x;
-			marker.y += 5*markerDirActual.y;
+			//marker.x += 5*markerDirActual.x;
+			//marker.y += 5*markerDirActual.y;
 			
 			if (target != null) {
 				
 				// make sure the marker doesn't pass the target...
 				if ((markerDirActual.x < 0 && marker.x < target.x) ||
-					(markerDirActual.x > 0 && marker.x > target.x)) {
+					(markerDirActual.x > 0 && marker.x > target.x) ||
+					(markerDirActual.x == 0)) {
 										
 					marker.x = target.x;
 					markerDirActual.x = 0;
+				} else {
+					marker.x += 5*markerDirActual.x;
 				}
 				if ((markerDirActual.y < 0 && marker.y < target.y) ||
-					(markerDirActual.y > 0 && marker.y > target.y)) {
+					(markerDirActual.y > 0 && marker.y > target.y) ||
+					(markerDirActual.y == 0)) {
 					
 					marker.y = target.y;
 					markerDirActual.y = 0;
+				} else {
+					marker.y += 5*markerDirActual.y;
 				}
 				
 				if (marker.x == target.x && marker.y == target.y) {
@@ -152,17 +158,21 @@ package
 		private function controlMarker():void {
 			markerDir.x = 0;
 			markerDir.y = 0;
-			if (Glob.pressed(LEFT_KEY)) {
-				markerDir.x -= 1;
-			}
-			if (Glob.pressed(RIGHT_KEY)) {
-				markerDir.x += 1;
-			}
-			if (Glob.pressed(UP_KEY)) {
-				markerDir.y -= 1;
-			}
-			if (Glob.pressed(DOWN_KEY)) {
-				markerDir.y += 1;
+			if (Glob.justPressed(LEFT_KEY) || Glob.justPressed(RIGHT_KEY) ||
+				Glob.justPressed(UP_KEY) || Glob.justPressed(DOWN_KEY)) {
+		
+				if (Glob.pressed(LEFT_KEY)) {
+					markerDir.x -= 1;
+				}
+				if (Glob.pressed(RIGHT_KEY)) {
+					markerDir.x += 1;
+				}
+				if (Glob.pressed(UP_KEY)) {
+					markerDir.y -= 1;
+				}
+				if (Glob.pressed(DOWN_KEY)) {
+					markerDir.y += 1;
+				}
 			}
 			// maybe this should also be normalized?
 		}
