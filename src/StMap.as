@@ -16,6 +16,11 @@ package
 		
 		private var marker:ZNode;
 		private var markerDir:FlxPoint;
+		private var markerDirActual:FlxPoint;
+		private var target:Level;
+		
+		private var isIdle:Boolean;
+		private var nextOrPrevious:Function;
 		
 		override public function create():void {
 			FlxG.bgColor = 0xff333333;
@@ -34,17 +39,24 @@ package
 			add(marker);
 			
 			markerDir = new FlxPoint(0,0);
+			markerDirActual = new FlxPoint(0,0);
+			
+			isIdle = true;
+			target = null;
 		}
 		
 		override protected function updateAnimations():void {
 			
+			moveMarkerToTarget();
+			
+			/*
 			// pick the node towards which the marker's attempting to move
 			// to do this, compare the marker's current distance to the next, prev (if they exist)
 			// to the marker's distance to them were it to move along its desired trajectory
 			var _lvl:Level = targetLevel();
 			if (_lvl!=null) {
 				FlxG.log(_lvl.x + ',' + _lvl.y);
-			}
+			}*/
 			
 			/*
 			if (marked().previous!=null) {
@@ -54,6 +66,9 @@ package
 		}
 		
 		private function targetLevel():Level {
+			
+			if (!isIdle) {return target;}
+			
 			var _lvl:Level = null;
 			
 			var _pos:FlxPoint = new FlxPoint(marker.x,marker.y);
@@ -67,6 +82,7 @@ package
 				_distSq = Math.pow(_pos.x-_cur.next.x,2.0) + Math.pow(_pos.y-_cur.next.y,2.0);
 				_distSqNew = Math.pow(_posNew.x-_cur.next.x,2.0) + Math.pow(_posNew.y-_cur.next.y,2.0);
 				if (_distSqNew < _distSq) {
+					nextOrPrevious = ZLevelGroup.next;
 					return _cur.next;
 				}
 			}
@@ -75,11 +91,48 @@ package
 				_distSq = Math.pow(_pos.x-_cur.previous.x,2.0) + Math.pow(_pos.y-_cur.previous.y,2.0);
 				_distSqNew = Math.pow(_posNew.x-_cur.previous.x,2.0) + Math.pow(_posNew.y-_cur.previous.y,2.0);
 				if (_distSqNew < _distSq) {
+					nextOrPrevious = ZLevelGroup.previous;
 					return _cur.previous;
 				}
 			}
 			
+			nextOrPrevious = null;
 			return _lvl;
+		}
+		
+		private function moveMarkerToTarget():void {
+			target = targetLevel();
+			if (target != null && isIdle) {
+				isIdle = false;
+				var _dist:Number = Math.pow(Math.pow(marker.x-target.x,2.0) + Math.pow(marker.y-target.y,2.0),0.5);
+				markerDirActual = new FlxPoint((-marker.x+target.x)/_dist,(-marker.y+target.y)/_dist);
+			}
+			marker.x += 5*markerDirActual.x;
+			marker.y += 5*markerDirActual.y;
+			
+			if (target != null) {
+				
+				// make sure the marker doesn't pass the target...
+				if ((markerDirActual.x < 0 && marker.x < target.x) ||
+					(markerDirActual.x > 0 && marker.x > target.x)) {
+										
+					marker.x = target.x;
+					markerDirActual.x = 0;
+				}
+				if ((markerDirActual.y < 0 && marker.y < target.y) ||
+					(markerDirActual.y > 0 && marker.y > target.y)) {
+					
+					marker.y = target.y;
+					markerDirActual.y = 0;
+				}
+				
+				if (marker.x == target.x && marker.y == target.y) {
+					isIdle = true;
+					nextOrPrevious();
+				}
+			}
+			
+			//FlxG.log(marker.x + ',' + marker.y);
 		}
 		
 		private function currentLevel():Level {

@@ -6,7 +6,7 @@ package
 	{		
 		public function ZLevelGroup()
 		{	
-			var _spacing:Number = 222;
+			var _spacing:Number = 111;
 						
 			super();
 			
@@ -34,6 +34,18 @@ package
 		
 		public function getCursed():Level {
 			return children.members[Glob.levelNum];
+		}
+		
+		public function selectNextOrPrevious(nextOrPrevious:Function):void {
+			nextOrPrevious();
+		}
+		
+		public static function next():void {
+			Glob.levelNum ++;
+		}
+		
+		public static function previous():void {
+			Glob.levelNum --;
 		}
 	}
 }
