@@ -22,16 +22,22 @@ package
 		
 		private var pulseSelectedEvent:ZTimedEvent;
 		
+		private var balloons:FlxGroup;
+		
 		override public function create():void {
 			// color background
-			FlxG.bgColor = 0xff222222;
+			FlxG.bgColor = 0xff444444;
 			super.create();
 			//cursor.restart();
 			//buttonGroup.restart();
 			pulseSelectedEvent.reset();
+			ZAudioHandler.addMusic(Glob.menuMusic);
 		}
 		
 		override public function createObjects():void {
+			
+			balloons = new FlxGroup();
+			add(balloons);
 			
 			// set up data array to build buttons
 			var buttonDataArray:Array = new Array(new Array(startReaction,"start"),
@@ -92,14 +98,19 @@ package
 			pulseSelectedEvent = new ZTimedEvent(PERIOD,null,true,true,_pulse,_resetPulse);
 			add(pulseSelectedEvent);
 			//add(cursor.pulseEvent(PERIOD));
+			
+			var spawnBalloonsEvent:ZTimedEvent = new ZTimedEvent(0.22,spawnMultipleBalloons);
+			add(spawnBalloonsEvent);
 		}
 		
 		override protected function updateAnimations():void {
-			// do nothing
+			
+			removeOutOfFrameBalloons();
 		}
 		
 		override protected function updateControls():void {
 			if (Glob.justPressed(BACK_KEY)) {
+				ZAudioHandler.clearAll();
 				goBack();
 			} else if (Glob.justPressed(CURSE_FORWARD_KEY)) {
 				buttonGroup.curseFoward();
@@ -121,6 +132,7 @@ package
 		
 		// Button Reactions
 		private function startReaction():void {
+			ZAudioHandler.clearAll();
 			goTo(StMap);
 		}
 		private function optionsReaction():void {
@@ -131,6 +143,36 @@ package
 		}
 		private function creditsReaction():void {
 			goTo(StCredits);
+		}
+		
+		private function spawnMultipleBalloons():void {
+			var _numBalloons:uint = Math.random()*2 + 1;
+			for (var i:uint = 0; i < _numBalloons; i++) {
+				spawnBalloon();
+			}
+		}
+		
+		private function spawnBalloon():void {
+			var _balloon:ZNode = new ZNode();
+			_balloon.loadGraphic(Glob.menuBalloonSheet,true,false,32,64);
+			_balloon.x = Math.random()*(FlxG.width - _balloon.width);
+			_balloon.y = FlxG.height; // + some buffer distance?
+			_balloon.addAnimation("IDLE",[0,1,2,3,4,5],5,true);
+			_balloon.play("IDLE");
+			_balloon.velocity.y = -44 -Math.random()*44;
+			_balloon.color = Math.random()*0xffffff;
+			balloons.add(_balloon);
+		}
+		
+		private function removeOutOfFrameBalloons():void {
+			var i:uint;
+			var _balloon:ZNode;
+			for (i = 0; i < balloons.length; i++) {
+				_balloon = balloons.members[i];
+				if (_balloon.y < -_balloon.height) {
+					_balloon.kill();
+				}
+			}
 		}
 	}
 }

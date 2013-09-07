@@ -39,6 +39,7 @@ package
 		
 		override public function update():void {
 			if (isPlaying) {
+				ZAudioHandler.update();
 				super.update();
 				updateAnimations();
 				if (isControllable) {

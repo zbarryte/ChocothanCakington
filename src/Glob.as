@@ -60,6 +60,11 @@ package
 		public static const GRAV_ACCEL:Number = 888;
 		public static const CENT:FlxPoint = new FlxPoint(FlxG.width/2.0,FlxG.height/2.0);
 		
+		// Title State
+		
+		// Menu State
+		[Embed("assets/spr_menu_balloon.png")] public static const menuBalloonSheet:Class;
+		
 		// Player sprite
 		//[Embed("assets/sprite_cake.png")] public static const cakeSheet:Class;
 		[Embed("assets/sprite_cake_base.png")] public static const cakeBaseSheet:Class;
@@ -110,6 +115,8 @@ package
 		// Sounds
 		[Embed("assets/title.mp3")] public static const titleMP3:Class;
 		public static const titleMusic:FlxSound = new FlxSound().loadEmbedded(titleMP3,true);
+		[Embed("assets/menu.mp3")] public static const menuMP3:Class;
+		public static const menuMusic:FlxSound = new FlxSound().loadEmbedded(menuMP3,true);
 		
 		// Key presses
 		public static function pressed(_keys:Array):Boolean {

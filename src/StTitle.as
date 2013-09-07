@@ -18,7 +18,8 @@ package
 			FlxG.bgColor = 0xff881111;
 			
 			// begin music
-			Glob.titleMusic.play();
+			//Glob.titleMusic.play();
+			ZAudioHandler.addMusic(Glob.titleMusic);
 			
 			super.create();
 		}
@@ -44,7 +45,7 @@ package
 		
 		override protected function updateControls():void {
 			if (Glob.justPressed(SELECT_KEY)) {
-				Glob.titleMusic.stop();
+				ZAudioHandler.clearAll();
 				goTo(StMenu);
 			}
 		}
