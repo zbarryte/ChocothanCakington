@@ -11,7 +11,7 @@ package
 			super();
 			
 			for (var i:uint = 0; i < Glob.levels.length; i++) {
-				add(new Level(Glob.CENT.x + _spacing*i, Glob.CENT.y,Glob.mapNodeSheet));
+				add(new Level(Glob.CENT.x + _spacing*i, Glob.CENT.y + _spacing*i,Glob.mapNodeSheet));
 			}
 			
 			linkLevelNodes();
