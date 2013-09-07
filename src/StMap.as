@@ -22,6 +22,8 @@ package
 		private var isIdle:Boolean;
 		private var nextOrPrevious:Function;
 		
+		private var label:FlxText;
+		
 		override public function create():void {
 			FlxG.bgColor = 0xff333333;
 			super.create();
@@ -43,6 +45,16 @@ package
 			
 			isIdle = true;
 			target = null;
+			
+			label = new FlxText(Glob.CENT.x,Glob.CENT.y,100);
+			add(label);
+			setLabel();
+		}
+		
+		private function setLabel():void {
+			label.text = "Level  " + (currentLevel.index + 1) +
+				":\n" + currentLevel.name +
+				"\n collect at least " + currentLevel.goal + "presents!";
 		}
 		
 		override protected function updateAnimations():void {
@@ -135,6 +147,7 @@ package
 				if (marker.x == target.x && marker.y == target.y) {
 					isIdle = true;
 					nextOrPrevious();
+					setLabel();
 				}
 			}
 			

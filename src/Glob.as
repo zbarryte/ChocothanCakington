@@ -108,22 +108,19 @@ package
 		[Embed("assets/tileset_level.png")] public static const tilesetLevelSheet:Class;
 		[Embed("assets/mapCSV_level_000.csv", mimeType = 'application/octet-stream')] public static const level000CSV:Class;
 		[Embed("assets/mapCSV_level_001.csv", mimeType = 'application/octet-stream')] public static const level001CSV:Class;
-		public static var levels:Array = [[level000CSV,"name000",FlxG.height,0],
-									      [level001CSV,"name001",FlxG.height,100],
-										  [level001CSV,"name002",FlxG.height,200],
-										  [level001CSV,"name003",FlxG.height,300],
-										  [level001CSV,"name004",FlxG.height-200,300],
-										  [level001CSV,"name005",FlxG.height-200,200],
-										  [level001CSV,"name006",FlxG.height-200,100],
-										  [level001CSV,"name007",FlxG.height-200,0]];
+		public static var levels:Array = [[level000CSV,"name000",FlxG.height,0,5],
+									      [level001CSV,"name001",FlxG.height,100,5],
+										  [level001CSV,"name002",FlxG.height,200,5],
+										  [level001CSV,"name003",FlxG.height,300,5],
+										  [level001CSV,"name004",FlxG.height-200,300,5],
+										  [level001CSV,"name005",FlxG.height-200,200,5],
+										  [level001CSV,"name006",FlxG.height-200,100,5],
+										  [level001CSV,"name007",FlxG.height-200,0,5]];
 		public static function get levelCSV():Class {return levels[levelNum][0];}
-		public static function get levelName():String {return levels[levelNum][1];}
-		public static function levelNodeX(_levelNum:uint):Number {
-			return levels[_levelNum][2];
-		}
-		public static function levelNodeY(_levelNum:uint):Number {
-			return levels[_levelNum][3];
-		}
+		public static function levelName(_levelNum:uint):String {return levels[_levelNum][1];}
+		public static function levelNodeX(_levelNum:uint):Number {return levels[_levelNum][2];}
+		public static function levelNodeY(_levelNum:uint):Number {return levels[_levelNum][3];}
+		public static function levelGoal(_levelNum:uint):uint {return levels[_levelNum][4];}
 		
 		// Titles
 		[Embed("assets/title-01.png")] public static const titleSheet:Class;

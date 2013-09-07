@@ -6,13 +6,22 @@ package
 		
 		public var previous:Level; // the level before
 		public var next:Level; // the level after
+		public var name:String;
+		public var index:uint;
+		public var goal:uint;
 		
 		private const SCALE_UNCURSED:Number = 0.5; // scale for x and y when uncursed
 		private const SCALE_CURSED:Number = 1.0; // scale for x and y when cursed
 		
-		public function Level(_x:Number=0, _y:Number=0, _simpleGraphic:Class=null)
+		public function Level(_levelNum:uint)
 		{
-			super(_x, _y, _simpleGraphic);
+			super();
+			index = _levelNum;
+			name = Glob.levelName(_levelNum);
+			x = Glob.levelNodeX(_levelNum);
+			y = Glob.levelNodeY(_levelNum);
+			goal = Glob.levelGoal(_levelNum);
+			loadGraphic(Glob.mapNodeSheet); // this could also be retreived from data
 			previous = null;
 			next = null;
 		}
