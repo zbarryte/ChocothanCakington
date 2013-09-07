@@ -7,13 +7,69 @@ package
 		private const BACK_KEY:Array = ["ESCAPE"];
 		private const FORWARD_KEY:Array = ["ENTER","SPACE"];
 		
+		private const LEFT_KEY:Array = ["LEFT"];
+		private const RIGHT_KEY:Array = ["RIGHT"];
+		private const UP_KEY:Array = ["UP"];
+		private const DOWN_KEY:Array = ["DOWN"];
+		
+		private var lvlGrp:ZLevelGroup;
+		
+		private var marker:ZNode;
+		private var markerDir:FlxPoint;
+		
 		override public function create():void {
 			FlxG.bgColor = 0xff333333;
 			super.create();
 		}
 		
 		override public function createObjects():void {
-			add(new FlxText(FlxG.width/2.0,FlxG.height/2.0,100,"Map State, continue with SPACE or ENTER"));
+			lvlGrp = new ZLevelGroup();
+			add(lvlGrp);
+			
+			var _level:Level = lvlGrp.getCursed();
+			marker = new ZNode(_level.x,_level.y);
+			marker.loadGraphic(Glob.mapMarkerSheet,true,false,64,64);
+			marker.addAnimation("IDLE",[0,1],5,true);
+			marker.play("IDLE");
+			add(marker);
+			
+			markerDir = new FlxPoint(0,0);
+		}
+		
+		override protected function updateAnimations():void {
+			
+			// pick the node towards which the marker's attempting to move
+			// to do this, compare the marker's current distance to the next, prev (if they exist)
+			// to the marker's distance to them were it to move along its desired trajectory
+			var _lvl:Level = targetLevel();
+			if (_lvl!=null) {
+				FlxG.log(_lvl.x + ',' + _lvl.y);
+			}
+			
+			/*
+			if (marked().previous!=null) {
+				marker.x += markerDir.x;
+				marker.y += markerDir.y;
+			}*/
+		}
+		
+		private function targetLevel():Level {
+			var _lvl:Level = null;
+			
+			var _cur:Level = currentLevel();
+			if (_cur.previous) {
+				
+			}
+			
+			if (_cur.next) {
+				
+			}
+			
+			return _lvl;
+		}
+		
+		private function currentLevel():Level {
+			return lvlGrp.getCursed();
 		}
 		
 		override protected function updateControls():void {
@@ -22,6 +78,26 @@ package
 			} else if (Glob.justPressed(FORWARD_KEY)) {
 				goTo(StPlay);
 			}
+			
+			controlMarker();
+		}
+		
+		private function controlMarker():void {
+			markerDir.x = 0;
+			markerDir.y = 0;
+			if (Glob.pressed(LEFT_KEY)) {
+				markerDir.x -= 1;
+			}
+			if (Glob.pressed(RIGHT_KEY)) {
+				markerDir.x += 1;
+			}
+			if (Glob.pressed(UP_KEY)) {
+				markerDir.y -= 1;
+			}
+			if (Glob.pressed(DOWN_KEY)) {
+				markerDir.y += 1;
+			}
+			// maybe this should also be normalized?
 		}
 	}
 }

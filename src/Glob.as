@@ -3,10 +3,14 @@ package
 	import org.flixel.*;
 	
 	public class Glob
-	{
-		// debug
+	{	
+		// Debug
 		public static const DEBUG_ON:Boolean = true;
-		// for loading saved data
+		
+		// General
+		public static const CENT:FlxPoint = new FlxPoint(FlxG.width/2.0,FlxG.height/2.0);
+		
+		// Save Data
 		private static var save:FlxSave;
 		private static var loaded:Boolean = false;
 		public static function load():void {
@@ -56,14 +60,24 @@ package
 			}
 		}
 		
-		// Environmental constants
-		public static const GRAV_ACCEL:Number = 888;
-		public static const CENT:FlxPoint = new FlxPoint(FlxG.width/2.0,FlxG.height/2.0);
-		
 		// Title State
 		
 		// Menu State
 		[Embed("assets/spr_menu_balloon.png")] public static const menuBalloonSheet:Class;
+		
+		// Options State
+		
+		// Controls State
+		
+		// Credits State
+		
+		// Map State
+		[Embed("assets/spr_map_node.png")] public static const mapNodeSheet:Class;
+		[Embed("assets/spr_map_marker.png")] public static const mapMarkerSheet:Class;
+		
+		// Play State
+		// environmental constants
+		public static const GRAV_ACCEL:Number = 888;
 		
 		// Player sprite
 		//[Embed("assets/sprite_cake.png")] public static const cakeSheet:Class;
@@ -94,15 +108,8 @@ package
 		[Embed("assets/tileset_level.png")] public static const tilesetLevelSheet:Class;
 		[Embed("assets/mapCSV_level_000.csv", mimeType = 'application/octet-stream')] public static const level000CSV:Class;
 		[Embed("assets/mapCSV_level_001.csv", mimeType = 'application/octet-stream')] public static const level001CSV:Class;
-		public static function get level():Class {
-			var _class:Class;
-			if (levelNum == 0) {
-				_class = level000CSV;
-			} else if (levelNum == 1) {
-				_class = level001CSV;
-			}
-			return _class;
-		}
+		public static var levels:Array = [level000CSV,level001CSV];
+		public static function get level():Class {return levels[levelNum];}
 		
 		// Titles
 		[Embed("assets/title-01.png")] public static const titleSheet:Class;
@@ -112,13 +119,15 @@ package
 		// Letters
 		[Embed("assets/alphabet.png")] public static const alphabetSheet:Class;
 		
-		// Sounds
+		// Music
 		[Embed("assets/title.mp3")] public static const titleMP3:Class;
 		public static const titleMusic:FlxSound = new FlxSound().loadEmbedded(titleMP3,true);
 		[Embed("assets/menu.mp3")] public static const menuMP3:Class;
 		public static const menuMusic:FlxSound = new FlxSound().loadEmbedded(menuMP3,true);
 		
-		// Key presses
+		// Sounds
+		
+		// Key Press Macros
 		public static function pressed(_keys:Array):Boolean {
 			for (var i:uint = 0; i < _keys.length; i++) {
 				if (FlxG.keys.pressed(_keys[i])) {
