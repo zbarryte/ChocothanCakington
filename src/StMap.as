@@ -82,7 +82,7 @@ package
 				_distSq = Math.pow(_pos.x-_cur.next.x,2.0) + Math.pow(_pos.y-_cur.next.y,2.0);
 				_distSqNew = Math.pow(_posNew.x-_cur.next.x,2.0) + Math.pow(_posNew.y-_cur.next.y,2.0);
 				if (_distSqNew < _distSq) {
-					nextOrPrevious = ZLevelGroup.next;
+					nextOrPrevious = lvlGrp.next;
 					return _cur.next;
 				}
 			}
@@ -91,7 +91,7 @@ package
 				_distSq = Math.pow(_pos.x-_cur.previous.x,2.0) + Math.pow(_pos.y-_cur.previous.y,2.0);
 				_distSqNew = Math.pow(_posNew.x-_cur.previous.x,2.0) + Math.pow(_posNew.y-_cur.previous.y,2.0);
 				if (_distSqNew < _distSq) {
-					nextOrPrevious = ZLevelGroup.previous;
+					nextOrPrevious = lvlGrp.previous;
 					return _cur.previous;
 				}
 			}
@@ -140,9 +140,9 @@ package
 		}
 		
 		override protected function updateControls():void {
-			if (Glob.justPressed(BACK_KEY)) {
+			if (Glob.justPressed(BACK_KEY) && isIdle) {
 				goBack();
-			} else if (Glob.justPressed(FORWARD_KEY)) {
+			} else if (Glob.justPressed(FORWARD_KEY) && isIdle) {
 				goTo(StPlay);
 			}
 			

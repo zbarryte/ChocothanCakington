@@ -25,7 +25,7 @@ package
 		}
 		
 		override public function draw():void {
-			if (graphic) {super.draw()}
+			if (graphic) {super.draw()} // don't draw the flixel logo sprites...
 			for (var i:uint = 0; i < children.length; i++) {
 				var _child:FlxSprite = children.members[i];
 				// preserve child's property values
@@ -42,7 +42,7 @@ package
 				_child.angle += angle;
 				_child.scale.x = scale.x*_child.scale.x;
 				_child.scale.y = scale.y*_child.scale.y;
-				_child.color = color*_child.color;
+				if (graphic) {_child.color = color*_child.color;}
 				_child.alpha = alpha;
 				// draw child
 				_child.draw();

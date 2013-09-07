@@ -4,10 +4,14 @@ package
 	
 	public class ZLevelGroup extends ZNode
 	{		
+		//public var previous:Function;
+		//public var next:Function;
+		
 		public function ZLevelGroup()
 		{	
 			var _spacing:Number = 111;
-						
+			
+			
 			super();
 			
 			for (var i:uint = 0; i < Glob.levels.length; i++) {
@@ -41,12 +45,25 @@ package
 			return children.members[Glob.levelNum];
 		}
 		
+		/*
 		public static function next():void {
 			Glob.levelNum ++;
 		}
 		
 		public static function previous():void {
 			Glob.levelNum --;
+		}*/
+		
+		public function previous ():void {
+			currentLevel.uncurse();
+			Glob.levelNum--;
+			currentLevel.curse();
+		}
+		
+		public function next():void {
+			currentLevel.uncurse();
+			Glob.levelNum++;
+			currentLevel.curse();
 		}
 	}
 }
