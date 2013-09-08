@@ -37,8 +37,8 @@ package
 				var _oldAlpha:uint = _child.alpha;
 				// change child's property values temporarily
 				var _theta:Number = -_child.angle*Math.PI/180.0;
-				_child.x = x - width/2.0 + Math.cos(_theta)*_child.x + Math.sin(_theta)*_child.y;
-				_child.y = y - height/2.0 - Math.sin(_theta)*_child.x + Math.cos(_theta)*_child.y;
+				_child.x = x - width/2.0 + _child.width/2.0 + Math.cos(_theta)*_child.x + Math.sin(_theta)*_child.y;
+				_child.y = y - height/2.0 + _child.height/2.0 - Math.sin(_theta)*_child.x + Math.cos(_theta)*_child.y;
 				_child.angle += angle;
 				_child.scale.x = scale.x*_child.scale.x;
 				_child.scale.y = scale.y*_child.scale.y;
@@ -53,6 +53,22 @@ package
 				_child.scale = _oldScale;
 				_child.color = _oldColor;
 				_child.alpha = _oldAlpha;
+			}
+		}
+		
+		override public function update():void {
+			super.update();
+			for (var i:uint = 0; i < children.length; i++) {
+				var _child:FlxSprite = children.members[i];
+				_child.update();
+			}
+		}
+		
+		override public function postUpdate():void {
+			super.postUpdate();
+			for (var i:uint = 0; i < children.length; i++) {
+				var _child:FlxSprite = children.members[i];
+				_child.postUpdate();
 			}
 		}
 	}

@@ -20,7 +20,7 @@ package
 		}
 		
 		private function locY():Number {
-			return btnGrp.getCursedY() - height/2.0 + ZButton.H/4.0;
+			return btnGrp.getCursedY() - height/2.0 + ZButton.H/2.0;
 		}
 		
 		public function pulse(dir:int):void {

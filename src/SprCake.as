@@ -6,14 +6,11 @@ package
 	
 	public class SprCake extends ZNode
 	{			
-		private const kDragX:Number = 888; // drags against motion in the x dir, in pixels per second^2
-		private const kMaxVelX:Number = 222; // max x velocity, in pixels per second
-		private const kFastMaxVelX:Number = 444; // max x velocity if running, in pixels per second
-		private const kMaxVelY:Number = 888; // max y velocity, in pixels per second
-		private const kBalloonMaxVelY:Number = 111;
-		private const kMoveAccelX:Number = 666; // acceleration of motion, in pixels per second^2
-		private const kMoveFastAccelX:Number = 888; // acceleration of motion if running, in pixels per second^2
-		private const kJumpVelY:Number = Math.pow(Glob.GRAV_ACCEL*10*32,0.5); // initial y jump velocity, in pixels per second
+		private const kMaxVelX:Number = 10.0*32.0; // max x velocity, in pixels per second
+		private const kMoveAccelX:Number = Math.pow(10*32.0,2.0); // acceleration of motion, in pixels per second^2
+		private const kDragX:Number = kMoveAccelX/2.0; // drags against motion in the x dir, in pixels per second^2
+		private const kJumpVelY:Number = Math.pow(Glob.GRAV_ACCEL*10.0*32.0,0.5); // initial y jump velocity, in pixels per second
+		private const kMaxVelY:Number = kJumpVelY*2.0; // max y velocity, in pixels per second
 		
 		private var isMovingLeft:Boolean;
 		private var isMovingRight:Boolean;
@@ -21,6 +18,14 @@ package
 		private var isFalling:Boolean;
 		private var isBallooning:Boolean;
 		private var isRunning:Boolean;
+		
+		private var body:ZNode;
+		private var eyes:ZNode;
+		private var feet:ZNode;
+		
+		private const kFeetAnimIdle:String = "IDLE";
+		private const kFeetAnimMove:String = "MOVE";
+		private const kFeetAnimJump:String = "JUMP";
 		/*
 		private var state:String;
 		
@@ -39,11 +44,23 @@ package
 										
 		public function SprCake(_x:Number=0,_y:Number=0,_simpleGraphic:Class=null)
 		{	
+			// set up the base
 			super(_x,_y);
-			loadGraphic(Glob.cakeSheet,true,true,32,32,true);
-			
+			width = 32;
+			height = 32;
+			// set up the body
+			body = new ZNode();
+			body.loadGraphic(Glob.cakeBodySheet);
+			add(body);
+			// set up feet
+			feet = new ZNode();
+			feet.loadGraphic(Glob.cakeFeetSheet,true,false,32,32);
+			feet.addAnimation(kFeetAnimIdle,[0]);
+			feet.addAnimation(kFeetAnimMove,[5,6,7,8],22,false);
+			add(feet);
+			// set up drag
 			drag.x = kDragX;
-			
+			// set up state properties
 			isMovingLeft = false;
 			isMovingRight = false;
 			isJumping = false;
@@ -54,24 +71,43 @@ package
 		
 		override public function update():void {
 			super.update();
-			setAccel();
+			updateAnimations();
+			updateMovements();
+			feet.update();
 		}
 		
-		private function setAccel():void {
-			// reset the acceleration
+		private function updateAnimations():void {
+			// run
+			if (isTouching(FlxObject.DOWN) && velocity.x != 0) {
+				feet.play(kFeetAnimMove);
+				FlxG.log(feet.frame);
+			}
+			if (isTouching(FlxObject.DOWN) && velocity.x == 0 && velocity.y == 0) {
+				feet.play(kFeetAnimIdle);
+			}
+		}
+		
+		private function updateMovements():void {
+			// reset the accel and max vel
 			acceleration.x = 0;
 			acceleration.y = Glob.GRAV_ACCEL;
+			maxVelocity.x = kMaxVelX;
+			maxVelocity.y = kMaxVelY;
 			// check if it's moving
 			if (isMovingLeft) {
-				acceleration.x += (isRunning) ? -kMoveFastAccelX : -kMoveAccelX;
+				acceleration.x += -kMoveAccelX;
 				isMovingLeft = false;
 			}
 			else if (isMovingRight) {
-				acceleration.x += (isRunning) ? kMoveFastAccelX : kMoveAccelX;
+				acceleration.x += kMoveAccelX;
 				isMovingRight = false;
 			}
-			maxVelocity.x = (isRunning) ? kFastMaxVelX : kMaxVelX;
-			isRunning = false;
+			// check if it's running
+			if (isRunning) {
+				maxVelocity.x *= 1.5;
+				acceleration.x *= 1.5;
+				isRunning = false;
+			}
 			// check if it's jumping, falling, or ballooning
 			if (isJumping) {
 				velocity.y -= kJumpVelY;
@@ -82,9 +118,13 @@ package
 					velocity.y = 0;
 				}
 				isFalling = false;
+			} else if (isBallooning) {
+				//maxVelocity.x *= 0.25;
+				maxVelocity.y *= 0.75;
+				acceleration.x *= 0.05;
+				acceleration.y *= 0.05;
+				isBallooning = false;
 			}
-			maxVelocity.y = (isBallooning) ? kBalloonMaxVelY : kMaxVelY;
-			isBallooning = false;
 		}
 		
 		public function moveLeft():void {

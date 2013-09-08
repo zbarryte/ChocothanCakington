@@ -16,6 +16,8 @@ package
 			//x = _x;
 			//y = _y;
 			super(_x,_y);
+			width = ZButton.W;
+			height = ZButton.H;
 			spacing = _spacing;
 			buttonIndex = 0;
 		}

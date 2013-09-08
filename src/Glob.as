@@ -77,9 +77,10 @@ package
 		
 		// Play State
 		// environmental constants
-		public static const GRAV_ACCEL:Number = 888;
+		public static const GRAV_ACCEL:Number = 2222;
 		// player
-		[Embed("assets/spr_cake.png")] public static const cakeSheet:Class;
+		[Embed("assets/spr_cake_body.png")] public static const cakeBodySheet:Class;
+		[Embed("assets/spr_cake_feet.png")] public static const cakeFeetSheet:Class;
 		[Embed("assets/sprite_balloon.png")] public static const balloonSheet:Class;
 		[Embed("assets/sprite_balloon_string.png")] public static const balloonStringSheet:Class;
 		

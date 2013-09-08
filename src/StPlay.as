@@ -99,12 +99,13 @@ package
 		}
 		
 		override protected function updateControls():void {
+			// move the player left and right
 			if (Glob.pressedAfter(kLeftKey,kRightKey)) {
 				player.moveLeft();
 			} else if (Glob.pressedAfter(kRightKey,kLeftKey)) {
 				player.moveRight();
 			}
-			
+			// jump or deploy the balloon
 			if (Glob.justPressed(kJumpKey)) {
 				player.jump();
 			} else if (Glob.pressed(kJumpKey)) {
@@ -112,7 +113,7 @@ package
 			} else if (Glob.justReleased(kJumpKey)) {
 				player.fall();
 			}
-			
+			// add some speed to movement
 			if (Glob.pressed(kRunKey)) {
 				player.run();
 			}
