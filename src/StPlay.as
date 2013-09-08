@@ -4,10 +4,10 @@ package
 	
 	public class StPlay extends ZState
 	{
-		private const LEFT_KEY:Array = ["LEFT"];
-		private const RIGHT_KEY:Array = ["RIGHT"];
-		private const JUMP_KEY:Array = ["SPACE","UP","X"];
-		private const RUN_KEY:Array = ["SHIFT","Z"];
+		private const kLeftKey:Array = ["LEFT"];
+		private const kRightKey:Array = ["RIGHT"];
+		private const kJumpKey:Array = ["SPACE","UP","X"];
+		private const kRunKey:Array = ["SHIFT","Z"];
 		
 		private const SPAWN_PLAYER:Array = [2];
 		private const SPAWN_PRESENT:Array = [3];
@@ -32,7 +32,7 @@ package
 		private var timeRemaining:Number;
 		
 		override public function create():void {
-			FlxG.bgColor = 0xff000000;
+			FlxG.bgColor = 0xff004400;
 			super.create();
 		}
 		
@@ -58,8 +58,6 @@ package
 			// Player
 			player = groupFromSpawn(SPAWN_PLAYER,SprCake,level).members[0];
 			add(player);
-			add(player.components);
-			add(player.balloon);
 			
 			FlxG.worldBounds = new FlxRect(0, 0, level.width,level.height);
 			FlxG.camera.bounds = FlxG.worldBounds;
@@ -79,13 +77,10 @@ package
 			
 			pauseGroup = new PauseGroup();
 			add(pauseGroup);
-			
-			//add(new ZText(10,10,"hello world"));
 		}
 		
 		override protected function updateAnimations():void {
 			FlxG.collide(player,level);
-			//FlxG.collide(player.balloon,level);
 			
 			var _present:SprPresent = presentOverlappedByPlayer();
 			if (_present) {
@@ -104,50 +99,28 @@ package
 		}
 		
 		override protected function updateControls():void {
-			player.acceleration = new FlxPoint(0,Glob.GRAV_ACCEL);
-			if (Glob.pressedAfter(LEFT_KEY,RIGHT_KEY)) {
+			if (Glob.pressedAfter(kLeftKey,kRightKey)) {
 				player.moveLeft();
-			} else if (Glob.pressedAfter(RIGHT_KEY,LEFT_KEY)) {
+			} else if (Glob.pressedAfter(kRightKey,kLeftKey)) {
 				player.moveRight();
 			}
 			
-			if (Glob.justPressed(JUMP_KEY)) {
+			if (Glob.justPressed(kJumpKey)) {
 				player.jump();
-			} else if (Glob.justReleased(JUMP_KEY)) {
+			} else if (Glob.pressed(kJumpKey)) {
+				player.balloon();
+			} else if (Glob.justReleased(kJumpKey)) {
 				player.fall();
 			}
 			
+			if (Glob.pressed(kRunKey)) {
+				player.run();
+			}
 		}
 		
 		override protected function updatePause():void {
 			pauseGroup.update();
 		}
-		
-		/*
-		override public function update():void {
-			if (!pauseGroup.isOn()) {
-				super.update();
-				FlxG.collide(player,level);
-				//FlxG.collide(player.balloon,level);
-				
-				var _present:Present = presentOverlappedByPlayer();
-				if (_present) {
-					removePresent(_present);
-				}
-				
-				timeRemaining -= FlxG.elapsed;
-				timeDisplay.text = ""+int(timeRemaining)+"";
-				if (timeRemaining < 0) {
-					playerDies();
-				}
-				
-				if (player.overlaps(flag)) {
-					completeLevel();
-				}
-			} else {
-				pauseGroup.update();
-			}
-		}*/
 		
 		private function groupFromSpawn(_spawn:Array,_class:Class,_map:FlxTilemap,_hide:Boolean=true):FlxGroup {
 			var _group:FlxGroup = new FlxGroup();
