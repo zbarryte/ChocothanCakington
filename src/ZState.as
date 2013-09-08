@@ -59,7 +59,7 @@ package
 		}
 		
 		protected function updatePause():void {
-			
+			// implemented by children, updates even when paused
 		}
 		
 		protected function goBack():void {

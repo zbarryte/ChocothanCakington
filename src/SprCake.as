@@ -4,7 +4,7 @@ package
 	
 	import org.flixel.*;
 	
-	public class SprCake extends FlxSprite
+	public class SprCake extends ZNode
 	{
 		private var blinkTimer:Number = 0;
 		private var blinkPeriod:Number = 2.2;
@@ -21,6 +21,15 @@ package
 		private const KEY_RIGHT:Array = ["RIGHT"];
 		private const KEY_LEFT:Array = ["LEFT"];
 		private const KEY_JUMP:Array = ["SPACE"];
+		
+		private var state:String;
+		
+		private static const IDLE:String = "IDLE";
+		private static const MOVE_LEFT:String = "MOVE_LEFT";
+		private static const MOVE_RIGHT:String = "MOVE_RIGHT";
+		private static const JUMP:String = "JUMP";
+		private static const FALL:String = "FALL";
+		private static const BALLOON:String = "BALLOON";
 		
 		public var balloon:FlxSprite;
 		private var stringLength:Number = 32;
@@ -80,16 +89,36 @@ package
 			balloonString.visible = false;
 		}
 		
+		public function moveLeft():void {
+			acceleration.x = -MOVE_ACCEL_X;
+		}
+		
+		public function moveRight():void {
+			acceleration.x = MOVE_ACCEL_X;
+		}
+		
+		public function jump():void {
+			if (onGround()) {
+				velocity.y = -MOVE_VEL_Y;
+			}
+		}
+		
+		public function fall():void {
+			if (velocity.y < 0 && !wasUsingBalloon) {
+				velocity.y = 0;
+			}
+		}
+		
 		override public function update():void {
 			
-			super.update();
+			//super.update();
 			
-			
+			/*
 			if (velocity.x != 0 && onGround()) {
 				feet.play("walk");
 			} else {
 				feet.play("idle");
-			}
+			}*/
 			
 			// blink?
 			blinkTimer += FlxG.elapsed;
@@ -100,9 +129,12 @@ package
 			
 			
 			// reset acceleration
-			acceleration = new FlxPoint(0,Glob.GRAV_ACCEL);
+			//acceleration = new FlxPoint(0,Glob.GRAV_ACCEL);
 			balloon.acceleration = new FlxPoint(0,0);
 			
+			super.update();
+			
+			/*
 			// handle left/right motion
 			if (Glob.pressedAfter(KEY_LEFT,KEY_RIGHT)) {
 				acceleration.x = -MOVE_ACCEL_X;
@@ -115,6 +147,8 @@ package
 			} else if (Glob.justReleased(KEY_JUMP) && velocity.y < 0 && !wasUsingBalloon) {
 				velocity.y = 0;
 			}
+			*/
+			
 			// Handle Balloon Use
 			if (justUsedBalloon()) {
 				balloon.x = x;
@@ -171,7 +205,7 @@ package
 			super.updateMotion();
 		}
 		
-		
+		/*
 		override public function overlaps(ObjectOrGroup:FlxBasic, InScreenSpace:Boolean=false, Camera:FlxCamera=null):Boolean {
 			for (var i:uint = 0; i < components.length; i++) {
 				if (components.members[i].overlaps(ObjectOrGroup,InScreenSpace,Camera)) {
@@ -181,6 +215,7 @@ package
 			
 			return (super.overlaps(ObjectOrGroup,InScreenSpace,Camera));
 		}
+		*/
 		
 		
 		

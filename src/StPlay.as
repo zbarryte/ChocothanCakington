@@ -4,9 +4,15 @@ package
 	
 	public class StPlay extends ZState
 	{
+		private const LEFT_KEY:Array = ["LEFT"];
+		private const RIGHT_KEY:Array = ["RIGHT"];
+		private const JUMP_KEY:Array = ["SPACE","UP","X"];
+		private const RUN_KEY:Array = ["SHIFT","Z"];
+		
 		private const SPAWN_PLAYER:Array = [2];
 		private const SPAWN_PRESENT:Array = [3];
 		private const SPAWN_FLAG:Array = [4];
+		private const SPAWN_UNTOUCHABLE:Array = [];
 		
 		private var player:SprCake;
 		private var presentGroup:FlxGroup;
@@ -98,6 +104,18 @@ package
 		}
 		
 		override protected function updateControls():void {
+			player.acceleration = new FlxPoint(0,Glob.GRAV_ACCEL);
+			if (Glob.pressedAfter(LEFT_KEY,RIGHT_KEY)) {
+				player.moveLeft();
+			} else if (Glob.pressedAfter(RIGHT_KEY,LEFT_KEY)) {
+				player.moveRight();
+			}
+			
+			if (Glob.justPressed(JUMP_KEY)) {
+				player.jump();
+			} else if (Glob.justReleased(JUMP_KEY)) {
+				player.fall();
+			}
 			
 		}
 		
