@@ -25,7 +25,7 @@ package
 		}
 		
 		override public function draw():void {
-			if (graphic) {super.draw()} // don't draw the flixel logo sprites...
+			if (graphic) {super.draw();} // don't draw the flixel logo sprites...
 			for (var i:uint = 0; i < children.length; i++) {
 				var _child:FlxSprite = children.members[i];
 				// preserve child's property values
@@ -33,7 +33,6 @@ package
 				var _oldX:Number = _child.x;
 				var _oldY:Number = _child.y;
 				var _oldScale:FlxPoint = _child.scale;
-				var _oldColor:uint = _child.color;
 				var _oldAlpha:uint = _child.alpha;
 				// change child's property values temporarily
 				var _theta:Number = -_child.angle*Math.PI/180.0;
@@ -42,7 +41,6 @@ package
 				_child.angle += angle;
 				_child.scale.x = scale.x*_child.scale.x;
 				_child.scale.y = scale.y*_child.scale.y;
-				if (graphic) {_child.color = color*_child.color;}
 				_child.alpha = alpha;
 				// draw child
 				_child.draw();
@@ -51,7 +49,6 @@ package
 				_child.x = _oldX;
 				_child.y = _oldY;
 				_child.scale = _oldScale;
-				_child.color = _oldColor;
 				_child.alpha = _oldAlpha;
 			}
 		}
@@ -69,6 +66,14 @@ package
 			for (var i:uint = 0; i < children.length; i++) {
 				var _child:FlxSprite = children.members[i];
 				_child.postUpdate();
+			}
+		}
+		
+		override public function preUpdate():void {
+			super.preUpdate();
+			for (var i:uint = 0; i < children.length; i++) {
+				var _child:FlxSprite = children.members[i];
+				_child.preUpdate();
 			}
 		}
 	}

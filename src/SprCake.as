@@ -20,12 +20,17 @@ package
 		private var isRunning:Boolean;
 		
 		private var body:ZNode;
-		private var eyes:ZNode;
+		private var eyeL:ZNode;
+		private var eyeR:ZNode;
 		private var feet:ZNode;
 		
 		private const kFeetAnimIdle:String = "IDLE";
-		private const kFeetAnimMove:String = "MOVE";
+		private const kFeetAnimWalk:String = "WALK";
+		private const kFeetAnimRun:String = "RUN";
 		private const kFeetAnimJump:String = "JUMP";
+		private const kEyeAnimBlink:String = "BLINK";
+		
+		private var blink:ZTimedEvent;
 		/*
 		private var state:String;
 		
@@ -48,17 +53,30 @@ package
 			super(_x,_y);
 			width = 32;
 			height = 32;
-			// set up the body
-			body = new ZNode();
-			body.loadGraphic(Glob.cakeBodySheet);
-			add(body);
 			// set up feet
 			feet = new ZNode();
 			feet.loadGraphic(Glob.cakeFeetSheet,true,false,32,32);
 			feet.addAnimation(kFeetAnimIdle,[0]);
-			feet.addAnimation(kFeetAnimMove,[5,6,7,8],22,false);
+			feet.addAnimation(kFeetAnimWalk,[5,6,7,8],22,false);
+			feet.addAnimation(kFeetAnimRun,[5,6,7,8],44,false);
+			feet.addAnimation(kFeetAnimJump,[9]);
 			add(feet);
-			// set up drag
+			// set up the body
+			body = new ZNode();
+			body.loadGraphic(Glob.cakeBodySheet);
+			add(body);
+			// set up eyes
+			eyeL = new ZNode();
+			eyeL.loadGraphic(Glob.cakeEyeLSheet,true,true,32,32);
+			eyeL.addAnimation(kEyeAnimBlink,[0,1,2,1,0],22,false);
+			eyeR = new ZNode();
+			eyeR.loadGraphic(Glob.cakeEyeRSheet,true,true,32,32);
+			eyeR.addAnimation(kEyeAnimBlink,[0,1,2,1,0],22,false);
+			body.add(eyeL);
+			body.add(eyeR);
+			// time blinks
+			blink = new ZTimedEvent(0.75,maybeBlink);
+			// drag
 			drag.x = kDragX;
 			// set up state properties
 			isMovingLeft = false;
@@ -69,22 +87,45 @@ package
 			isRunning = false;
 		}
 		
+		private function maybeBlink():void {
+			if (Math.random()*2>=1.5) {
+				eyeL.play(kEyeAnimBlink);
+			}
+			if (Math.random()*2>=1.5) {
+				eyeR.play(kEyeAnimBlink);
+			}
+		}
+		
 		override public function update():void {
 			super.update();
 			updateAnimations();
 			updateMovements();
-			feet.update();
 		}
 		
 		private function updateAnimations():void {
+			body.y = 0;
 			// run
 			if (isTouching(FlxObject.DOWN) && velocity.x != 0) {
-				feet.play(kFeetAnimMove);
-				FlxG.log(feet.frame);
+				if (maxVelocity.x <= kMaxVelX) {
+					feet.play(kFeetAnimWalk);
+				} else {
+					feet.play(kFeetAnimRun);
+				}
+				
+				if (feet.frame == 6 || feet.frame == 7) {
+					body.y = 2;
+				}
 			}
+			// idle
 			if (isTouching(FlxObject.DOWN) && velocity.x == 0 && velocity.y == 0) {
 				feet.play(kFeetAnimIdle);
 			}
+			// jump
+			if (!isTouching(FlxObject.DOWN)) {
+				feet.play(kFeetAnimJump);
+			}
+			// blink
+			blink.update();
 		}
 		
 		private function updateMovements():void {

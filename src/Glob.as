@@ -81,6 +81,8 @@ package
 		// player
 		[Embed("assets/spr_cake_body.png")] public static const cakeBodySheet:Class;
 		[Embed("assets/spr_cake_feet.png")] public static const cakeFeetSheet:Class;
+		[Embed("assets/spr_cake_eyeL.png")] public static const cakeEyeLSheet:Class;
+		[Embed("assets/spr_cake_eyeR.png")] public static const cakeEyeRSheet:Class;
 		[Embed("assets/sprite_balloon.png")] public static const balloonSheet:Class;
 		[Embed("assets/sprite_balloon_string.png")] public static const balloonStringSheet:Class;
 		
