@@ -25,7 +25,7 @@ package
 		}
 		
 		override public function draw():void {
-			if (graphic) {super.draw();} // don't draw the flixel logo sprites...
+			if (graphic && visible) {super.draw();} // don't draw the flixel logo sprites...
 			for (var i:uint = 0; i < children.length; i++) {
 				var _child:FlxSprite = children.members[i];
 				// preserve child's property values

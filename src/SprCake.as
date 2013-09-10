@@ -37,6 +37,8 @@ package
 		private var jawY:Number;
 		private var faceY:Number;
 		private var faceAngle:Number;
+		
+		private var balloon:SprBalloon;
 		/*
 		private var state:String;
 		
@@ -59,6 +61,9 @@ package
 			super(_x,_y);
 			width = 32;
 			height = 32;
+			// set up balloon
+			balloon = new SprBalloon();
+			add(balloon);
 			// set up feet
 			feet = new ZNode();
 			feet.loadGraphic(Glob.cakeFeetSheet,true,false,32,32);
@@ -192,7 +197,10 @@ package
 				maxVelocity.y *= 0.75;
 				acceleration.x *= 0.05;
 				acceleration.y *= 0.05;
+				balloon.inflate();
 				isBallooning = false;
+			} else {
+				balloon.deflate();
 			}
 		}
 		
@@ -218,7 +226,7 @@ package
 			isRunning = true;
 		}
 		
-		public function balloon():void {
+		public function launchBalloon():void {
 			if (velocity.y > 0) {
 				isBallooning = true;
 			}

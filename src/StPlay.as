@@ -109,7 +109,7 @@ package
 			if (Glob.justPressed(kJumpKey)) {
 				player.jump();
 			} else if (Glob.pressed(kJumpKey)) {
-				player.balloon();
+				player.launchBalloon();
 			} else if (Glob.justReleased(kJumpKey)) {
 				player.fall();
 			}
