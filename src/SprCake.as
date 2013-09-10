@@ -19,7 +19,8 @@ package
 		private var isBallooning:Boolean;
 		private var isRunning:Boolean;
 		
-		private var body:ZNode;
+		private var face:ZNode;
+		private var jaw:ZNode;
 		private var eyeL:ZNode;
 		private var eyeR:ZNode;
 		private var feet:ZNode;
@@ -31,6 +32,11 @@ package
 		private const kEyeAnimBlink:String = "BLINK";
 		
 		private var blink:ZTimedEvent;
+		private var idle:ZTimedEvent;
+		
+		private var jawY:Number;
+		private var faceY:Number;
+		private var faceAngle:Number;
 		/*
 		private var state:String;
 		
@@ -61,10 +67,17 @@ package
 			feet.addAnimation(kFeetAnimRun,[5,6,7,8],44,false);
 			feet.addAnimation(kFeetAnimJump,[9]);
 			add(feet);
-			// set up the body
-			body = new ZNode();
-			body.loadGraphic(Glob.cakeBodySheet);
-			add(body);
+			// set up the jaw
+			jaw = new ZNode();
+			jaw.loadGraphic(Glob.cakeJawSheet);
+			add(jaw);
+			jawY = 0.0;
+			// set up the face
+			face = new ZNode();
+			face.loadGraphic(Glob.cakeFaceSheet);
+			jaw.add(face);
+			faceY = 0.0;
+			faceAngle = 0.0;
 			// set up eyes
 			eyeL = new ZNode();
 			eyeL.loadGraphic(Glob.cakeEyeLSheet,true,true,32,32);
@@ -72,10 +85,11 @@ package
 			eyeR = new ZNode();
 			eyeR.loadGraphic(Glob.cakeEyeRSheet,true,true,32,32);
 			eyeR.addAnimation(kEyeAnimBlink,[0,1,2,1,0],22,false);
-			body.add(eyeL);
-			body.add(eyeR);
+			face.add(eyeL);
+			face.add(eyeR);
 			// time blinks
 			blink = new ZTimedEvent(0.75,maybeBlink);
+			idle = new ZTimedEvent(0.75,idleAction);
 			// drag
 			drag.x = kDragX;
 			// set up state properties
@@ -96,6 +110,15 @@ package
 			}
 		}
 		
+		private function idleAction():void {
+			if (Math.random()*3>=2.5) {
+				jawY = int(Math.random()*2);
+			}
+			if (Math.random()*3>=2.5) {
+				faceY = -int(Math.random()*2);
+			}
+		}
+		
 		override public function update():void {
 			super.update();
 			updateAnimations();
@@ -103,7 +126,9 @@ package
 		}
 		
 		private function updateAnimations():void {
-			body.y = 0;
+			jaw.y = jawY;
+			face.y = faceY;
+			face.angle = faceAngle;
 			// run
 			if (isTouching(FlxObject.DOWN) && velocity.x != 0) {
 				if (maxVelocity.x <= kMaxVelX) {
@@ -113,16 +138,19 @@ package
 				}
 				
 				if (feet.frame == 6 || feet.frame == 7) {
-					body.y = 2;
+					jaw.y = 2;
 				}
 			}
 			// idle
 			if (isTouching(FlxObject.DOWN) && velocity.x == 0 && velocity.y == 0) {
 				feet.play(kFeetAnimIdle);
+				idle.update();
 			}
 			// jump
 			if (!isTouching(FlxObject.DOWN)) {
 				feet.play(kFeetAnimJump);
+				face.angle = Math.random()*2*Math.pow(-1,int(Math.random()*2));
+				face.y = -Math.random()*3;
 			}
 			// blink
 			blink.update();

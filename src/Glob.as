@@ -79,7 +79,8 @@ package
 		// environmental constants
 		public static const GRAV_ACCEL:Number = 2222;
 		// player
-		[Embed("assets/spr_cake_body.png")] public static const cakeBodySheet:Class;
+		[Embed("assets/spr_cake_face.png")] public static const cakeFaceSheet:Class;
+		[Embed("assets/spr_cake_jaw.png")] public static const cakeJawSheet:Class;
 		[Embed("assets/spr_cake_feet.png")] public static const cakeFeetSheet:Class;
 		[Embed("assets/spr_cake_eyeL.png")] public static const cakeEyeLSheet:Class;
 		[Embed("assets/spr_cake_eyeR.png")] public static const cakeEyeRSheet:Class;
