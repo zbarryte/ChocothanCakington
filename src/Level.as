@@ -18,8 +18,8 @@ package
 			super();
 			index = _levelNum;
 			name = Glob.levelName(_levelNum);
-			x = Glob.levelNodeX(_levelNum);
-			y = Glob.levelNodeY(_levelNum);
+			//x = Glob.levelNodeX(_levelNum);
+			//y = Glob.levelNodeY(_levelNum);
 			goal = Glob.levelGoal(_levelNum);
 			loadGraphic(Glob.mapNodeSheet); // this could also be retreived from data
 			previous = null;

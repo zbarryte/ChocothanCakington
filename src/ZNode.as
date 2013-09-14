@@ -32,7 +32,8 @@ package
 				var _oldAngle:Number = _child.angle;
 				var _oldX:Number = _child.x;
 				var _oldY:Number = _child.y;
-				var _oldScale:FlxPoint = _child.scale;
+				var _oldScaleX:Number = _child.scale.x;
+				var _oldScaleY:Number = _child.scale.y;
 				var _oldAlpha:uint = _child.alpha;
 				// change child's property values temporarily
 				var _theta:Number = -_child.angle*Math.PI/180.0;
@@ -48,7 +49,8 @@ package
 				_child.angle = _oldAngle;
 				_child.x = _oldX;
 				_child.y = _oldY;
-				_child.scale = _oldScale;
+				_child.scale.x = _oldScaleX;
+				_child.scale.y = _oldScaleY;
 				_child.alpha = _oldAlpha;
 			}
 		}

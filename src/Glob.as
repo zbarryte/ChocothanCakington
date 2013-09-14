@@ -86,6 +86,9 @@ package
 		[Embed("assets/spr_cake_eyeR.png")] public static const cakeEyeRSheet:Class;
 		[Embed("assets/sprite_balloon.png")] public static const balloonSheet:Class;
 		[Embed("assets/sprite_balloon_string.png")] public static const balloonStringSheet:Class;
+		[Embed("assets/spr_cake_candle.png")] public static const cakeCandleSheet:Class;
+		[Embed("assets/spr_cake_candle_flame.png")] public static const cakeCandleFlameSheet:Class;
+		
 		
 		// Present sprite
 		[Embed("assets/sprite_present.png")] public static const presentSheet:Class;

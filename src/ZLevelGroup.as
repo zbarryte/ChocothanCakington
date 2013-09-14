@@ -21,6 +21,17 @@ package
 			currentLevel.curse();
 		}
 		
+		public function setPositionsWithPoints(pts:Array):void {
+			if (pts.length == children.length) {
+				for (var i:uint = 0; i < children.length; i++) {
+					children.members[i].x = pts[i].x;
+					children.members[i].y = pts[i].y;
+				}
+			} else {
+				FlxG.log("Could not set positions with points: children and pts are different lenghths");
+			}
+		}
+		
 		private function linkLevelNodes():void {
 			var _prev:Level = null;
 			for (var i:uint = 0; i < children.length; i++) {

@@ -7,8 +7,8 @@ package
 	public class SprCake extends ZNode
 	{			
 		private const kMaxVelX:Number = 10.0*32.0; // max x velocity, in pixels per second
-		private const kMoveAccelX:Number = Math.pow(10*32.0,2.0); // acceleration of motion, in pixels per second^2
-		private const kDragX:Number = kMoveAccelX/2.0; // drags against motion in the x dir, in pixels per second^2
+		private const kMoveAccelX:Number = Math.pow(4*32.0,2.0); // acceleration of motion, in pixels per second^2
+		private const kDragX:Number = kMoveAccelX/8.0; // drags against motion in the x dir, in pixels per second^2
 		private const kJumpVelY:Number = Math.pow(Glob.GRAV_ACCEL*10.0*32.0,0.5); // initial y jump velocity, in pixels per second
 		private const kMaxVelY:Number = kJumpVelY*2.0; // max y velocity, in pixels per second
 		
@@ -39,6 +39,9 @@ package
 		private var faceAngle:Number;
 		
 		private var balloon:SprBalloon;
+		
+		private const kCandleXs:Array = [7,10,14,15,22];
+		private const kCandleScales:Array = [0.88,0.44,0.55,0.33,0.44];
 		/*
 		private var state:String;
 		
@@ -83,6 +86,15 @@ package
 			jaw.add(face);
 			faceY = 0.0;
 			faceAngle = 0.0;
+			// set up the candles
+			for (var i:uint = 0; i < kCandleXs.length; i++) {
+				var candle:SprCandle = new SprCandle();
+				candle.scale.y = kCandleScales[i];
+				candle.x = kCandleXs[i];
+				candle.y = -candle.height*candle.scale.y;
+				face.add(candle);
+				candle.addFlame();
+			}
 			// set up eyes
 			eyeL = new ZNode();
 			eyeL.loadGraphic(Glob.cakeEyeLSheet,true,true,32,32);
@@ -145,6 +157,8 @@ package
 				if (feet.frame == 6 || feet.frame == 7) {
 					jaw.y = 2;
 				}
+				face.angle = Math.random()*2*Math.pow(-1,int(Math.random()*2));
+				face.y = -Math.random()*3;
 			}
 			// idle
 			if (isTouching(FlxObject.DOWN) && velocity.x == 0 && velocity.y == 0) {
@@ -154,8 +168,7 @@ package
 			// jump
 			if (!isTouching(FlxObject.DOWN)) {
 				feet.play(kFeetAnimJump);
-				face.angle = Math.random()*2*Math.pow(-1,int(Math.random()*2));
-				face.y = -Math.random()*3;
+				face.y = -2;
 			}
 			// blink
 			blink.update();
@@ -167,6 +180,7 @@ package
 			acceleration.y = Glob.GRAV_ACCEL;
 			maxVelocity.x = kMaxVelX;
 			maxVelocity.y = kMaxVelY;
+			drag.x = kDragX;
 			// check if it's moving
 			if (isMovingLeft) {
 				acceleration.x += -kMoveAccelX;
@@ -194,9 +208,13 @@ package
 				isFalling = false;
 			} else if (isBallooning) {
 				//maxVelocity.x *= 0.25;
-				maxVelocity.y *= 0.75;
+				if (!balloon.visible) {
+					velocity.y 0;
+				}
+				maxVelocity.y *= 0.5;
 				acceleration.x *= 0.05;
 				acceleration.y *= 0.05;
+				drag.x *= 0.5;
 				balloon.inflate();
 				isBallooning = false;
 			} else {

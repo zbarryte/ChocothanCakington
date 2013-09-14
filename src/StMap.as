@@ -31,11 +31,11 @@ package
 		
 		override public function createObjects():void {
 			lvlGrp = new ZLevelGroup();
-			add(lvlGrp);
+			add(lvlGrp);			
 			
 			var _level:Level = currentLevel;
 			marker = new ZNode(_level.x,_level.y);
-			marker.loadGraphic(Glob.mapMarkerSheet,true,false,64,64);
+			marker.loadGraphic(Glob.mapMarkerSheet,true,false,32,32);
 			marker.addAnimation("IDLE",[0,1],5,true);
 			marker.play("IDLE");
 			add(marker);
@@ -49,6 +49,27 @@ package
 			label = new FlxText(Glob.CENT.x,Glob.CENT.y,100);
 			add(label);
 			setLabel();
+			
+			// place levels
+			var edgeBuffer:Number = marker.width;
+			var xSpacing:Number = FlxG.width/5;
+			var ySpacing:Number = FlxG.height/5;
+			
+			var lvlPts:Array = [
+				new FlxPoint(edgeBuffer,FlxG.height-edgeBuffer),
+				new FlxPoint(edgeBuffer+xSpacing*1,FlxG.height-edgeBuffer),
+				new FlxPoint(edgeBuffer+xSpacing*2,FlxG.height-edgeBuffer),
+				new FlxPoint(edgeBuffer+xSpacing*3,FlxG.height-edgeBuffer-ySpacing/2.0),
+				new FlxPoint(edgeBuffer+xSpacing*2,FlxG.height-edgeBuffer-3*ySpacing/2),
+				new FlxPoint(edgeBuffer+xSpacing,FlxG.height-edgeBuffer-3*ySpacing/2),
+				new FlxPoint(edgeBuffer,FlxG.height-edgeBuffer-5*ySpacing/2),
+				new FlxPoint(edgeBuffer+xSpacing*1,FlxG.height-edgeBuffer-5*ySpacing/2)
+			];
+			
+			lvlGrp.setPositionsWithPoints(lvlPts);
+			
+			marker.x = _level.x;
+			marker.y = _level.y;
 		}
 		
 		private function setLabel():void {

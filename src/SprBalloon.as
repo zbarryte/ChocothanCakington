@@ -76,11 +76,9 @@ package
 			scale.y += _rescaleY;
 			
 			// hide an anchored balloon
-			visible = true;
-			if (x == kAnchorX && y == kAnchorY &&
-				scale.x == kAnchorScaleX && scale.y == kAnchorScaleY) {
-				
-				visible = false;
+			visible = false;
+			if (y < (kInflateY-kAnchorY)/4.0) {
+				visible = true;
 			}
 		}
 	}

@@ -12,7 +12,7 @@ package
 		private const SPAWN_PLAYER:Array = [2];
 		private const SPAWN_PRESENT:Array = [3];
 		private const SPAWN_FLAG:Array = [4];
-		private const SPAWN_UNTOUCHABLE:Array = [];
+		private const SPAWN_DEATHTOUCH:Array = [5];
 		
 		private var player:SprCake;
 		private var presentGroup:FlxGroup;
@@ -37,6 +37,7 @@ package
 		}
 		
 		override public function createObjects():void {
+			
 			timeRemaining = 600;
 			
 			// Info
@@ -46,6 +47,9 @@ package
 			level = new FlxTilemap().loadMap(new Glob.levelCSV,Glob.tilesetLevelSheet,32,32);
 			add(level);
 			
+			// Death Touch
+			setCallbackFromSpawn(SPAWN_DEATHTOUCH,function():void {playerDies();},level,!Glob.DEBUG_ON);
+						
 			// Flag
 			flag = groupFromSpawn(SPAWN_FLAG,SprFlag,level).members[0];
 			add(flag);
@@ -102,7 +106,7 @@ package
 			// move the player left and right
 			if (Glob.pressedAfter(kLeftKey,kRightKey)) {
 				player.moveLeft();
-			} else if (Glob.pressedAfter(kRightKey,kLeftKey)) {
+			} if (Glob.pressedAfter(kRightKey,kLeftKey)) {
 				player.moveRight();
 			}
 			// jump or deploy the balloon
@@ -126,7 +130,7 @@ package
 		private function groupFromSpawn(_spawn:Array,_class:Class,_map:FlxTilemap,_hide:Boolean=true):FlxGroup {
 			var _group:FlxGroup = new FlxGroup();
 			for (var i:uint = 0; i <_spawn.length; i++) {
-				var _array:Array = level.getTileInstances(_spawn[i]);
+				var _array:Array = _map.getTileInstances(_spawn[i]);
 				if (_array) {
 					for (var j:uint = 0; j < _array.length; j++) {
 						var _point:FlxPoint = pointForTile(_array[j],_map);
@@ -138,6 +142,18 @@ package
 				}
 			}
 			return _group;
+		}
+		
+		private function setCallbackFromSpawn(_spawn:Array,_callback:Function,_map:FlxTilemap,_hide:Boolean=true):void {
+			for (var i:uint = 0; i <_spawn.length; i++) {
+				_map.setTileProperties(_spawn[i],FlxObject.ANY,_callback);
+				var _array:Array = _map.getTileInstances(_spawn[i]);
+				if (_array && _hide) {
+					for (var j:uint = 0; j < _array.length; j++) {
+						_map.setTileByIndex(_array[j],0);
+					}
+				}
+			}
 		}
 		
 		private function pointForTile(_tile:uint,_map:FlxTilemap):FlxPoint {
