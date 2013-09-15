@@ -8,6 +8,11 @@ package
 		private const kRightKey:Array = ["RIGHT"];
 		private const kJumpKey:Array = ["SPACE","UP","X"];
 		private const kRunKey:Array = ["SHIFT","Z"];
+		private const kTogglePauseKey:Array = ["P","ENTER"];
+		
+		private const kCurseForwardKey:Array = ["RIGHT","DOWN"];
+		private const kCurseBackKey:Array = ["LEFT","UP"];
+		private const kSelectKey:Array = ["SPACE"];
 		
 		private const SPAWN_PLAYER:Array = [2];
 		private const SPAWN_PRESENT:Array = [3];
@@ -30,10 +35,13 @@ package
 		private var pauseGroup:PauseGroup;
 		
 		private var timeRemaining:Number;
-		
+				
 		override public function create():void {
 			FlxG.bgColor = 0xff004400;
 			super.create();
+			FlxG.worldBounds = new FlxRect(0, 0, level.width,level.height);
+			FlxG.camera.bounds = FlxG.worldBounds;
+			FlxG.camera.follow(player,FlxCamera.STYLE_PLATFORMER);
 		}
 		
 		override public function createObjects():void {
@@ -63,9 +71,11 @@ package
 			player = groupFromSpawn(SPAWN_PLAYER,SprCake,level).members[0];
 			add(player);
 			
+			/*
 			FlxG.worldBounds = new FlxRect(0, 0, level.width,level.height);
 			FlxG.camera.bounds = FlxG.worldBounds;
 			FlxG.camera.follow(player,FlxCamera.STYLE_PLATFORMER);
+			*/
 			
 			// HUD
 			HUD = new FlxGroup;
@@ -79,8 +89,17 @@ package
 			
 			add(HUD);
 			
+			// Pause
 			pauseGroup = new PauseGroup();
+			/*
+			pauseGroup.x = Glob.CENT.x-ZButton.W/2.0;
+			pauseGroup.y = FlxG.height/5;*/
+			pauseGroup.addButton(new BtnPause(resume,"continue"));
+			pauseGroup.addButton(new BtnPause(refresh,"restart"));
+			pauseGroup.addButton(new BtnPause(function():void {goTo(StControls);},"controls"));
+			pauseGroup.addButton(new BtnPause(goBack,"go back",Glob.buttonCakeBottomSheet));
 			add(pauseGroup);
+			pauseGroup.scrollFactor = new FlxPoint(0,0);
 		}
 		
 		override protected function updateAnimations():void {
@@ -121,10 +140,28 @@ package
 			if (Glob.pressed(kRunKey)) {
 				player.run();
 			}
+			
+			if (Glob.justPressed(kTogglePauseKey)) {
+				pauseGroup.visible = true;
+				pause();
+			}
 		}
 		
 		override protected function updatePause():void {
-			pauseGroup.update();
+						
+			if (Glob.justPressed(kCurseForwardKey)) {
+				pauseGroup.curseFoward();
+			}
+			if (Glob.justPressed(kCurseBackKey)) {
+				pauseGroup.curseBack();
+			}
+			if (Glob.justPressed(kSelectKey)) {
+				pauseGroup.select();
+			}
+			if (Glob.justPressed(kTogglePauseKey)) {
+				pauseGroup.visible = false;
+				resume();
+			}
 		}
 		
 		private function groupFromSpawn(_spawn:Array,_class:Class,_map:FlxTilemap,_hide:Boolean=true):FlxGroup {

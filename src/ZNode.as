@@ -35,6 +35,7 @@ package
 				var _oldScaleX:Number = _child.scale.x;
 				var _oldScaleY:Number = _child.scale.y;
 				var _oldAlpha:uint = _child.alpha;
+				var _oldScrollFactor:FlxPoint = _child.scrollFactor;
 				// change child's property values temporarily
 				var _theta:Number = -_child.angle*Math.PI/180.0;
 				_child.x = x + _child.x;//- width/2.0 + _child.width/2.0 + Math.cos(_theta)*_child.x + Math.sin(_theta)*_child.y;
@@ -43,6 +44,7 @@ package
 				_child.scale.x = scale.x*_child.scale.x;
 				_child.scale.y = scale.y*_child.scale.y;
 				_child.alpha = alpha;
+				_child.scrollFactor = scrollFactor;
 				// draw child
 				_child.draw();
 				// reset child property values
@@ -52,6 +54,7 @@ package
 				_child.scale.x = _oldScaleX;
 				_child.scale.y = _oldScaleY;
 				_child.alpha = _oldAlpha;
+				_child.scrollFactor = _oldScrollFactor;
 			}
 		}
 		

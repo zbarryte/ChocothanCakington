@@ -4,15 +4,15 @@ package
 	
 	public class BtnMenu extends ZButton
 	{
-		protected const SIZE_CURSE:uint = 22;
-		protected const SIZE_UNCURSE:uint = 17;
-		protected const COLOR_CURSE:Number = 0xffffff;
-		protected const COLOR_UNCURSE:Number = 0xbbbbbb;
-		protected const ALIGNMENT:String = "center";
+		private const SIZE_CURSE:uint = 22;
+		private const SIZE_UNCURSE:uint = 17;
+		private const COLOR_CURSE:Number = 0xffffff;
+		private const COLOR_UNCURSE:Number = 0xbbbbbb;
+		private const ALIGNMENT:String = "center";
 		
-		public var text:FlxText;
+		private var text:FlxText;
 		
-		public function BtnMenu(_callback:Function=null,_label:String=null)
+		public function BtnMenu(_callback:Function,_label:String)
 		{
 			super(_callback);
 			// add a text Label

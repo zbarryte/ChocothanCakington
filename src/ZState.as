@@ -7,10 +7,13 @@ package
 		public var prev:ZState; // previous state
 		protected var isControllable:Boolean; // can the state be controlled?
 		protected var isPlaying:Boolean; // is the state playing?
+		protected var isTimed:Boolean;
+		protected var wasPlaying:Boolean;
 		protected var transToTime:Number; // time to transition to the next state
 		protected var transBackTime:Number; // time to transition to the previous state
 		protected var transResetTime:Number;
 		protected var areObjectsCreated:Boolean; // have we created objects?
+		protected var timedEvents:FlxGroup;
 		
 		public function ZState()
 		{
@@ -21,11 +24,13 @@ package
 			transResetTime = 0;
 			isControllable = true;
 			isPlaying = true;
+			isTimed = true;
 			areObjectsCreated = false;
+			timedEvents = new FlxGroup();
 		}
 		
 		override public function create():void {
-			resume();
+			if (wasPlaying) {resume();}
 			if (prev!=null) {prev.pause();}
 			if (!areObjectsCreated) {
 				createObjects();
@@ -38,7 +43,9 @@ package
 		}
 		
 		override public function update():void {
+			wasPlaying = false;
 			if (isPlaying) {
+				wasPlaying = true;
 				ZAudioHandler.update();
 				super.update();
 				updateAnimations();
@@ -47,6 +54,9 @@ package
 				}
 			} else {
 				updatePause();
+			}
+			if (isTimed) {
+				timedEvents.update();
 			}
 		}
 		
@@ -64,7 +74,7 @@ package
 		
 		protected function goBack():void {
 			if (prev != null) {
-				add(new ZTimedEvent(transBackTime,function():void{actuallyDestroy(); FlxG.switchState(prev);},false));
+				addTimedEvent(new ZTimedEvent(transBackTime,function():void{actuallyDestroy(); FlxG.switchState(prev);},false));
 			}
 		}
 		
@@ -76,7 +86,7 @@ package
 		protected function goTo(_class:Class):void {
 			var _state:ZState = new _class();
 			_state.prev = this;
-			add(new ZTimedEvent(transToTime,function():void{FlxG.switchState(_state);},false));
+			addTimedEvent(new ZTimedEvent(transToTime,function():void{FlxG.switchState(_state);},false));
 		}
 		
 		protected function refresh():void {
@@ -98,6 +108,10 @@ package
 		
 		public function actuallyDestroy():void {
 			super.destroy();
+		}
+		
+		protected function addTimedEvent(_event:ZTimedEvent):void {
+			timedEvents.add(_event);
 		}
 	}
 }
