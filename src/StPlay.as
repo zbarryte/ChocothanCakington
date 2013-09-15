@@ -91,15 +91,22 @@ package
 			
 			// Pause
 			pauseGroup = new PauseGroup();
+			//pauseGroup.x = Glob.CENT.x;
 			/*
 			pauseGroup.x = Glob.CENT.x-ZButton.W/2.0;
 			pauseGroup.y = FlxG.height/5;*/
+			
+			//pauseGroup.x = 100;
+			//pauseGroup.y = 100;
+			
 			pauseGroup.addButton(new BtnPause(resume,"continue"));
 			pauseGroup.addButton(new BtnPause(refresh,"restart"));
 			pauseGroup.addButton(new BtnPause(function():void {goTo(StControls);},"controls"));
-			pauseGroup.addButton(new BtnPause(goBack,"go back",Glob.buttonCakeBottomSheet));
+			pauseGroup.addButton(new BtnPause(goBack,"go back"));//,Glob.buttonCakeBottomSheet));
 			add(pauseGroup);
-			pauseGroup.scrollFactor = new FlxPoint(0,0);
+			
+			pauseGroup.scrollFactor.x = 0;
+			pauseGroup.scrollFactor.y = 0;
 		}
 		
 		override protected function updateAnimations():void {

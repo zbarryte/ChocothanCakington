@@ -19,6 +19,8 @@ package
 			text = new FlxText(0,0,ZButton.W,_label);
 			text.alignment = ALIGNMENT;
 			add(text);
+			
+			width = ZButton.W;
 		}
 		
 		override public function curse():void {

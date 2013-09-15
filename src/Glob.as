@@ -169,5 +169,17 @@ package
 			return pressed(_keysPrimary) && (justPressed(_keysPrimary) || !pressed(_keysSecondary));
 		}
 		
+		// centering
+		public static function centerNodeX(_node:ZNode):void {
+			_node.x = Glob.CENT.x - _node.width/2.0;
+		}
+		public static function centerNodeY(_node:ZNode):void {
+			_node.y = Glob.CENT.y - _node.height/2.0;
+		}
+		public static function centerNode(_node:ZNode):void {
+			centerNodeX(_node);
+			centerNodeY(_node);
+		}
+		
 	}
 }

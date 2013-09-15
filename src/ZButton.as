@@ -4,8 +4,8 @@ package
 	
 	public class ZButton extends ZNode
 	{
-		public static const W:Number = 222;
-		public static const H:Number = 44;
+		public static var W:Number = 222;
+		public static var H:Number = 44;
 		
 		private var callback:Function; // called when button is selected
 		

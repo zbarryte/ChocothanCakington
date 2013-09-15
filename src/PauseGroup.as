@@ -8,8 +8,10 @@ package
 		
 		public function PauseGroup()
 		{
-			super(Glob.CENT.x-ZButton.W/2.0,FlxG.height/5.0,ZButton.H/2.0);
+			super(0,0,ZButton.H/2.0);
+			//Glob.centerNode(this);
 			
+			visible = false;
 			//toggle();
 			
 			/*
@@ -57,11 +59,13 @@ package
 			}
 		}*/
 		
+		/*
 		override public function draw():void {
 			for (var i:uint = children.length-1; i >= 0; i--) {
 				//members[i].draw();
 				children.members[i].draw();
 			}
 		}
+		*/
 	}
 }

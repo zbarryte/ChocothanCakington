@@ -81,6 +81,8 @@ package
 			// curse first button
 			if (children.length<=0) {
 				_button.curse();
+				width = _button.width;
+				Glob.centerNodeX(this);
 			} else {
 				_button.uncurse();
 			}

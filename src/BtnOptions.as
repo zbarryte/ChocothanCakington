@@ -29,11 +29,14 @@ package
 			//toggleSprite();
 			add(spr);
 			// add text to sprite node
-			sprText = new FlxText(spr.width/2.0,spr.height/2.0,spr.width,onOrOff());
+			sprText = new FlxText(0,0,spr.width,onOrOff());
+			sprText.y += height/2.0;
 			sprText.alignment = "center";
 			sprText.size = 12;
 			spr.add(sprText);
 			toggleSprite();
+			
+			width = ZButton.W;
 		}
 		
 		override public function curse():void {

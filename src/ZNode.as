@@ -66,6 +66,8 @@ package
 			}
 		}
 		
+		
+		/*
 		override public function postUpdate():void {
 			super.postUpdate();
 			for (var i:uint = 0; i < children.length; i++) {
@@ -73,7 +75,9 @@ package
 				_child.postUpdate();
 			}
 		}
+		*/
 		
+		/*
 		override public function preUpdate():void {
 			super.preUpdate();
 			for (var i:uint = 0; i < children.length; i++) {
@@ -81,5 +85,6 @@ package
 				_child.preUpdate();
 			}
 		}
+		*/
 	}
 }
