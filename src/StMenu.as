@@ -13,7 +13,7 @@ package
 		
 		private var buttonGroup:ZButtonGroup;
 		
-		private var cursor:GrpCursor;
+		private var cursor:ZCursor;
 		
 		private var exitHint:FlxSprite;
 		private var selectHint:FlxSprite;
@@ -32,6 +32,10 @@ package
 			//buttonGroup.restart();
 			pulseSelectedEvent.reset();
 			ZAudioHandler.addMusic(Glob.menuMusic);
+			
+			//transToTime = 2;
+			isTransitioning = true;
+			fadeFromColor(0xffffffff,10);
 		}
 		
 		override public function createObjects():void {
@@ -62,10 +66,11 @@ package
 			//add(buttonGroup.event);
 			
 			// add a cursor to point to the cursed button
-			cursor = new GrpCursor(buttonGroup);
+			cursor = new ZCursor(buttonGroup);
 			add(cursor);
 			//add(cursor.event);
 			
+			/*
 			// create and add the exit button
 			exitHint = new FlxSprite();
 			exitHint.loadGraphic(Glob.exitHintSheet);
@@ -84,6 +89,18 @@ package
 			add(selectHint);
 			add(new FlxText(selectHint.x+8,selectHint.y+4,exitHint.width,"[Space]"));
 			add(new FlxText(selectHint.x+8,selectHint.y+16,exitHint.width,"select"));
+			*/
+			
+			
+			var selectHint:HintButton = new HintButton("Space","select",true);
+			Glob.bottomNode(selectHint);
+			Glob.rightNode(selectHint);
+			add(selectHint);
+			
+			var exitHint:HintButton = new HintButton("Esc","back");
+			Glob.bottomNode(exitHint);
+			Glob.leftNode(exitHint);
+			add(exitHint);
 			
 			var _pulse:Function = function(_dir:int):void {
 				cursor.pulse(_dir);
@@ -101,6 +118,8 @@ package
 			
 			var spawnBalloonsEvent:ZTimedEvent = new ZTimedEvent(0.11,spawnMultipleBalloons);
 			add(spawnBalloonsEvent);
+			
+			//fadeFromColor(0xffffffff);
 		}
 		
 		override protected function updateAnimations():void {

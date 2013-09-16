@@ -20,14 +20,10 @@ package
 			_node.y -= _node.height/2.0;
 			add(_node);
 			
-			// create and add the exit button
-			exitHint = new FlxSprite();
-			exitHint.loadGraphic(Glob.exitHintSheet);
-			exitHint.x = 0;
-			exitHint.y = FlxG.height - exitHint.height;
+			var exitHint:HintButton = new HintButton("Esc","back");
+			Glob.bottomNode(exitHint);
+			Glob.leftNode(exitHint);
 			add(exitHint);
-			add(new FlxText(exitHint.x+8,exitHint.y+4,exitHint.width,"[Esc]"));
-			add(new FlxText(exitHint.x+8,exitHint.y+16,exitHint.width,"back"));
 		}
 		
 		override protected function updateControls():void {

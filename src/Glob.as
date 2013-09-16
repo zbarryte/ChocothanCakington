@@ -105,6 +105,8 @@ package
 		[Embed("assets/sprite_cursor.png")] public static const cursorSheet:Class;
 		[Embed("assets/button_exit_hint.png")] public static const exitHintSheet:Class;
 		
+		[Embed("assets/spr_key.png")] public static const keySheet:Class;
+		
 		// Level
 		public static var levelNum:uint = 0;
 		[Embed("assets/tileset_level.png")] public static const tilesetLevelSheet:Class;
@@ -170,15 +172,31 @@ package
 		}
 		
 		// centering
-		public static function centerNodeX(_node:ZNode):void {
+		public static function centerNodeX(_node:FlxSprite):void {
 			_node.x = Glob.CENT.x - _node.width/2.0;
 		}
-		public static function centerNodeY(_node:ZNode):void {
+		public static function centerNodeY(_node:FlxSprite):void {
 			_node.y = Glob.CENT.y - _node.height/2.0;
 		}
-		public static function centerNode(_node:ZNode):void {
+		public static function centerNode(_node:FlxSprite):void {
 			centerNodeX(_node);
 			centerNodeY(_node);
+		}
+		
+		public static function bottomNode(_node:FlxSprite):void {
+			_node.y = FlxG.height - _node.height;
+		}
+		
+		public static function topNode(_node:FlxSprite):void {
+			_node.y = _node.height;
+		}
+		
+		public static function leftNode(_node:FlxSprite):void {
+			_node.x = 0;
+		}
+		
+		public static function rightNode(_node:FlxSprite):void {
+			_node.x = FlxG.width - _node.width;
 		}
 		
 	}

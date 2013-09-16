@@ -32,9 +32,11 @@ package
 		
 		private var HUD:FlxGroup;
 		
-		private var pauseGroup:PauseGroup;
+		private var pauseGroup:BtnGrpPause;
 		
 		private var timeRemaining:Number;
+		
+		private var darkness:FlxSprite;
 				
 		override public function create():void {
 			FlxG.bgColor = 0xff004400;
@@ -89,8 +91,15 @@ package
 			
 			add(HUD);
 			
+			darkness = new FlxSprite(0,0);
+			darkness.makeGraphic(FlxG.width, FlxG.height, 0x88000000);
+			darkness.scrollFactor.x = darkness.scrollFactor.y = 0;
+			darkness.blend = "multiply";
+			add(darkness);
+			darkness.visible = false;
+			
 			// Pause
-			pauseGroup = new PauseGroup();
+			pauseGroup = new BtnGrpPause();
 			//pauseGroup.x = Glob.CENT.x;
 			/*
 			pauseGroup.x = Glob.CENT.x-ZButton.W/2.0;
@@ -149,13 +158,12 @@ package
 			}
 			
 			if (Glob.justPressed(kTogglePauseKey)) {
-				pauseGroup.visible = true;
 				pause();
 			}
 		}
 		
 		override protected function updatePause():void {
-						
+			
 			if (Glob.justPressed(kCurseForwardKey)) {
 				pauseGroup.curseFoward();
 			}
@@ -166,7 +174,6 @@ package
 				pauseGroup.select();
 			}
 			if (Glob.justPressed(kTogglePauseKey)) {
-				pauseGroup.visible = false;
 				resume();
 			}
 		}
@@ -236,6 +243,18 @@ package
 		
 		private function playerDies():void {
 			refresh();
+		}
+		
+		override public function pause():void {
+			pauseGroup.visible = true;
+			darkness.visible = true;
+			super.pause();
+		}
+		
+		override public function resume():void {
+			pauseGroup.visible = false;
+			darkness.visible = false;
+			super.resume();
 		}
 	}
 }

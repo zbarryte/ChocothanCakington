@@ -46,7 +46,12 @@ package
 			isIdle = true;
 			target = null;
 			
-			label = new FlxText(Glob.CENT.x,Glob.CENT.y,100);
+			label = new FlxText(0,0,FlxG.width);
+			Glob.centerNodeX(label);
+			Glob.topNode(label);
+			label.y += label.height;
+			label.alignment = "center";
+			label.size = 22;
 			add(label);
 			setLabel();
 			
@@ -74,8 +79,8 @@ package
 		
 		private function setLabel():void {
 			label.text = "Level  " + (currentLevel.index + 1) +
-				":\n" + currentLevel.name +
-				"\n collect at least " + currentLevel.goal + "presents!";
+				": \n" + currentLevel.name +
+				" \n collect at least " + currentLevel.goal + "presents!";
 		}
 		
 		override protected function updateAnimations():void {

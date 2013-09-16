@@ -13,6 +13,8 @@ package
 		private var fadeTime:Number = 0;
 		private const FADE_PERIOD:Number = 2.22;
 		
+		//private var brightness:FlxSprite;
+		
 		override public function create():void {
 			
 			FlxG.bgColor = 0xff881111;
@@ -22,11 +24,14 @@ package
 			ZAudioHandler.addMusic(Glob.titleMusic);
 			
 			super.create();
+			
+			//fadeFromColor(0xffffffff);
 		}
 		
 		override public function createObjects():void {
 			// set up ZState vars
-			transToTime = 0.22;
+			transToTime = 0.22;//5;
+			
 			
 			// set up prompt
 			var promptW:Number = 100;
@@ -36,6 +41,13 @@ package
 			prompt.scale.x = 2;
 			prompt.scale.y = 2;
 			add(prompt);
+			
+			/*
+			brightness = new FlxSprite(0,0);
+			brightness.makeGraphic(FlxG.width,FlxG.height,0xffffffff);
+			//brightness.blend = "multiply";
+			brightness.alpha = 0;
+			add(brightness);*/
 		}
 		
 		override public function update():void {
@@ -47,8 +59,22 @@ package
 			if (Glob.justPressed(SELECT_KEY)) {
 				ZAudioHandler.clearAll();
 				goTo(StMenu);
+				fadeToColor(0xffffffff,transToTime);
+				/*addTimedEvent(new ZTimedEvent(transToTime,null,false,true,function():void {
+					brightness.alpha += 0.1;
+				}));*/
 			}
 		}
+		
+		/*
+		override protected function goTo(_class:Class):void {
+			var _state:ZState = new _class();
+			_state.prev = this;
+			_state.create();
+			_state.isControllable = false;
+			FlxG.bgColor = 0xff881111;
+			addTimedEvent(new ZTimedEvent(transToTime,function():void{_state.isControllable = true; FlxG.switchState(_state);},false,true,function():void{darkness.alpha += 0.01; _state.update();}));
+		}*/
 		
 		// Prompt Stuff
 		private function pulsePrompt():void {
