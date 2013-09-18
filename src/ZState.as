@@ -109,8 +109,12 @@ package
 		
 		protected function refresh():void {
 			var _class:Class = FlxU.getClass(FlxU.getClassName(this));
+			goToNoReturn(_class);
+		}
+		
+		protected function goToNoReturn(_class:Class):void {
 			var _state:ZState = new _class();
-			if (prev != null) {_state.prev = prev;}
+			if (prev !=null) {_state.prev = prev;}
 			addTransitionObject(new ZTimedEvent(transToTime,function():void{FlxG.switchState(_state);},false));
 		}
 		

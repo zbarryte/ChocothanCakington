@@ -15,12 +15,12 @@ package
 		{
 			super(_callback);
 			
-			W = 100;
+			var ww:Number = 100;
 			
 			if (_simpleGraphic) {
-				loadGraphic(_simpleGraphic,true,false,W,H);
+				loadGraphic(_simpleGraphic,true,false,ww,H);
 			} else {
-				loadGraphic(Glob.buttonCakeMiddleSheet,true,false,W,H);
+				loadGraphic(Glob.buttonCakeMiddleSheet,true,false,ww,H);
 			}
 			addAnimation(kCurseAnim,[0]);
 			addAnimation(kUncurseAnim,[1]);

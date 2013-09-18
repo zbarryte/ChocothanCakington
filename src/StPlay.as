@@ -8,7 +8,7 @@ package
 		private const kRightKey:Array = ["RIGHT"];
 		private const kJumpKey:Array = ["SPACE","UP","X"];
 		private const kRunKey:Array = ["SHIFT","Z"];
-		private const kTogglePauseKey:Array = ["P","ENTER"];
+		private const kTogglePauseKey:Array = ["P","ENTER","ESCAPE"];
 		
 		private const kCurseForwardKey:Array = ["RIGHT","DOWN"];
 		private const kCurseBackKey:Array = ["LEFT","UP"];
@@ -22,7 +22,7 @@ package
 		private var player:SprCake;
 		private var presentGroup:FlxGroup;
 		private var level:FlxTilemap;
-		private var flag:FlxSprite;
+		private var flag:SprFlag;
 		
 		private var presentsCollected:uint;
 		private var presentsTotal:uint;
@@ -37,6 +37,8 @@ package
 		private var timeRemaining:Number;
 		
 		private var darkness:FlxSprite;
+		
+		private var goal:uint;
 				
 		override public function create():void {
 			FlxG.bgColor = 0xff004400;
@@ -48,7 +50,7 @@ package
 		
 		override public function createObjects():void {
 			
-			timeRemaining = 120;
+			timeRemaining = Glob.levelTime;
 			
 			// Info
 			presentsCollected = 0;
@@ -56,6 +58,8 @@ package
 			// Level
 			level = new FlxTilemap().loadMap(new Glob.levelCSV,Glob.tilesetLevelSheet,32,32);
 			add(level);
+			goal = Glob.goal;
+			FlxG.log(goal);
 			
 			// Death Touch
 			setCallbackFromSpawn(SPAWN_DEATHTOUCH,function():void {playerDies();},level,!Glob.DEBUG_ON);
@@ -111,7 +115,7 @@ package
 			pauseGroup.addButton(new BtnPause(resume,"continue"));
 			pauseGroup.addButton(new BtnPause(refresh,"restart"));
 			pauseGroup.addButton(new BtnPause(function():void {goTo(StControls);},"controls"));
-			pauseGroup.addButton(new BtnPause(goBack,"go back"));//,Glob.buttonCakeBottomSheet));
+			pauseGroup.addButton(new BtnPause(goBack,"go back",Glob.buttonCakeBottomSheet));
 			add(pauseGroup);
 			
 			pauseGroup.scrollFactor.x = 0;
@@ -132,7 +136,7 @@ package
 				playerDies();
 			}
 			
-			if (player.overlaps(flag)) {
+			if (presentsCollected >= goal && player.overlaps(flag)) {
 				completeLevel();
 			}
 		}
@@ -235,10 +239,18 @@ package
 			presentGroup.remove(_present,true);
 			presentsCollected ++;
 			presentsCollectedDisplay.text = "You've collected " + presentsCollected + " of " + presentsTotal + " presents!";
+			if (presentsCollected >= goal) {
+				flag.makeHappy();
+			}
 		}
 		
 		private function completeLevel():void {
-			goBack();
+			if (Glob.nextLevelNum == Glob.levelNum) {
+				goBack();
+			} else {
+				Glob.levelNum = Glob.nextLevelNum;
+				goToNoReturn(StPlay);
+			}
 		}
 		
 		private function playerDies():void {

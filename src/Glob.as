@@ -113,19 +113,20 @@ package
 		[Embed("assets/mapCSV_level_000.csv", mimeType = 'application/octet-stream')] public static const level000CSV:Class;
 		[Embed("assets/mapCSV_level_001.csv", mimeType = 'application/octet-stream')] public static const level001CSV:Class;
 		[Embed("assets/mapCSV_level_002.csv", mimeType = 'application/octet-stream')] public static const level002CSV:Class;
-		public static var levels:Array = [[level000CSV,"name000",FlxG.height,0,5],
-									      [level001CSV,"name001",FlxG.height,100,5],
-										  [level002CSV,"name002",FlxG.height,200,5],
-										  [level001CSV,"name003",FlxG.height,300,5],
-										  [level001CSV,"name004",FlxG.height-200,300,5],
-										  [level001CSV,"name005",FlxG.height-200,200,5],
-										  [level001CSV,"name006",FlxG.height-200,100,5],
-										  [level001CSV,"name007",FlxG.height-200,0,5]];
+		public static var levels:Array = [[level000CSV,"name000",0,200],
+									      [level001CSV,"name001",1,180],
+										  [level002CSV,"name002",10,120],
+										  [level001CSV,"name003",5,100],
+										  [level001CSV,"name004",5,100],
+										  [level001CSV,"name005",5,100],
+										  [level001CSV,"name006",5,100],
+										  [level001CSV,"name007",5,100]];
 		public static function get levelCSV():Class {return levels[levelNum][0];}
 		public static function levelName(_levelNum:uint):String {return levels[_levelNum][1];}
-		public static function levelNodeX(_levelNum:uint):Number {return levels[_levelNum][2];}
-		public static function levelNodeY(_levelNum:uint):Number {return levels[_levelNum][3];}
-		public static function levelGoal(_levelNum:uint):uint {return levels[_levelNum][4];}
+		public static function levelGoal(_levelNum:uint):uint {return levels[_levelNum][2];}
+		public static function get goal():uint {return levelGoal(levelNum);}
+		public static function get levelTime():uint {return levels[levelNum][3];}
+		public static function get nextLevelNum():uint {return (levelNum + 1 < levels.length) ? levelNum + 1 : levelNum;}
 		
 		// Titles
 		[Embed("assets/title-01.png")] public static const titleSheet:Class;
