@@ -18,11 +18,19 @@ package
 		private const SPAWN_PRESENT:Array = [3];
 		private const SPAWN_FLAG:Array = [4];
 		private const SPAWN_DEATHTOUCH:Array = [5];
+		private const SPAWN_HINT_MOVE:Array = [6];
+		private const SPAWN_HINT_JUMP:Array = [7];
+		private const SPAWN_HINT_RUN:Array = [8];
+		private const SPAWN_HINT_BALLOON:Array = [9];
 		
 		private var player:SprCake;
 		private var presentGroup:FlxGroup;
 		private var level:FlxTilemap;
 		private var flag:SprFlag;
+		private var hintMoveGroup:FlxGroup;
+		private var hintJumpGroup:FlxGroup;
+		private var hintRunGroup:FlxGroup;
+		private var hintBalloonGroup:FlxGroup;
 		
 		private var presentsCollected:uint;
 		private var presentsTotal:uint;
@@ -65,7 +73,15 @@ package
 			
 			// Death Touch
 			setCallbackFromSpawn(SPAWN_DEATHTOUCH,function():void {playerDies();},level,!Glob.DEBUG_ON);
-						
+			
+			// Hints
+			hintMoveGroup = groupFromSpawn(SPAWN_HINT_MOVE,SprHintMove,level);
+			add(hintMoveGroup);
+			hintJumpGroup = groupFromSpawn(SPAWN_HINT_JUMP,SprHintJump,level);
+			add(hintJumpGroup);
+			hintBalloonGroup = groupFromSpawn(SPAWN_HINT_BALLOON,SprHintBalloon,level);
+			add(hintBalloonGroup);
+			
 			// Flag
 			flag = groupFromSpawn(SPAWN_FLAG,SprFlag,level).members[0];
 			add(flag);

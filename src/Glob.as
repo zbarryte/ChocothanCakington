@@ -105,6 +105,10 @@ package
 		[Embed("assets/sprite_cursor.png")] public static const cursorSheet:Class;
 		[Embed("assets/button_exit_hint.png")] public static const exitHintSheet:Class;
 		
+		[Embed("assets/spr_hint_move.png")] public static const hintMoveSheet:Class;
+		[Embed("assets/spr_hint_jump.png")] public static const hintJumpSheet:Class;
+		[Embed("assets/spr_hint_balloon.png")] public static const hintBalloonSheet:Class;
+		
 		[Embed("assets/spr_key.png")] public static const keySheet:Class;
 		
 		// Level
