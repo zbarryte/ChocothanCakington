@@ -111,17 +111,28 @@ package
 		
 		[Embed("assets/spr_key.png")] public static const keySheet:Class;
 		
+		// Acid
+		[Embed("assets/spr_acid_fall.png")] public static const acidFallingSheet:Class;
+		[Embed("assets/spr_acid_pool.png")] public static const acidPoolingSheet:Class;
+		[Embed("assets/spr_acid_sit.png")] public static const acidSitSheet:Class;
+		
 		// Level
 		public static var levelNum:uint = 0;
 		[Embed("assets/tileset_level.png")] public static const tilesetLevelSheet:Class;
+		[Embed("assets/tileset_level_front.png")] public static const cosmeticTilesetLevelSheet:Class;
 		[Embed("assets/mapCSV_level_000.csv", mimeType = 'application/octet-stream')] public static const level000CSV:Class;
+		//
 		[Embed("assets/mapCSV_level_001.csv", mimeType = 'application/octet-stream')] public static const level001CSV:Class;
+		//
 		[Embed("assets/mapCSV_level_002.csv", mimeType = 'application/octet-stream')] public static const level002CSV:Class;
-		public static var levels:Array = [[level000CSV,"name000",1,200],
-									      [level001CSV,"name001",3,180],
-										  [level002CSV,"name002",15,120],
+		[Embed("assets/mapCSV_level_002-front.csv", mimeType = 'application/octet-stream')] public static const level002FrontCSV:Class;
+		
+		public static var levels:Array = [[level000CSV,"name000",1,200,level002FrontCSV],
+									      [level001CSV,"name001",3,180,level002FrontCSV],
+										  [level002CSV,"name002",15,120,level002FrontCSV],
 										  ];
 		public static function get levelCSV():Class {return levels[levelNum][0];}
+		public static function get cosmeticLevelCSV():Class {return levels[levelNum][4];}
 		public static function levelName(_levelNum:uint):String {return levels[_levelNum][1];}
 		public static function levelGoal(_levelNum:uint):uint {return levels[_levelNum][2];}
 		public static function get goal():uint {return levelGoal(levelNum);}

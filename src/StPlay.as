@@ -14,6 +14,7 @@ package
 		private const kCurseBackKey:Array = ["LEFT","UP"];
 		private const kSelectKey:Array = ["SPACE"];
 		
+		// level spawn
 		private const SPAWN_PLAYER:Array = [2];
 		private const SPAWN_PRESENT:Array = [3];
 		private const SPAWN_FLAG:Array = [4];
@@ -23,6 +24,11 @@ package
 		private const SPAWN_HINT_RUN:Array = [8];
 		private const SPAWN_HINT_BALLOON:Array = [9];
 		
+		// cosmetic level spawn
+		private const kSpawnAcidFall:Array = [1];
+		private const kSpawnAcidSit:Array = [2];
+		private const kSpawnAcidPool:Array = [3];
+		
 		private var player:SprCake;
 		private var presentGroup:FlxGroup;
 		private var level:FlxTilemap;
@@ -31,6 +37,11 @@ package
 		private var hintJumpGroup:FlxGroup;
 		private var hintRunGroup:FlxGroup;
 		private var hintBalloonGroup:FlxGroup;
+		
+		private var cosmeticLevel:FlxTilemap;
+		private var acidFallGroup:FlxGroup;
+		private var acidPoolGroup:FlxGroup;
+		private var acidSitGroup:FlxGroup;
 		
 		private var presentsCollected:uint;
 		private var presentsTotal:uint;
@@ -70,6 +81,18 @@ package
 			level = new FlxTilemap().loadMap(new Glob.levelCSV,Glob.tilesetLevelSheet,32,32);
 			add(level);
 			goal = Glob.goal;
+			
+			// Cosmetic Level
+			cosmeticLevel = new FlxTilemap().loadMap(new Glob.cosmeticLevelCSV,Glob.cosmeticTilesetLevelSheet,32,32);
+			add(cosmeticLevel);
+			
+			// Acid Fall
+			acidFallGroup = groupFromSpawn(kSpawnAcidFall,SprAcidFalling,cosmeticLevel);
+			add(acidFallGroup);
+			acidPoolGroup = groupFromSpawn(kSpawnAcidPool,SprAcidPooling,cosmeticLevel);
+			add(acidPoolGroup);
+			acidSitGroup = groupFromSpawn(kSpawnAcidSit,SprAcidSit,cosmeticLevel);
+			add(acidSitGroup);
 			
 			// Death Touch
 			setCallbackFromSpawn(SPAWN_DEATHTOUCH,function():void {playerDies();},level,!Glob.DEBUG_ON);
