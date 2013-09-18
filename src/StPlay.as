@@ -59,7 +59,6 @@ package
 			level = new FlxTilemap().loadMap(new Glob.levelCSV,Glob.tilesetLevelSheet,32,32);
 			add(level);
 			goal = Glob.goal;
-			FlxG.log(goal);
 			
 			// Death Touch
 			setCallbackFromSpawn(SPAWN_DEATHTOUCH,function():void {playerDies();},level,!Glob.DEBUG_ON);
@@ -236,19 +235,27 @@ package
 		
 		private function removePresent(_present:SprPresent):void {
 			// audio and animation?
+			
+			ZAudioHandler.clearSounds();
+			ZAudioHandler.addSound(Glob.presentGetSound);
+			
 			_present.captured = true;
-			var _removal:ZTimedEvent = new ZTimedEvent(0.22,function():void {
-			presentGroup.remove(_present,true);
 			presentsCollected ++;
 			presentsCollectedDisplay.text = "You've collected " + presentsCollected + " of " + presentsTotal + " presents!";
 			if (presentsCollected >= goal) {
 				flag.makeHappy();
 			}
+			var _removal:ZTimedEvent = new ZTimedEvent(0.22,function():void {
+			presentGroup.remove(_present,true);
 			},false,true,function():void{_present.y-=3;_present.alpha-=0.1;});
 			add(_removal);
 		}
 		
 		private function completeLevel():void {
+			ZAudioHandler.clearSounds();
+			ZAudioHandler.addSound(Glob.selectSound);
+			
+			
 			if (Glob.nextLevelNum == Glob.levelNum) {
 				goBack();
 			} else {
@@ -258,18 +265,22 @@ package
 		}
 		
 		private function playerDies():void {
+			ZAudioHandler.clearSounds();
+			ZAudioHandler.addSound(Glob.deathSound);
 			refresh();
 		}
 		
 		override public function pause():void {
 			pauseGroup.visible = true;
 			darkness.visible = true;
+			ZAudioHandler.half = true;
 			super.pause();
 		}
 		
 		override public function resume():void {
 			pauseGroup.visible = false;
 			darkness.visible = false;
+			ZAudioHandler.half = false;
 			super.resume();
 		}
 		

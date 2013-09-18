@@ -41,6 +41,9 @@ package
 			// curse new button
 			buttonIndex = _buttonIndexNext;
 			children.members[buttonIndex].curse();
+			
+			ZAudioHandler.clearSounds();
+			ZAudioHandler.addSound(Glob.curseSound);
 		}
 		
 		public function curseBack():void {
@@ -50,11 +53,17 @@ package
 			// curse new button
 			buttonIndex = _buttonIndexNext;
 			children.members[buttonIndex].curse();
+			
+			ZAudioHandler.clearSounds();
+			ZAudioHandler.addSound(Glob.curseSound);
 		}
 		
 		public function select():void {
 			children.members[buttonIndex].select();
 			children.members[buttonIndex].curse();
+			
+			ZAudioHandler.clearSounds();
+			ZAudioHandler.addSound(Glob.selectSound);
 		}
 		
 		public function /*reset*/restart():void {

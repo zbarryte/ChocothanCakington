@@ -237,6 +237,8 @@ package
 		
 		public function jump():void {
 			if (isTouching(FlxObject.DOWN)) {
+				ZAudioHandler.clearSounds();
+				ZAudioHandler.addSound(Glob.jumpSound);
 				isJumping = true;
 			}
 		}

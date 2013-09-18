@@ -150,7 +150,7 @@ package
 		
 		// Button Reactions
 		private function startReaction():void {
-			ZAudioHandler.clearAll();
+			//ZAudioHandler.clearAll();
 			goTo(StMap);
 		}
 		private function optionsReaction():void {

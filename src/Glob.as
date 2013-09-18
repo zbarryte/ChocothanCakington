@@ -140,7 +140,44 @@ package
 		[Embed("assets/level.mp3")] public static const levelMP3:Class;
 		public static const levelMusic:FlxSound = new FlxSound().loadEmbedded(levelMP3,true);
 		
+		[Embed("assets/sfx_curse.mp3")] public static const curseSFX:Class;
+		public static const curseSound:FlxSound = new FlxSound().loadEmbedded(curseSFX);
+		[Embed("assets/sfx_death.mp3")] public static const deathSFX:Class;
+		public static const deathSound:FlxSound = new FlxSound().loadEmbedded(deathSFX);
+		[Embed("assets/sfx_present_get.mp3")] public static const presentGetSFX:Class;
+		public static const presentGetSound:FlxSound = new FlxSound().loadEmbedded(presentGetSFX);
+		[Embed("assets/sfx_select.mp3")] public static const selectSFX:Class;
+		public static const selectSound:FlxSound = new FlxSound().loadEmbedded(selectSFX);
 		// Sounds
+		[Embed("assets/sfx_jump_01.mp3")] public static const jump01SFX:Class;
+		public static const jump01Sound:FlxSound = new FlxSound().loadEmbedded(jump01SFX);
+		[Embed("assets/sfx_jump_02.mp3")] public static const jump02SFX:Class;
+		public static const jump02Sound:FlxSound = new FlxSound().loadEmbedded(jump02SFX);
+		[Embed("assets/sfx_jump_03.mp3")] public static const jump03SFX:Class;
+		public static const jump03Sound:FlxSound = new FlxSound().loadEmbedded(jump03SFX);
+		[Embed("assets/sfx_jump_04.mp3")] public static const jump04SFX:Class;
+		public static const jump04Sound:FlxSound = new FlxSound().loadEmbedded(jump04SFX);
+		public static const jumpSounds:Array = [jump01Sound,jump02Sound,jump03Sound,jump04Sound];
+		
+		public static function get jumpSound():FlxSound {
+			var index:uint = Math.random()*jumpSounds.length;
+			return jumpSounds[index];
+		}
+		
+		[Embed("assets/sfx_step01.mp3")] public static const step01SFX:Class;
+		public static const step01Sound:FlxSound = new FlxSound().loadEmbedded(step01SFX);
+		[Embed("assets/sfx_step02.mp3")] public static const step02SFX:Class;
+		public static const step02Sound:FlxSound = new FlxSound().loadEmbedded(step02SFX);
+		[Embed("assets/sfx_step03.mp3")] public static const step03SFX:Class;
+		public static const step03Sound:FlxSound = new FlxSound().loadEmbedded(step03SFX);
+		[Embed("assets/sfx_step04.mp3")] public static const step04SFX:Class;
+		public static const step04Sound:FlxSound = new FlxSound().loadEmbedded(step04SFX);
+		public static const stepSounds:Array = [step01Sound,jump02Sound,jump03Sound,step04Sound];
+		
+		public static function get stepSound():FlxSound {
+			var index:uint = Math.random()*stepSounds.length;
+			return stepSounds[index];
+		}
 		
 		// Key Press Macros
 		public static function pressed(_keys:Array):Boolean {

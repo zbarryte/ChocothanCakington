@@ -7,13 +7,17 @@ package
 		private static var sounds:FlxGroup = new FlxGroup();
 		private static var music:FlxGroup = new FlxGroup();
 		
+		public static var half:Boolean = false;
+		
 		public static function addSound(_sound:FlxSound,_isAutomatic:Boolean=true):void {
 			sounds.add(_sound);
+			_sound.volume = (Glob.soundOn) ? 1 : 0;
 			if (_isAutomatic) {_sound.play();}
 		}
 		
 		public static function addMusic(_music:FlxSound,_isAutomatic:Boolean=true):void {
 			music.add(_music);
+			_music.volume = (Glob.musicOn) ? 1 : 0;
 			if (_isAutomatic) {_music.play();}
 		}
 		
@@ -42,6 +46,7 @@ package
 			}
 			for (var j:uint = 0; j < music.length; j++) {
 				music.members[j].volume = Glob.musicOn;
+				if (half) {FlxG.log("hi");}
 			}
 		}
 		
