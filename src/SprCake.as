@@ -9,7 +9,7 @@ package
 		private const kMaxVelX:Number = 10.0*32.0; // max x velocity, in pixels per second
 		private const kMoveAccelX:Number = Math.pow(4*32.0,2.0); // acceleration of motion, in pixels per second^2
 		private const kDragX:Number = kMoveAccelX/8.0; // drags against motion in the x dir, in pixels per second^2
-		private const kJumpVelY:Number = Math.pow(Glob.GRAV_ACCEL*10.0*32.0,0.5); // initial y jump velocity, in pixels per second
+		private const kJumpVelY:Number = Math.pow(Glob.GRAV_ACCEL*12.0*32.0,0.5); // initial y jump velocity, in pixels per second
 		private const kMaxVelY:Number = kJumpVelY*2.0; // max y velocity, in pixels per second
 		
 		private var isMovingLeft:Boolean;
@@ -211,7 +211,7 @@ package
 				if (!balloon.visible) {
 					velocity.y 0;
 				}
-				maxVelocity.y *= 0.5;
+				maxVelocity.y *= 0.05;
 				acceleration.x *= 0.05;
 				acceleration.y *= 0.05;
 				drag.x *= 0.5;

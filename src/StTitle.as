@@ -58,6 +58,7 @@ package
 		override protected function updateControls():void {
 			if (Glob.justPressed(SELECT_KEY)) {
 				ZAudioHandler.clearAll();
+				ZAudioHandler.addMusic(Glob.menuMusic);
 				goTo(StMenu);
 				fadeToColor(0xffffffff,transToTime);
 				/*addTimedEvent(new ZTimedEvent(transToTime,null,false,true,function():void {

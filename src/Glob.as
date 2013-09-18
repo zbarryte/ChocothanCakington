@@ -112,9 +112,10 @@ package
 		[Embed("assets/tileset_level.png")] public static const tilesetLevelSheet:Class;
 		[Embed("assets/mapCSV_level_000.csv", mimeType = 'application/octet-stream')] public static const level000CSV:Class;
 		[Embed("assets/mapCSV_level_001.csv", mimeType = 'application/octet-stream')] public static const level001CSV:Class;
+		[Embed("assets/mapCSV_level_002.csv", mimeType = 'application/octet-stream')] public static const level002CSV:Class;
 		public static var levels:Array = [[level000CSV,"name000",FlxG.height,0,5],
 									      [level001CSV,"name001",FlxG.height,100,5],
-										  [level001CSV,"name002",FlxG.height,200,5],
+										  [level002CSV,"name002",FlxG.height,200,5],
 										  [level001CSV,"name003",FlxG.height,300,5],
 										  [level001CSV,"name004",FlxG.height-200,300,5],
 										  [level001CSV,"name005",FlxG.height-200,200,5],
@@ -139,6 +140,8 @@ package
 		public static const titleMusic:FlxSound = new FlxSound().loadEmbedded(titleMP3,true);
 		[Embed("assets/menu.mp3")] public static const menuMP3:Class;
 		public static const menuMusic:FlxSound = new FlxSound().loadEmbedded(menuMP3,true);
+		[Embed("assets/level.mp3")] public static const levelMP3:Class;
+		public static const levelMusic:FlxSound = new FlxSound().loadEmbedded(levelMP3,true);
 		
 		// Sounds
 		

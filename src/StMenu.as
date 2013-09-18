@@ -31,7 +31,6 @@ package
 			//cursor.restart();
 			//buttonGroup.restart();
 			pulseSelectedEvent.reset();
-			ZAudioHandler.addMusic(Glob.menuMusic);
 			
 			//transToTime = 2;
 			isTransitioning = true;

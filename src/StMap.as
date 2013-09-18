@@ -188,6 +188,8 @@ package
 			if (Glob.justPressed(BACK_KEY) && isIdle) {
 				goBack();
 			} else if (Glob.justPressed(FORWARD_KEY) && isIdle) {
+				ZAudioHandler.clearMusic();
+				ZAudioHandler.addMusic(Glob.levelMusic);
 				goTo(StPlay);
 			}
 			

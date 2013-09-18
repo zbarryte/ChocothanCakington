@@ -48,7 +48,7 @@ package
 		
 		override public function createObjects():void {
 			
-			timeRemaining = 600;
+			timeRemaining = 120;
 			
 			// Info
 			presentsCollected = 0;
@@ -255,6 +255,12 @@ package
 			pauseGroup.visible = false;
 			darkness.visible = false;
 			super.resume();
+		}
+		
+		override protected function goBack():void {
+			ZAudioHandler.clearMusic();
+			ZAudioHandler.addMusic(Glob.menuMusic);
+			super.goBack();
 		}
 	}
 }
