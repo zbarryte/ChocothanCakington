@@ -27,6 +27,10 @@ package
 		override public function create():void {
 			FlxG.bgColor = 0xff333333;
 			super.create();
+			
+			var _level:Level = currentLevel;
+			marker.x = _level.x;
+			marker.y = _level.y;
 		}
 		
 		override public function createObjects():void {
@@ -72,9 +76,6 @@ package
 			];
 			
 			lvlGrp.setPositionsWithPoints(lvlPts);
-			
-			marker.x = _level.x;
-			marker.y = _level.y;
 		}
 		
 		private function setLabel():void {

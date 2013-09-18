@@ -116,11 +116,11 @@ package
 		public static var levels:Array = [[level000CSV,"name000",0,200],
 									      [level001CSV,"name001",1,180],
 										  [level002CSV,"name002",10,120],
-										  [level001CSV,"name003",5,100],
-										  [level001CSV,"name004",5,100],
-										  [level001CSV,"name005",5,100],
-										  [level001CSV,"name006",5,100],
-										  [level001CSV,"name007",5,100]];
+										  [level001CSV,"name003",0,100],
+										  [level001CSV,"name004",0,100],
+										  [level001CSV,"name005",0,100],
+										  [level001CSV,"name006",0,100],
+										  [level001CSV,"name007",0,100]];
 		public static function get levelCSV():Class {return levels[levelNum][0];}
 		public static function levelName(_levelNum:uint):String {return levels[_levelNum][1];}
 		public static function levelGoal(_levelNum:uint):uint {return levels[_levelNum][2];}
