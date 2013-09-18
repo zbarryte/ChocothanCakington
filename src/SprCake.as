@@ -42,6 +42,8 @@ package
 		
 		private const kCandleXs:Array = [7,10,14,15,22];
 		private const kCandleScales:Array = [0.88,0.44,0.55,0.33,0.44];
+		
+		public var canMove:Boolean;
 		/*
 		private var state:String;
 		
@@ -116,6 +118,7 @@ package
 			isFalling = false;
 			isBallooning = false;
 			isRunning = false;
+			canMove = true;
 		}
 		
 		private function maybeBlink():void {
@@ -139,7 +142,9 @@ package
 		override public function update():void {
 			super.update();
 			updateAnimations();
-			updateMovements();
+			if (canMove) {
+				updateMovements();
+			}
 		}
 		
 		private function updateAnimations():void {

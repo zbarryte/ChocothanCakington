@@ -113,14 +113,10 @@ package
 		[Embed("assets/mapCSV_level_000.csv", mimeType = 'application/octet-stream')] public static const level000CSV:Class;
 		[Embed("assets/mapCSV_level_001.csv", mimeType = 'application/octet-stream')] public static const level001CSV:Class;
 		[Embed("assets/mapCSV_level_002.csv", mimeType = 'application/octet-stream')] public static const level002CSV:Class;
-		public static var levels:Array = [[level000CSV,"name000",0,200],
-									      [level001CSV,"name001",1,180],
-										  [level002CSV,"name002",10,120],
-										  [level001CSV,"name003",0,100],
-										  [level001CSV,"name004",0,100],
-										  [level001CSV,"name005",0,100],
-										  [level001CSV,"name006",0,100],
-										  [level001CSV,"name007",0,100]];
+		public static var levels:Array = [[level000CSV,"name000",1,200],
+									      [level001CSV,"name001",3,180],
+										  [level002CSV,"name002",15,120],
+										  ];
 		public static function get levelCSV():Class {return levels[levelNum][0];}
 		public static function levelName(_levelNum:uint):String {return levels[_levelNum][1];}
 		public static function levelGoal(_levelNum:uint):uint {return levels[_levelNum][2];}

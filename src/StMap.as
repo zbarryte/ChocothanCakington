@@ -14,7 +14,7 @@ package
 		
 		private var lvlGrp:ZLevelGroup;
 		
-		private var marker:ZNode;
+		private var marker:SprCake;//ZNode;
 		private var markerDir:FlxPoint;
 		private var markerDirActual:FlxPoint;
 		private var target:Level;
@@ -29,8 +29,8 @@ package
 			super.create();
 			
 			var _level:Level = currentLevel;
-			marker.x = _level.x;
-			marker.y = _level.y;
+			marker.x = _level.x + marker.width/2.0;
+			marker.y = _level.y + marker.height/2.0;
 		}
 		
 		override public function createObjects():void {
@@ -38,10 +38,11 @@ package
 			add(lvlGrp);			
 			
 			var _level:Level = currentLevel;
-			marker = new ZNode(_level.x,_level.y);
+			marker = new SprCake();
+			marker.canMove = false;/*ZNode(_level.x,_level.y);
 			marker.loadGraphic(Glob.mapMarkerSheet,true,false,32,32);
 			marker.addAnimation("IDLE",[0,1],5,true);
-			marker.play("IDLE");
+			marker.play("IDLE");*/
 			add(marker);
 			
 			markerDir = new FlxPoint(0,0);
@@ -60,19 +61,28 @@ package
 			setLabel();
 			
 			// place levels
+			/*
 			var edgeBuffer:Number = marker.width;
 			var xSpacing:Number = FlxG.width/5;
-			var ySpacing:Number = FlxG.height/5;
+			var ySpacing:Number = FlxG.height/5;*/
+			var padding:Number = 64;
+			var nodeWidth:Number = 64;
+			var xSpacing:Number = 96;
+			var ySpacing:Number = 96;
 			
 			var lvlPts:Array = [
-				new FlxPoint(edgeBuffer,FlxG.height-edgeBuffer),
-				new FlxPoint(edgeBuffer+xSpacing*1,FlxG.height-edgeBuffer),
-				new FlxPoint(edgeBuffer+xSpacing*2,FlxG.height-edgeBuffer),
+				/*
+				new FlxPoint(edgeBuffer,FlxG.height-edgeBuffer-ySpacing),
+				new FlxPoint(edgeBuffer+xSpacing*1,FlxG.height-edgeBuffer-ySpacing),
+				new FlxPoint(edgeBuffer+xSpacing*2,FlxG.height-edgeBuffer-ySpacing),
 				new FlxPoint(edgeBuffer+xSpacing*3,FlxG.height-edgeBuffer-ySpacing/2.0),
 				new FlxPoint(edgeBuffer+xSpacing*2,FlxG.height-edgeBuffer-3*ySpacing/2),
 				new FlxPoint(edgeBuffer+xSpacing,FlxG.height-edgeBuffer-3*ySpacing/2),
 				new FlxPoint(edgeBuffer,FlxG.height-edgeBuffer-5*ySpacing/2),
-				new FlxPoint(edgeBuffer+xSpacing*1,FlxG.height-edgeBuffer-5*ySpacing/2)
+				new FlxPoint(edgeBuffer+xSpacing*1,FlxG.height-edgeBuffer-5*ySpacing/2)*/
+				new FlxPoint(padding + nodeWidth,FlxG.height - padding - nodeWidth),
+				new FlxPoint(padding + nodeWidth*2 + xSpacing,FlxG.height -padding -nodeWidth),
+				new FlxPoint(padding + nodeWidth*3 + xSpacing*2, FlxG.height - padding - nodeWidth)
 			];
 			
 			lvlGrp.setPositionsWithPoints(lvlPts);
@@ -143,8 +153,8 @@ package
 			target = targetLevel();
 			if (target != null && isIdle) {
 				isIdle = false;
-				var _dist:Number = Math.pow(Math.pow(marker.x-target.x,2.0) + Math.pow(marker.y-target.y,2.0),0.5);
-				markerDirActual = new FlxPoint((-marker.x+target.x)/_dist,(-marker.y+target.y)/_dist);
+				var _dist:Number = Math.pow(Math.pow(marker.x + marker.width/2.0 -target.x - target.width/2.0,2.0) + Math.pow(marker.y+marker.height/2.0-target.y-target.height/2.0,2.0),0.5);
+				markerDirActual = new FlxPoint((-marker.x-marker.width/2.0+target.x+target.width/2.0)/_dist,(-marker.y-marker.height/2.0+target.y+target.height/2.0)/_dist);
 			}
 			//marker.x += 5*markerDirActual.x;
 			//marker.y += 5*markerDirActual.y;
@@ -152,26 +162,26 @@ package
 			if (target != null) {
 				
 				// make sure the marker doesn't pass the target...
-				if ((markerDirActual.x < 0 && marker.x < target.x) ||
-					(markerDirActual.x > 0 && marker.x > target.x) ||
+				if ((markerDirActual.x < 0 && marker.x + marker.width/2.0 < target.x + target.width/2.0) ||
+					(markerDirActual.x > 0 && marker.x + marker.width/2.0 > target.x + target.width/2.0) ||
 					(markerDirActual.x == 0)) {
 										
-					marker.x = target.x;
+					marker.x = target.x + target.width/2.0 - marker.width/2.0;
 					markerDirActual.x = 0;
 				} else {
 					marker.x += 5*markerDirActual.x;
 				}
-				if ((markerDirActual.y < 0 && marker.y < target.y) ||
-					(markerDirActual.y > 0 && marker.y > target.y) ||
+				if ((markerDirActual.y < 0 && marker.y + marker.height/2.0 < target.y + target.height/2.0) ||
+					(markerDirActual.y > 0 && marker.y + marker.height/2.0 > target.y + target.height/2.0) ||
 					(markerDirActual.y == 0)) {
 					
-					marker.y = target.y;
+					marker.y = target.y + target.height/2.0 - marker.height/2.0;
 					markerDirActual.y = 0;
 				} else {
 					marker.y += 5*markerDirActual.y;
 				}
 				
-				if (marker.x == target.x && marker.y == target.y) {
+				if (marker.x + marker.width/2.0 == target.x + target.width/2.0 && marker.y + marker.height/2.0 == target.y + target.height/2.0) {
 					isIdle = true;
 					nextOrPrevious();
 					setLabel();

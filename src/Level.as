@@ -11,7 +11,7 @@ package
 		public var goal:uint;
 		
 		private const SCALE_UNCURSED:Number = 0.5; // scale for x and y when uncursed
-		private const SCALE_CURSED:Number = 1.0; // scale for x and y when cursed
+		private const SCALE_CURSED:Number = 0.7; // scale for x and y when cursed
 		
 		public function Level(_levelNum:uint)
 		{

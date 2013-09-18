@@ -11,7 +11,7 @@ package
 		private const PROMPT_PERIOD:Number = 0.44;
 		private var promptDir:int = 1;
 		private var fadeTime:Number = 0;
-		private const FADE_PERIOD:Number = 2.22;
+		private const FADE_PERIOD:Number = 4.44;
 		
 		//private var brightness:FlxSprite;
 		
@@ -32,6 +32,14 @@ package
 			// set up ZState vars
 			transToTime = 0.22;//5;
 			
+			var cake:SprCake = new SprCake();
+			cake.canMove = false;
+			cake.scale.x = 10;
+			cake.scale.y = 10;
+			Glob.centerNodeX(cake);
+			Glob.bottomNode(cake);
+			cake.y += cake.scale.y*cake.height/5.0;
+			add(cake);
 			
 			// set up prompt
 			var promptW:Number = 100;
@@ -40,6 +48,7 @@ package
 			prompt.alignment = "center";
 			prompt.scale.x = 2;
 			prompt.scale.y = 2;
+			prompt.y -= cake.scale.y*cake.height/3.0;
 			add(prompt);
 			
 			/*

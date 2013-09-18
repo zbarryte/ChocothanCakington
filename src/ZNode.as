@@ -36,15 +36,19 @@ package
 				var _oldScaleY:Number = _child.scale.y;
 				var _oldAlpha:uint = _child.alpha;
 				var _oldScrollFactor:FlxPoint = _child.scrollFactor;
+				var _oldHeight:Number = _child.height;
+				var _oldWidth:Number = _child.width;
 				// change child's property values temporarily
 				var _theta:Number = -_child.angle*Math.PI/180.0;
-				_child.x = x + _child.x;//- width/2.0 + _child.width/2.0 + Math.cos(_theta)*_child.x + Math.sin(_theta)*_child.y;
-				_child.y = y + _child.y;//- height/2.0 + _child.height/2.0 - Math.sin(_theta)*_child.x + Math.cos(_theta)*_child.y;
+				_child.x = x + _child.x*scale.x;//- width/2.0 + _child.width/2.0 + Math.cos(_theta)*_child.x + Math.sin(_theta)*_child.y;
+				_child.y = y + _child.y*scale.y;//- height/2.0 + _child.height/2.0 - Math.sin(_theta)*_child.x + Math.cos(_theta)*_child.y;
 				_child.angle += angle;
 				_child.scale.x = scale.x*_child.scale.x;
 				_child.scale.y = scale.y*_child.scale.y;
 				_child.alpha = alpha;
 				_child.scrollFactor = scrollFactor;
+				_child.height = _child.height*_child.scale.y;
+				_child.width = _child.width*_child.scale.x;
 				// draw child
 				_child.draw();
 				// reset child property values
@@ -55,6 +59,8 @@ package
 				_child.scale.y = _oldScaleY;
 				_child.alpha = _oldAlpha;
 				_child.scrollFactor = _oldScrollFactor;
+				_child.height = _oldHeight;
+				_child.width = _oldWidth;
 			}
 		}
 		

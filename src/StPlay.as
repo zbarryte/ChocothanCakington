@@ -226,7 +226,7 @@ package
 				var _present:SprPresent = presentGroup.members[i];
 				var _presentCent:FlxPoint = new FlxPoint(_present.x-_present.width/2.0,_present.y-_present.height/2.0);
 				var _distSq:Number = Math.pow(_playerCent.x-_presentCent.x,2.0) + Math.pow(_playerCent.y-_presentCent.y/2.0,2.0);
-				if (_distSq < _distSqMin && player.overlaps(_present)) {
+				if (_distSq < _distSqMin && player.overlaps(_present) && !_present.captured) {
 					_presentOverlapped = _present;
 					_distSqMin = _distSq;
 				}
@@ -236,12 +236,16 @@ package
 		
 		private function removePresent(_present:SprPresent):void {
 			// audio and animation?
+			_present.captured = true;
+			var _removal:ZTimedEvent = new ZTimedEvent(0.22,function():void {
 			presentGroup.remove(_present,true);
 			presentsCollected ++;
 			presentsCollectedDisplay.text = "You've collected " + presentsCollected + " of " + presentsTotal + " presents!";
 			if (presentsCollected >= goal) {
 				flag.makeHappy();
 			}
+			},false,true,function():void{_present.y-=3;_present.alpha-=0.1;});
+			add(_removal);
 		}
 		
 		private function completeLevel():void {
