@@ -42,11 +42,10 @@ package
 		
 		public static function update():void {
 			for (var i:uint = 0; i < sounds.length; i++) {
-				sounds.members[i].volume = Glob.soundOn;
+				sounds.members[i].volume = Glob.soundOn; // maybe () ? 1 : 0, then if (half, /2)
 			}
 			for (var j:uint = 0; j < music.length; j++) {
 				music.members[j].volume = Glob.musicOn;
-				if (half) {FlxG.log("hi");}
 			}
 		}
 		

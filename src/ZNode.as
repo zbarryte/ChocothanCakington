@@ -19,6 +19,10 @@ package
 			children.add(_spr);
 		}
 		
+		public function remove(_spr:FlxSprite):void {
+			children.remove(_spr);
+		}
+		
 		override public function loadGraphic(_graphic:Class,_animated:Boolean=false,_reverse:Boolean=false,_width:uint=0,_height:uint=0,_unique:Boolean=false):FlxSprite {
 			graphic = _graphic;
 			return super.loadGraphic(_graphic,_animated,_reverse,_width,_height,_unique);

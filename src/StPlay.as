@@ -39,6 +39,9 @@ package
 		private var darkness:FlxSprite;
 		
 		private var goal:uint;
+		
+		private var deathAnim:FlxSprite;
+		private const kDeathAnim:String = "DEATH";
 				
 		override public function create():void {
 			FlxG.bgColor = 0xff004400;
@@ -119,6 +122,10 @@ package
 			
 			pauseGroup.scrollFactor.x = 0;
 			pauseGroup.scrollFactor.y = 0;
+			
+			deathAnim = new FlxSprite();
+			deathAnim.loadGraphic(Glob.cakeDeathAnimSheet,true,false,32,40);
+			deathAnim.addAnimation(kDeathAnim,[0,1,2,3,4,5,6,7],22,false);
 		}
 		
 		override protected function updateAnimations():void {
@@ -137,6 +144,10 @@ package
 			
 			if (presentsCollected >= goal && player.overlaps(flag)) {
 				completeLevel();
+			}
+			
+			if (deathAnim.frame==7) {
+				refresh();
 			}
 		}
 		
@@ -267,7 +278,15 @@ package
 		private function playerDies():void {
 			ZAudioHandler.clearSounds();
 			ZAudioHandler.addSound(Glob.deathSound);
-			refresh();
+			//player.death();
+			deathAnim.x = player.x;
+			deathAnim.y = player.y-8;
+			remove(player,true);
+			add(deathAnim);
+			deathAnim.play(kDeathAnim);
+			deathAnim.acceleration.y = Glob.GRAV_ACCEL/2.0;
+			
+			//refresh();
 		}
 		
 		override public function pause():void {

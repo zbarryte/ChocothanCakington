@@ -44,6 +44,9 @@ package
 		private const kCandleScales:Array = [0.88,0.44,0.55,0.33,0.44];
 		
 		public var canMove:Boolean;
+		public var isDead:Boolean;
+		
+		//private var deathAnim:ZNode;
 		/*
 		private var state:String;
 		
@@ -119,6 +122,7 @@ package
 			isBallooning = false;
 			isRunning = false;
 			canMove = true;
+			isDead = false;
 		}
 		
 		private function maybeBlink():void {
@@ -177,6 +181,16 @@ package
 			}
 			// blink
 			blink.update();
+			
+			/*
+			if (deathAnim ) {
+				//deathAnim.frame ++;
+				//if (deathAnim.frame >= 7) {
+				if (deathAnim.finished) {
+				isDead = true;
+				}
+				//}
+			}*/
 		}
 		
 		private function updateMovements():void {
@@ -256,6 +270,24 @@ package
 				isBallooning = true;
 			}
 		}
+		
+		/*
+		public function death():void {
+			FlxG.log("removing");
+			face.alpha = 0;
+			eyeL.alpha = 0;
+			eyeR.alpha = 0;
+			feet.alpha = 0;
+			jaw.alpha = 0;
+			FlxG.log("removed");
+			
+			deathAnim = new ZNode();
+			deathAnim.loadGraphic(Glob.cakeDeathAnimSheet,true,false,32,40);
+			deathAnim.addAnimation("death",[0,1,2,3,4,5,6,7],22,true);
+			add(deathAnim);
+			deathAnim.play("death");
+			
+		}*/
 			
 			
 			/*
