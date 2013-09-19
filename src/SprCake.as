@@ -46,6 +46,8 @@ package
 		public var canMove:Boolean;
 		public var isDead:Boolean;
 		
+		
+		private var candles:FlxGroup;
 		//private var deathAnim:ZNode;
 		/*
 		private var state:String;
@@ -93,6 +95,7 @@ package
 			faceY = 0.0;
 			faceAngle = 0.0;
 			// set up the candles
+			candles = new FlxGroup();
 			for (var i:uint = 0; i < kCandleXs.length; i++) {
 				var candle:SprCandle = new SprCandle();
 				candle.scale.y = kCandleScales[i];
@@ -100,6 +103,7 @@ package
 				candle.y = -candle.height*candle.scale.y;
 				face.add(candle);
 				candle.addFlame();
+				candles.add(candle);
 			}
 			// set up eyes
 			eyeL = new ZNode();

@@ -216,6 +216,8 @@ package
 		[Embed("assets/spr_icon_balloon.png")] public static const iconBalloonSheet:Class;
 		
 		
+		[Embed("assets/spr_alpha.png")] public static const alphaSheet:Class;
+		
 		// Present sprite
 		[Embed("assets/sprite_present.png")] public static const presentSheet:Class;
 		
