@@ -161,7 +161,7 @@ package
 			}
 			
 			if (allPerfect) {
-				secretLabel.text = "Congratulation. You Win the Birthday.\nHave a Happy Michael's Birthday.\n" +
+				secretLabel.text = "Congratulation. You Win the Birthday.\n\nThose are all the levels so far, let me know if you want more.\n\nHave a Happy Michael's Birthday.\n" +
 					"Sincerely,\nBrother";
 			} else {
 				secretLabel.text = "";
