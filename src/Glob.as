@@ -290,6 +290,9 @@ package
 		public static const menuMusic:FlxSound = new FlxSound().loadEmbedded(menuMP3,true);
 		[Embed("assets/level.mp3")] public static const levelMP3:Class;
 		public static const levelMusic:FlxSound = new FlxSound().loadEmbedded(levelMP3,true);
+		[Embed("assets/intro.mp3")] public static const introMP3:Class;
+		public static const introMusic:FlxSound = new FlxSound().loadEmbedded(introMP3,true);
+		
 		
 		[Embed("assets/sfx_curse.mp3")] public static const curseSFX:Class;
 		public static const curseSound:FlxSound = new FlxSound().loadEmbedded(curseSFX);

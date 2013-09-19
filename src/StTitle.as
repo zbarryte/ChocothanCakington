@@ -5,6 +5,7 @@ package
 	public class StTitle extends ZState
 	{	
 		private const SELECT_KEY:Array = ["SPACE"];
+		private const BACK_KEY:Array = ["ESCAPE"];
 		
 		private var prompt:FlxText;
 		private var promptTime:Number = 0;
@@ -16,6 +17,10 @@ package
 		private const kEyeAnimBlink:String = "BLINK";
 		
 		
+		private var eyeL:ZNode;
+		private var eyeR:ZNode;
+		private var blink:ZTimedEvent;
+		
 		
 		//private var brightness:FlxSprite;
 		
@@ -26,6 +31,7 @@ package
 			
 			// begin music
 			//Glob.titleMusic.play();
+			ZAudioHandler.clearAll();
 			ZAudioHandler.addMusic(Glob.titleMusic);
 			
 			super.create();
@@ -51,10 +57,10 @@ package
 			face.loadGraphic(Glob.cakeFaceSheet);
 			add(face);
 			// set up eyes
-			var eyeL:ZNode = new ZNode();
+			eyeL = new ZNode();
 			eyeL.loadGraphic(Glob.cakeEyeLSheet,true,true,32,32);
 			eyeL.addAnimation(kEyeAnimBlink,[0,1,2,1,0],22,false);
-			var eyeR:ZNode = new ZNode();
+			eyeR = new ZNode();
 			eyeR.loadGraphic(Glob.cakeEyeRSheet,true,true,32,32);
 			eyeR.addAnimation(kEyeAnimBlink,[0,1,2,1,0],22,false);
 			face.add(eyeL);
@@ -105,11 +111,23 @@ package
 			add(brightness);*/
 			fadeFromColor(0xffffffff,0.22);
 			isTransitioning = true;
+			
+			blink = new ZTimedEvent(0.75,maybeBlink);
+		}
+		
+		private function maybeBlink():void {
+			if (Math.random()*2>=1.5) {
+				eyeL.play(kEyeAnimBlink);
+			}
+			if (Math.random()*2>=1.5) {
+				eyeR.play(kEyeAnimBlink);
+			}
 		}
 		
 		override public function update():void {
 			pulsePrompt();
 			super.update();
+			blink.update();
 		}
 		
 		override protected function updateControls():void {
@@ -121,6 +139,10 @@ package
 				/*addTimedEvent(new ZTimedEvent(transToTime,null,false,true,function():void {
 					brightness.alpha += 0.1;
 				}));*/
+			}
+			if (Glob.justPressed(BACK_KEY)) {
+				fadeToColor(0xff000000,0.44);
+				goBackRefreshed(0.44);
 			}
 		}
 		

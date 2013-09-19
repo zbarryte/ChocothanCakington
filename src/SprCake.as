@@ -157,6 +157,9 @@ package
 		}
 		
 		private function updateAnimations():void {
+			
+			if (canMove) {
+			
 			jaw.y = jawY;
 			face.y = faceY;
 			face.angle = faceAngle;
@@ -192,6 +195,9 @@ package
 				face.y = -2;
 			}
 			// blink
+			
+			}
+			
 			blink.update();
 			
 			/*
