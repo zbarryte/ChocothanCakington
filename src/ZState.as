@@ -14,6 +14,7 @@ package
 		protected var transResetTime:Number;
 		protected var areObjectsCreated:Boolean; // have we created objects?
 		protected var transitionObjects:FlxGroup;
+		protected var canPause:Boolean;
 		
 		protected var overlay:FlxSprite;
 		
@@ -29,6 +30,7 @@ package
 			isTransitioning = false;
 			areObjectsCreated = false;
 			transitionObjects = new FlxGroup();
+			canPause = true;
 		}
 		
 		override public function create():void {
@@ -56,7 +58,7 @@ package
 				if (isControllable) {
 					updateControls();
 				}
-			} else {
+			} else if (canPause) {
 				updatePause();
 			}
 			if (isTransitioning) {
@@ -158,6 +160,7 @@ package
 			overlay = new FlxSprite(0,0);
 			overlay.makeGraphic(FlxG.width,FlxG.height,_color);
 			overlay.alpha = 0;
+			overlay.scrollFactor = new FlxPoint(0,0);
 			add(overlay);
 			var _fade:ZTimedEvent = new ZTimedEvent(_time,
 													function():void {

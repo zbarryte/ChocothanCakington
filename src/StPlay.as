@@ -318,21 +318,24 @@ package
 		private function completeLevel():void {
 			
 			if (!isTransitioning) {
-			
-			ZAudioHandler.clearSounds();
-			ZAudioHandler.addSound(Glob.selectSound);
-			
-			Glob.setLevelStatusForLevelNum(Glob.levelNum,Glob.kBeaten);
-			
-			//FlxG.log(Glob.levelNum);
-			
-			if (Glob.nextLevelNum == Glob.levelNum) {
-				goBack();
-			} else {
-				Glob.levelNum = Glob.nextLevelNum;
-				goToNoReturn(StPlay,0.22);
-				fadeToColor(0xff000000,0.22);
-			}
+				
+				canPause = false;
+				pause();
+				
+				ZAudioHandler.clearSounds();
+				ZAudioHandler.addSound(Glob.selectSound);
+				
+				Glob.setLevelStatusForLevelNum(Glob.levelNum,Glob.kBeaten);
+				
+				//FlxG.log(Glob.levelNum);
+				
+				if (Glob.nextLevelNum == Glob.levelNum) {
+					goBack();
+				} else {
+					Glob.levelNum = Glob.nextLevelNum;
+					goToNoReturn(StPlay,0.22);
+					fadeToColor(0xff000000,0.22);
+				}
 			}
 		}
 		
@@ -351,9 +354,10 @@ package
 		}
 		
 		override public function pause():void {
+			if (canPause) {
 			pauseGroup.visible = true;
 			darkness.visible = true;
-			ZAudioHandler.half = true;
+			ZAudioHandler.half = true; }
 			super.pause();
 		}
 		
