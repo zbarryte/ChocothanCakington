@@ -115,6 +115,7 @@ package
 		[Embed("assets/spr_acid_fall.png")] public static const acidFallingSheet:Class;
 		[Embed("assets/spr_acid_pool.png")] public static const acidPoolingSheet:Class;
 		[Embed("assets/spr_acid_sit.png")] public static const acidSitSheet:Class;
+		[Embed("assets/spr_acid_bubble.png")] public static const acidBubbleSheet:Class;
 		
 		// Level
 		public static var levelNum:uint = 0;

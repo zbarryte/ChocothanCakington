@@ -28,6 +28,7 @@ package
 		private const kSpawnAcidFall:Array = [1];
 		private const kSpawnAcidSit:Array = [2];
 		private const kSpawnAcidPool:Array = [3];
+		private const kSpawnAcidBubble:Array = [4];
 		
 		private var player:SprCake;
 		private var presentGroup:FlxGroup;
@@ -42,6 +43,7 @@ package
 		private var acidFallGroup:FlxGroup;
 		private var acidPoolGroup:FlxGroup;
 		private var acidSitGroup:FlxGroup;
+		private var acidBubbleGroup:FlxGroup;
 		
 		private var presentsCollected:uint;
 		private var presentsTotal:uint;
@@ -93,6 +95,8 @@ package
 			add(acidPoolGroup);
 			acidSitGroup = groupFromSpawn(kSpawnAcidSit,SprAcidSit,cosmeticLevel);
 			add(acidSitGroup);
+			acidBubbleGroup = groupFromSpawn(kSpawnAcidBubble,SprAcidBubble,cosmeticLevel);
+			add(acidBubbleGroup);
 			
 			// Death Touch
 			setCallbackFromSpawn(SPAWN_DEATHTOUCH,function():void {playerDies();},level,!Glob.DEBUG_ON);
