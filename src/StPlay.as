@@ -74,6 +74,14 @@ package
 		
 		override public function createObjects():void {
 			
+			
+			// unlock level
+			var checkStatus:String = Glob.levelStatus(Glob.levelNum);
+			FlxG.log(checkStatus);
+			if (checkStatus == Glob.kLocked) {
+				Glob.setLevelStatusForLevelNum(Glob.levelNum,Glob.kUnlocked);
+			}
+			
 			timeRemaining = Glob.levelTime;
 			
 			// Info
@@ -308,9 +316,15 @@ package
 		}
 		
 		private function completeLevel():void {
+			
+			if (!isTransitioning) {
+			
 			ZAudioHandler.clearSounds();
 			ZAudioHandler.addSound(Glob.selectSound);
 			
+			Glob.setLevelStatusForLevelNum(Glob.levelNum,Glob.kBeaten);
+			
+			//FlxG.log(Glob.levelNum);
 			
 			if (Glob.nextLevelNum == Glob.levelNum) {
 				goBack();
@@ -318,6 +332,7 @@ package
 				Glob.levelNum = Glob.nextLevelNum;
 				goToNoReturn(StPlay,0.22);
 				fadeToColor(0xff000000,0.22);
+			}
 			}
 		}
 		
@@ -353,7 +368,7 @@ package
 			ZAudioHandler.clearMusic();
 			ZAudioHandler.addMusic(Glob.menuMusic);
 			fadeToColor(0xffffffff,0.22);
-			super.goBack(0.22);
+			super.goBackRefreshed(0.22);
 		}
 	}
 }

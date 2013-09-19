@@ -25,6 +25,7 @@ package
 		private var label:FlxText;
 		
 		override public function create():void {
+			
 			//FlxG.bgColor = 0xff333333;
 			super.create();
 			
@@ -34,6 +35,9 @@ package
 		}
 		
 		override public function createObjects():void {
+			
+			//FlxG.log("created objects");
+			
 			lvlGrp = new ZLevelGroup();
 			add(lvlGrp);			
 			

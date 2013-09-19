@@ -97,8 +97,17 @@ package
 		}
 		
 		protected function goBackRefreshed(_time:Number=0):void {
-			prev.refresh();
-			goBack(_time);
+			//prev.refresh();
+			//goBack(_time);
+			var _tmpPrev:ZState;
+			var _class:Class;
+			if (prev.prev != null) {_tmpPrev = prev.prev;}
+			_class = FlxU.getClass(FlxU.getClassName(prev));
+			prev.actuallyDestroy();
+			var _state:ZState = new _class();
+			if (_tmpPrev != null) {_state.prev = _tmpPrev;}
+			addTransitionObject(new ZTimedEvent(_time,function():void{FlxG.switchState(_state);},false));
+			
 		}
 		
 		protected function goTo(_class:Class,_time:Number=0):void {
@@ -106,6 +115,7 @@ package
 			_state.prev = this;
 			addTransitionObject(new ZTimedEvent(_time,function():void{FlxG.switchState(_state);},false));
 		}
+		
 		
 		protected function refresh(_time:Number=0):void {
 			var _class:Class = FlxU.getClass(FlxU.getClassName(this));

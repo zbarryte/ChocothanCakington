@@ -85,6 +85,9 @@ package
 		public static function level01StatusFn():String {
 			return level01Status;
 		}
+		public static function level01SetStatusFn(_status:String):void {
+			level01Status = _status;
+		}
 		public static function get level02Status():String {
 			if (loaded) {
 				return save.data.level02Status;
@@ -102,6 +105,9 @@ package
 		}
 		public static function level02StatusFn():String {
 			return level02Status;
+		}
+		public static function level02SetStatusFn(_status:String):void {
+			level02Status = _status;
 		}
 		public static function get level03Status():String {
 			
@@ -121,6 +127,9 @@ package
 		}
 		public static function level03StatusFn():String {
 			return level03Status;
+		}
+		public static function level03SetStatusFn(_status:String):void {
+			level03Status = _status;
 		}
 		
 		public static function clearAllData():void {
@@ -205,9 +214,9 @@ package
 		[Embed("assets/mapCSV_level_002.csv", mimeType = 'application/octet-stream')] public static const level002CSV:Class;
 		[Embed("assets/mapCSV_level_002-front.csv", mimeType = 'application/octet-stream')] public static const level002FrontCSV:Class;
 		
-		public static var levels:Array = [[level000CSV,"name000",1,200,level000FrontCSV,level01StatusFn],
-									      [level001CSV,"name001",3,180,level001FrontCSV,level02StatusFn],
-										  [level002CSV,"name002",15,120,level002FrontCSV,level03StatusFn],
+		public static var levels:Array = [[level000CSV,"name000",1,200,level000FrontCSV,level01StatusFn,level01SetStatusFn],
+									      [level001CSV,"name001",3,180,level001FrontCSV,level02StatusFn,level02SetStatusFn],
+										  [level002CSV,"name002",15,120,level002FrontCSV,level03StatusFn,level03SetStatusFn],
 										  ];
 		public static function get levelCSV():Class {return levels[levelNum][0];}
 		public static function get cosmeticLevelCSV():Class {return levels[levelNum][4];}
@@ -217,6 +226,7 @@ package
 		public static function get levelTime():uint {return levels[levelNum][3];}
 		public static function get nextLevelNum():uint {return (levelNum + 1 < levels.length) ? levelNum + 1 : levelNum;}
 		public static function levelStatus(_levelNum:uint):String {return levels[_levelNum][5]();}
+		public static function setLevelStatusForLevelNum(_levelNum:uint,_status:String):void {levels[_levelNum][6](_status);}
 		
 		// Titles
 		[Embed("assets/title-01.png")] public static const titleSheet:Class;
