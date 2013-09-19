@@ -252,14 +252,17 @@ package
 		[Embed("assets/tileset_level_front.png")] public static const cosmeticTilesetLevelSheet:Class;
 		[Embed("assets/mapCSV_level_000.csv", mimeType = 'application/octet-stream')] public static const level000CSV:Class;
 		[Embed("assets/mapCSV_level_000-front.csv", mimeType = 'application/octet-stream')] public static const level000FrontCSV:Class;
+		[Embed("assets/mapCSV_level_000-back.csv", mimeType = 'application/octet-stream')] public static const level000BackCSV:Class;
 		[Embed("assets/mapCSV_level_001.csv", mimeType = 'application/octet-stream')] public static const level001CSV:Class;
 		[Embed("assets/mapCSV_level_001-front.csv", mimeType = 'application/octet-stream')] public static const level001FrontCSV:Class;
+		[Embed("assets/mapCSV_level_001-back.csv", mimeType = 'application/octet-stream')] public static const level001BackCSV:Class;
 		[Embed("assets/mapCSV_level_002.csv", mimeType = 'application/octet-stream')] public static const level002CSV:Class;
 		[Embed("assets/mapCSV_level_002-front.csv", mimeType = 'application/octet-stream')] public static const level002FrontCSV:Class;
+		[Embed("assets/mapCSV_level_002-back.csv", mimeType = 'application/octet-stream')] public static const level002BackCSV:Class;
 		
-		public static var levels:Array = [[level000CSV,"name000",1,200,level000FrontCSV,level01StatusFn,level01SetStatusFn,1],
-									      [level001CSV,"name001",3,180,level001FrontCSV,level02StatusFn,level02SetStatusFn,4],
-										  [level002CSV,"name002",15,120,level002FrontCSV,level03StatusFn,level03SetStatusFn,20],
+		public static var levels:Array = [[level000CSV,"name000",1,200,level000FrontCSV,level01StatusFn,level01SetStatusFn,1,level000BackCSV],
+									      [level001CSV,"name001",3,180,level001FrontCSV,level02StatusFn,level02SetStatusFn,4,level001BackCSV],
+										  [level002CSV,"name002",15,120,level002FrontCSV,level03StatusFn,level03SetStatusFn,20,level002BackCSV],
 										  ];
 		public static function get levelCSV():Class {return levels[levelNum][0];}
 		public static function get cosmeticLevelCSV():Class {return levels[levelNum][4];}
@@ -274,6 +277,7 @@ package
 		public static function getLevelPresentsCollectedRecord(_levelNum:uint):uint {return levelPresentsCollected[_levelNum];}
 		public static function setLevelPresentsCollectedRecord(_levelNum:uint,_record:uint):void {levelPresentsCollected[_levelNum]=_record;}
 		public static function levelMaxPres(_levelNum:uint):uint {return levels[_levelNum][7];}
+		public static function get bkgLevelCSV():Class {return levels[levelNum][8];}
 		
 		// Titles
 		[Embed("assets/title-01.png")] public static const titleSheet:Class;

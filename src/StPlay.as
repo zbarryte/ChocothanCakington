@@ -88,6 +88,10 @@ package
 			// Info
 			presentsCollected = 0;
 			
+			var bkg:FlxTilemap = new FlxTilemap().loadMap(new Glob.bkgLevelCSV,Glob.cosmeticTilesetLevelSheet,32,32);
+			add(bkg);
+			bkg.scrollFactor = new FlxPoint(0.5,0.5);
+			
 			// Level
 			level = new FlxTilemap().loadMap(new Glob.levelCSV,Glob.tilesetLevelSheet,32,32);
 			add(level);
