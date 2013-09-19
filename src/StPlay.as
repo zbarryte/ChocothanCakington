@@ -47,7 +47,8 @@ package
 		
 		private var presentsCollected:uint;
 		private var presentsTotal:uint;
-		private var presentsCollectedDisplay:FlxText;
+		private var presentsCollectedDisplay:ZNode;//FlxText;
+		private var presCollectedLabel:FlxText;
 		
 		private var timeDisplay:FlxText;
 		
@@ -77,7 +78,7 @@ package
 			
 			// unlock level
 			var checkStatus:String = Glob.levelStatus(Glob.levelNum);
-			FlxG.log(checkStatus);
+			//FlxG.log(checkStatus);
 			if (checkStatus == Glob.kLocked) {
 				Glob.setLevelStatusForLevelNum(Glob.levelNum,Glob.kUnlocked);
 			}
@@ -140,13 +141,33 @@ package
 			
 			// HUD
 			HUD = new FlxGroup;
-			presentsCollectedDisplay = new FlxText(0,0,100,"You've collected " + presentsCollected + " of " + presentsTotal + " presents!");
+			
+			presentsCollectedDisplay = new ZNode();
+			//Glob.topNode(presentsCollectedDisplay);
+			//Glob.centerNodeX(presentsCollectedDisplay);
+			presentsCollectedDisplay.x = 0;
+			presentsCollectedDisplay.y = 0;
 			presentsCollectedDisplay.scrollFactor = new FlxPoint(0,0);
+			
+			var presIcon:SprPresent = new SprPresent();
+			presIcon.scale.x = 0.5;
+			presIcon.scale.y = 0.5;
+			presentsCollectedDisplay.add(presIcon);
+			
+			presCollectedLabel = new FlxText(0,0,FlxG.width);//,"You've collected " + presentsCollected + " of " + presentsTotal + " presents!");
+			presCollectedLabel.alignment = "center";
+			presentsCollectedDisplay.add(presCollectedLabel);
+			presCollectedLabel.x -= FlxG.width/2.0 -44;
+			
+			rewritePresCollectedText();
+			
 			HUD.add(presentsCollectedDisplay);
 			timeDisplay = new FlxText(FlxG.width-100,0,100,""+int(timeRemaining)+"");
 			timeDisplay.scrollFactor = new FlxPoint(0,0);
 			timeDisplay.size = 10;
+			timeDisplay.alignment = "right";
 			HUD.add(timeDisplay);
+			timeDisplay.x = FlxG.width-timeDisplay.width;
 			
 			add(HUD);
 			
@@ -302,19 +323,25 @@ package
 		private function removePresent(_present:SprPresent):void {
 			// audio and animation?
 			
-			ZAudioHandler.clearSounds();
+			ZAudioHandler.removeSound(Glob.presentGetSound);
 			ZAudioHandler.addSound(Glob.presentGetSound);
 			
 			_present.captured = true;
 			presentsCollected ++;
-			presentsCollectedDisplay.text = "You've collected " + presentsCollected + " of " + presentsTotal + " presents!";
+			rewritePresCollectedText();
+			//presentsCollectedDisplay.text = "You've collected " + presentsCollected + " of " + presentsTotal + " presents!";
 			if (presentsCollected >= goal) {
+				presCollectedLabel.color = 0xffffff00;
 				flag.makeHappy();
 			}
 			var _removal:ZTimedEvent = new ZTimedEvent(0.22,function():void {
 			presentGroup.remove(_present,true);
 			},false,true,function():void{_present.y-=3;_present.alpha-=0.1;});
 			add(_removal);
+		}
+		
+		private function rewritePresCollectedText():void {
+			presCollectedLabel.text = "    " + presentsCollected +"/"+presentsTotal + ((presentsCollected >= goal)? "":("\n\ncollect "+(goal-presentsCollected)+ " more"));
 		}
 		
 		private function completeLevel():void {
@@ -324,7 +351,7 @@ package
 				canPause = false;
 				pause();
 				
-				ZAudioHandler.clearSounds();
+				ZAudioHandler.removeSound(Glob.selectSound);
 				ZAudioHandler.addSound(Glob.selectSound);
 				
 				Glob.setLevelStatusForLevelNum(Glob.levelNum,Glob.kBeaten);

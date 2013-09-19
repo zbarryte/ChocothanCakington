@@ -158,6 +158,9 @@ package
 			face.angle = faceAngle;
 			// run
 			if (isTouching(FlxObject.DOWN) && velocity.x != 0) {
+				
+				//ZAudioHandler.addSound(Glob.stepSound);
+				
 				if (maxVelocity.x <= kMaxVelX) {
 					/*feet.*/play(kFeetAnimWalk);
 				} else {
@@ -174,6 +177,10 @@ package
 			else if (isTouching(FlxObject.DOWN) && velocity.x == 0 && velocity.y == 0) {
 				/*feet.*/play(kFeetAnimIdle);
 				idle.update();
+				//ZAudioHandler.removeSound(Glob.step01Sound);
+				//ZAudioHandler.removeSound(Glob.step02Sound);
+				//ZAudioHandler.removeSound(Glob.step03Sound);
+				//ZAudioHandler.removeSound(Glob.step04Sound);
 			}
 			// jump
 			else if (!isTouching(FlxObject.DOWN)) {
@@ -258,7 +265,11 @@ package
 		
 		public function jump():void {
 			if (isTouching(FlxObject.DOWN)) {
-				ZAudioHandler.clearSounds();
+				//ZAudioHandler.clearSounds();
+				ZAudioHandler.removeSound(Glob.jump01Sound);
+				ZAudioHandler.removeSound(Glob.jump02Sound);
+				ZAudioHandler.removeSound(Glob.jump03Sound);
+				ZAudioHandler.removeSound(Glob.jump04Sound);
 				ZAudioHandler.addSound(Glob.jumpSound);
 				isJumping = true;
 			}
