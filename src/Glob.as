@@ -168,6 +168,7 @@ package
 			level02Status = level02StatusTmp;
 			level03Status = level03StatusTmp;
 			levelPresentsCollected = levelPresentsCollectedTmp;
+			levelNum = 0;
 		}
 		
 		public static function cheat():void {

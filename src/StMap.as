@@ -25,6 +25,9 @@ package
 		private var label:FlxText;
 		private var labelNode:ZNode;
 		private var subLabel:FlxText;
+		private var secretLabel:FlxText;
+		
+		//private var rotateMarker:ZTimedEvent;
 		
 		override public function create():void {
 			
@@ -50,6 +53,7 @@ package
 			marker.addAnimation("IDLE",[0,1],5,true);
 			marker.play("IDLE");*/
 			add(marker);
+			marker.play("WALK");
 			
 			markerDir = new FlxPoint(0,0);
 			markerDirActual = new FlxPoint(0,0);
@@ -73,6 +77,16 @@ package
 			subLabel.alignment = "center";
 			subLabel.size = 11;
 			add(labelNode);
+			
+			secretLabel = new FlxText(0,0,FlxG.width);
+			secretLabel.y = subLabel.height+label.height*4;
+			secretLabel.x -= secretLabel.width/2.0;
+			labelNode.add(secretLabel);
+			secretLabel.alignment = "center";
+			secretLabel.size = 14;
+			secretLabel.color = 0xffff0000;
+			//secretLabel.text = "Congratulation. You Win the Birthday.\nHave a Happy Michael's Birthday.\n" +
+				//"Sincerely,\nBrother";
 			setLabel();
 			
 			// place levels
@@ -112,6 +126,8 @@ package
 			Glob.leftNode(exitHint);
 			add(exitHint);
 			
+			//rotateMarker = new ZTimedEvent(0.22,function():void {marker.angle++;});
+			
 			fadeFromColor(0xffffffff,0.22);
 			isTransitioning = true;
 		}
@@ -134,9 +150,27 @@ package
 			} else {
 				subLabel.color = 0xffffffff;
 			}
+			
+			var allPerfect:Boolean = true;
+			for (var i:uint = 0; i < lvlGrp.children.length; i++) {
+				var lvl:Level = lvlGrp.children.members[i];
+				if (!lvl.isPerfect()) {
+					allPerfect = false;
+					break;
+				}
+			}
+			
+			if (allPerfect) {
+				secretLabel.text = "Congratulation. You Win the Birthday.\nHave a Happy Michael's Birthday.\n" +
+					"Sincerely,\nBrother";
+			} else {
+				secretLabel.text = "";
+			}
 		}
 		
 		override protected function updateAnimations():void {
+			
+			//rotateMarker.update();
 			
 			moveMarkerToTarget();
 			
@@ -154,6 +188,7 @@ package
 				marker.x += markerDir.x;
 				marker.y += markerDir.y;
 			}*/
+			super.updateAnimations();
 		}
 		
 		private function targetLevel():Level {
