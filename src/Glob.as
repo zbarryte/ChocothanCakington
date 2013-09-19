@@ -60,6 +60,83 @@ package
 			}
 		}
 		
+		public static const kLocked:String = "LOCKED";
+		public static const kBeaten:String = "BEATEN";
+		public static const kUnlocked:String = "UNLOCKED";
+		// saving level lockedness
+		private static var level01StatusTmp:String = kUnlocked;
+		private static var level02StatusTmp:String = kLocked;
+		private static var level03StatusTmp:String = kLocked;
+		public static function get level01Status():String {
+			if (loaded) {
+				return save.data.level01Status;
+			} else {
+				return level01StatusTmp;
+			}
+		}
+		public static function set level01Status(_level01Status:String):void {
+			if (loaded) {
+				save.data.level01Status = _level01Status;
+				save.flush();
+			} else {
+				level01Status = _level01Status;
+			}
+		}
+		public static function level01StatusFn():String {
+			return level01Status;
+		}
+		public static function get level02Status():String {
+			if (loaded) {
+				return save.data.level02Status;
+			} else {
+				return level02StatusTmp;
+			}
+		}
+		public static function set level02Status(_level02Status:String):void {
+			if (loaded) {
+				save.data.level02Status = _level02Status;
+				save.flush();
+			} else {
+				level02Status = _level02Status;
+			}
+		}
+		public static function level02StatusFn():String {
+			return level02Status;
+		}
+		public static function get level03Status():String {
+			
+			if (loaded) {
+				return save.data.level03Status;
+			} else {
+				return level03StatusTmp;
+			}
+		}
+		public static function set level03Status(_level03Status:String):void {
+			if (loaded) {
+				save.data.level03Status = _level03Status;
+				save.flush();
+			} else {
+				level03Status = _level03Status;
+			}
+		}
+		public static function level03StatusFn():String {
+			return level03Status;
+		}
+		
+		public static function clearAllData():void {
+			soundOn = soundOnTmp;
+			musicOn = musicOnTmp;
+			level01Status = level01StatusTmp;
+			level02Status = level02StatusTmp;
+			level03Status = level03StatusTmp;
+		}
+		
+		public static function cheat():void {
+			level01Status = kBeaten;
+			level02Status = kBeaten;
+			level03Status = kBeaten;
+		}
+		
 		// Title State
 		
 		// Menu State
@@ -122,15 +199,15 @@ package
 		[Embed("assets/tileset_level.png")] public static const tilesetLevelSheet:Class;
 		[Embed("assets/tileset_level_front.png")] public static const cosmeticTilesetLevelSheet:Class;
 		[Embed("assets/mapCSV_level_000.csv", mimeType = 'application/octet-stream')] public static const level000CSV:Class;
-		//
+		[Embed("assets/mapCSV_level_000-front.csv", mimeType = 'application/octet-stream')] public static const level000FrontCSV:Class;
 		[Embed("assets/mapCSV_level_001.csv", mimeType = 'application/octet-stream')] public static const level001CSV:Class;
-		//
+		[Embed("assets/mapCSV_level_001-front.csv", mimeType = 'application/octet-stream')] public static const level001FrontCSV:Class;
 		[Embed("assets/mapCSV_level_002.csv", mimeType = 'application/octet-stream')] public static const level002CSV:Class;
 		[Embed("assets/mapCSV_level_002-front.csv", mimeType = 'application/octet-stream')] public static const level002FrontCSV:Class;
 		
-		public static var levels:Array = [[level000CSV,"name000",1,200,level002FrontCSV],
-									      [level001CSV,"name001",3,180,level002FrontCSV],
-										  [level002CSV,"name002",15,120,level002FrontCSV],
+		public static var levels:Array = [[level000CSV,"name000",1,200,level000FrontCSV,level01StatusFn],
+									      [level001CSV,"name001",3,180,level001FrontCSV,level02StatusFn],
+										  [level002CSV,"name002",15,120,level002FrontCSV,level03StatusFn],
 										  ];
 		public static function get levelCSV():Class {return levels[levelNum][0];}
 		public static function get cosmeticLevelCSV():Class {return levels[levelNum][4];}
@@ -139,6 +216,7 @@ package
 		public static function get goal():uint {return levelGoal(levelNum);}
 		public static function get levelTime():uint {return levels[levelNum][3];}
 		public static function get nextLevelNum():uint {return (levelNum + 1 < levels.length) ? levelNum + 1 : levelNum;}
+		public static function levelStatus(_levelNum:uint):String {return levels[_levelNum][5]();}
 		
 		// Titles
 		[Embed("assets/title-01.png")] public static const titleSheet:Class;

@@ -9,7 +9,7 @@ package
 		private var exitHint:FlxSprite;
 		
 		override public function create():void {
-			FlxG.bgColor = 0xff555555;
+			//FlxG.bgColor = 0xff555555;
 			super.create();
 		}
 		

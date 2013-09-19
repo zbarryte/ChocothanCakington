@@ -65,7 +65,7 @@ package
 		private const kDeathAnim:String = "DEATH";
 				
 		override public function create():void {
-			FlxG.bgColor = 0xff004400;
+			//FlxG.bgColor = 0xff004400;
 			super.create();
 			FlxG.worldBounds = new FlxRect(0, 0, level.width,level.height);
 			FlxG.camera.bounds = FlxG.worldBounds;
@@ -99,7 +99,9 @@ package
 			add(acidBubbleGroup);
 			
 			// Death Touch
-			setCallbackFromSpawn(SPAWN_DEATHTOUCH,function():void {playerDies();},level,!Glob.DEBUG_ON);
+			setCallbackFromSpawn(SPAWN_DEATHTOUCH,function():void {playerDies();},level,false);
+			
+			level.visible = false;
 			
 			// Hints
 			hintMoveGroup = groupFromSpawn(SPAWN_HINT_MOVE,SprHintMove,level);
@@ -314,7 +316,8 @@ package
 				goBack();
 			} else {
 				Glob.levelNum = Glob.nextLevelNum;
-				goToNoReturn(StPlay);
+				goToNoReturn(StPlay,0.22);
+				fadeToColor(0xff000000,0.22);
 			}
 		}
 		
@@ -346,10 +349,11 @@ package
 			super.resume();
 		}
 		
-		override protected function goBack():void {
+		override protected function goBack(_time:Number=0):void {
 			ZAudioHandler.clearMusic();
 			ZAudioHandler.addMusic(Glob.menuMusic);
-			super.goBack();
+			fadeToColor(0xffffffff,0.22);
+			super.goBack(0.22);
 		}
 	}
 }

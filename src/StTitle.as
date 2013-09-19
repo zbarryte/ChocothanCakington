@@ -17,7 +17,8 @@ package
 		
 		override public function create():void {
 			
-			FlxG.bgColor = 0xff881111;
+			//FlxG.bgColor = 0xff881111;
+			FlxG.bgColor = 0xff443333;
 			
 			// begin music
 			//Glob.titleMusic.play();
@@ -68,7 +69,7 @@ package
 			if (Glob.justPressed(SELECT_KEY)) {
 				ZAudioHandler.clearAll();
 				ZAudioHandler.addMusic(Glob.menuMusic);
-				goTo(StMenu);
+				goTo(StMenu,transToTime);
 				fadeToColor(0xffffffff,transToTime);
 				/*addTimedEvent(new ZTimedEvent(transToTime,null,false,true,function():void {
 					brightness.alpha += 0.1;

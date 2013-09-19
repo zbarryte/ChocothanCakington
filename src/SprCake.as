@@ -23,7 +23,7 @@ package
 		private var jaw:ZNode;
 		private var eyeL:ZNode;
 		private var eyeR:ZNode;
-		private var feet:ZNode;
+		//private var feet:ZNode;
 		
 		private const kFeetAnimIdle:String = "IDLE";
 		private const kFeetAnimWalk:String = "WALK";
@@ -71,15 +71,16 @@ package
 			height = 32;
 			// set up balloon
 			balloon = new SprBalloon();
+			balloon.color = 0xff8888;
 			add(balloon);
 			// set up feet
-			feet = new ZNode();
-			feet.loadGraphic(Glob.cakeFeetSheet,true,false,32,32);
-			feet.addAnimation(kFeetAnimIdle,[0]);
-			feet.addAnimation(kFeetAnimWalk,[5,6,7,8],22,false);
-			feet.addAnimation(kFeetAnimRun,[5,6,7,8],44,false);
-			feet.addAnimation(kFeetAnimJump,[9]);
-			add(feet);
+			//feet = new ZNode();
+			/*feet.*/loadGraphic(Glob.cakeFeetSheet,true,true,32,32);
+			/*feet.*/addAnimation(kFeetAnimIdle,[0]);
+			/*feet.*/addAnimation(kFeetAnimWalk,[5,6,7,8],22,true);
+			/*feet.*/addAnimation(kFeetAnimRun,[5,6,7,8],44,true);
+			/*feet.*/addAnimation(kFeetAnimJump,[9]);
+			/*add(feet);*/
 			// set up the jaw
 			jaw = new ZNode();
 			jaw.loadGraphic(Glob.cakeJawSheet);
@@ -158,25 +159,25 @@ package
 			// run
 			if (isTouching(FlxObject.DOWN) && velocity.x != 0) {
 				if (maxVelocity.x <= kMaxVelX) {
-					feet.play(kFeetAnimWalk);
+					/*feet.*/play(kFeetAnimWalk);
 				} else {
-					feet.play(kFeetAnimRun);
+					/*feet.*/play(kFeetAnimRun);
 				}
 				
-				if (feet.frame == 6 || feet.frame == 7) {
+				if (/*feet.*/frame == 6 || /*feet.*/frame == 7) {
 					jaw.y = 2;
 				}
 				face.angle = Math.random()*2*Math.pow(-1,int(Math.random()*2));
 				face.y = -Math.random()*3;
 			}
 			// idle
-			if (isTouching(FlxObject.DOWN) && velocity.x == 0 && velocity.y == 0) {
-				feet.play(kFeetAnimIdle);
+			else if (isTouching(FlxObject.DOWN) && velocity.x == 0 && velocity.y == 0) {
+				/*feet.*/play(kFeetAnimIdle);
 				idle.update();
 			}
 			// jump
-			if (!isTouching(FlxObject.DOWN)) {
-				feet.play(kFeetAnimJump);
+			else if (!isTouching(FlxObject.DOWN)) {
+				/*feet.*/play(kFeetAnimJump);
 				face.y = -2;
 			}
 			// blink
@@ -242,10 +243,16 @@ package
 		}
 		
 		public function moveLeft():void {
+			eyeL.facing = FlxObject.LEFT;
+			eyeR.facing = FlxObject.LEFT;
+			facing = FlxObject.LEFT;
 			isMovingLeft = true;
 		}
 		
 		public function moveRight():void {
+			eyeL.facing = FlxObject.RIGHT;
+			eyeR.facing = FlxObject.RIGHT;
+			facing = FlxObject.RIGHT;
 			isMovingRight = true;
 		}
 		

@@ -25,7 +25,7 @@ package
 		private var label:FlxText;
 		
 		override public function create():void {
-			FlxG.bgColor = 0xff333333;
+			//FlxG.bgColor = 0xff333333;
 			super.create();
 			
 			var _level:Level = currentLevel;
@@ -86,12 +86,27 @@ package
 			];
 			
 			lvlGrp.setPositionsWithPoints(lvlPts);
+			
+			var selectHint:HintButton = new HintButton("Space","select",true);
+			Glob.bottomNode(selectHint);
+			Glob.rightNode(selectHint);
+			add(selectHint);
+			
+			var exitHint:HintButton = new HintButton("Esc","back");
+			Glob.bottomNode(exitHint);
+			Glob.leftNode(exitHint);
+			add(exitHint);
+			
+			isTransitioning = true;
+			fadeFromColor(0xffffffff,0.22);
 		}
 		
 		private function setLabel():void {
-			label.text = "Level  " + (currentLevel.index + 1) +
+			/*label.text = "Level  " + (currentLevel.index + 1) +
 				": \n" + currentLevel.name +
-				" \n collect at least " + currentLevel.goal + "presents!";
+				" \n collect at least " + currentLevel.goal + " presents!";*/
+			label.text = /*"Level " + (currentLevel.index + 1) + ":\n" +*/
+				"Collect at least " + currentLevel.goal + " Presents!"
 		}
 		
 		override protected function updateAnimations():void {
@@ -127,7 +142,7 @@ package
 			var _distSqNew:Number;
 			
 			var _cur:Level = currentLevel;
-			if (_cur.next) {
+			if (_cur.next && _cur.next.isUnlocked()) {
 				_distSq = Math.pow(_pos.x-_cur.next.x,2.0) + Math.pow(_pos.y-_cur.next.y,2.0);
 				_distSqNew = Math.pow(_posNew.x-_cur.next.x,2.0) + Math.pow(_posNew.y-_cur.next.y,2.0);
 				if (_distSqNew < _distSq) {
@@ -136,7 +151,7 @@ package
 				}
 			}
 			
-			if (_cur.previous) {
+			if (_cur.previous && _cur.previous.isUnlocked()) {
 				_distSq = Math.pow(_pos.x-_cur.previous.x,2.0) + Math.pow(_pos.y-_cur.previous.y,2.0);
 				_distSqNew = Math.pow(_posNew.x-_cur.previous.x,2.0) + Math.pow(_posNew.y-_cur.previous.y,2.0);
 				if (_distSqNew < _distSq) {
@@ -185,6 +200,8 @@ package
 					isIdle = true;
 					nextOrPrevious();
 					setLabel();
+					
+					//FlxG.log(target.status);
 				}
 			}
 			
@@ -197,11 +214,13 @@ package
 		
 		override protected function updateControls():void {
 			if (Glob.justPressed(BACK_KEY) && isIdle) {
-				goBack();
+				goBack(0.22);
+				fadeToColor(0xffffffff,0.22);
 			} else if (Glob.justPressed(FORWARD_KEY) && isIdle) {
 				ZAudioHandler.clearMusic();
 				ZAudioHandler.addMusic(Glob.levelMusic);
-				goTo(StPlay);
+				goTo(StPlay,0.44);
+				fadeToColor(0xff000000,0.44);
 			}
 			
 			controlMarker();

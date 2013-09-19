@@ -90,32 +90,32 @@ package
 			// implemented by children, updates even when paused
 		}
 		
-		protected function goBack():void {
+		protected function goBack(_time:Number=0):void {
 			if (prev != null) {
-				addTransitionObject(new ZTimedEvent(transBackTime,function():void{actuallyDestroy(); FlxG.switchState(prev);},false));
+				addTransitionObject(new ZTimedEvent(_time,function():void{actuallyDestroy(); FlxG.switchState(prev);},false));
 			}
 		}
 		
-		protected function goBackRefreshed():void {
+		protected function goBackRefreshed(_time:Number=0):void {
 			prev.refresh();
-			goBack();
+			goBack(_time);
 		}
 		
-		protected function goTo(_class:Class):void {
+		protected function goTo(_class:Class,_time:Number=0):void {
 			var _state:ZState = new _class();
 			_state.prev = this;
-			addTransitionObject(new ZTimedEvent(transToTime,function():void{FlxG.switchState(_state);},false));
+			addTransitionObject(new ZTimedEvent(_time,function():void{FlxG.switchState(_state);},false));
 		}
 		
-		protected function refresh():void {
+		protected function refresh(_time:Number=0):void {
 			var _class:Class = FlxU.getClass(FlxU.getClassName(this));
-			goToNoReturn(_class);
+			goToNoReturn(_class,_time);
 		}
 		
-		protected function goToNoReturn(_class:Class):void {
+		protected function goToNoReturn(_class:Class,_time:Number=0):void {
 			var _state:ZState = new _class();
 			if (prev !=null) {_state.prev = prev;}
-			addTransitionObject(new ZTimedEvent(transToTime,function():void{FlxG.switchState(_state);},false));
+			addTransitionObject(new ZTimedEvent(_time,function():void{FlxG.switchState(_state);},false));
 		}
 		
 		override public function destroy():void {
@@ -144,6 +144,7 @@ package
 		}
 		
 		protected function fadeToColor(_color:Number,_time:Number):void {
+			
 			overlay = new FlxSprite(0,0);
 			overlay.makeGraphic(FlxG.width,FlxG.height,_color);
 			overlay.alpha = 0;
@@ -155,7 +156,7 @@ package
 													false,
 													true,
 													function():void {
-														overlay.alpha += FlxG.elapsed/transToTime;
+														overlay.alpha += FlxG.elapsed/_time;
 													});
 			addTransitionObject(_fade);
 		}
@@ -172,7 +173,7 @@ package
 													false,
 													true,
 													function():void {
-														overlay.alpha -= FlxG.elapsed/transToTime;
+														overlay.alpha -= FlxG.elapsed/_time;
 													});
 			addTransitionObject(_fade);
 		}

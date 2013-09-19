@@ -42,7 +42,7 @@ package
 			buttonIndex = _buttonIndexNext;
 			children.members[buttonIndex].curse();
 			
-			ZAudioHandler.clearSounds();
+			ZAudioHandler.removeSound(Glob.curseSound);
 			ZAudioHandler.addSound(Glob.curseSound);
 		}
 		
@@ -54,7 +54,7 @@ package
 			buttonIndex = _buttonIndexNext;
 			children.members[buttonIndex].curse();
 			
-			ZAudioHandler.clearSounds();
+			ZAudioHandler.removeSound(Glob.curseSound);
 			ZAudioHandler.addSound(Glob.curseSound);
 		}
 		

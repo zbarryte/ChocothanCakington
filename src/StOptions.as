@@ -24,7 +24,7 @@ package
 		
 		override public function create():void {
 			// color background
-			FlxG.bgColor = 0xff222222;
+			//FlxG.bgColor = 0xff222222;
 			super.create();
 			pulseSelectedEvent.reset();
 		}
@@ -48,6 +48,11 @@ package
 				// add the button to the button group
 				buttonGroup.addButton(startButton);
 			}
+			
+			buttonGroup.addButton(new BtnMenu(Glob.clearAllData,"clear data"));
+			buttonGroup.addButton(new BtnMenu(Glob.cheat,"cheat"));
+			
+			//buttonGroup.addButton(new BtnMenu(breakGame,"break game"));
 			
 			// add the button group to the state
 			add(buttonGroup);
@@ -115,5 +120,14 @@ package
 		private function musicReaction():void {
 			Glob.musicOn = !Glob.musicOn;
 		}
+		
+		/*
+		private function breakGame():void {
+			while (true) {
+				// do nothing;
+				[Embed("assets/sfx_death.mp3")] var deathSFX:Class;
+				FlxG.play(deathSFX);
+			}
+		}*/
 	}
 }

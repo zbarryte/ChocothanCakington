@@ -26,15 +26,11 @@ package
 		
 		override public function create():void {
 			// color background
-			FlxG.bgColor = 0xff444444;
+			//FlxG.bgColor = 0xff444444;
 			super.create();
 			//cursor.restart();
 			//buttonGroup.restart();
 			pulseSelectedEvent.reset();
-			
-			//transToTime = 2;
-			isTransitioning = true;
-			fadeFromColor(0xffffffff,10);
 		}
 		
 		override public function createObjects():void {
@@ -119,6 +115,10 @@ package
 			add(spawnBalloonsEvent);
 			
 			//fadeFromColor(0xffffffff);
+			
+			//transToTime = 2;
+			isTransitioning = true;
+			fadeFromColor(0xffffffff,0.22);
 		}
 		
 		override protected function updateAnimations():void {
@@ -151,7 +151,8 @@ package
 		// Button Reactions
 		private function startReaction():void {
 			//ZAudioHandler.clearAll();
-			goTo(StMap);
+			goTo(StMap,0.44);
+			fadeToColor(0xffffffff,0.44);
 		}
 		private function optionsReaction():void {
 			goTo(StOptions);

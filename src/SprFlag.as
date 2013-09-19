@@ -16,6 +16,7 @@ package
 		
 		public function makeSad():void {
 			frame = 0;
+			happyEvent = null;
 		}
 		
 		public function makeHappy():void {
