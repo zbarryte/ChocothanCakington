@@ -23,6 +23,8 @@ package
 		private var nextOrPrevious:Function;
 		
 		private var label:FlxText;
+		private var labelNode:ZNode;
+		private var subLabel:FlxText;
 		
 		override public function create():void {
 			
@@ -56,12 +58,21 @@ package
 			target = null;
 			
 			label = new FlxText(0,0,FlxG.width);
-			Glob.centerNodeX(label);
-			Glob.topNode(label);
-			label.y += label.height;
+			labelNode = new ZNode();
+			Glob.centerNodeX(labelNode);
+			Glob.topNode(labelNode);
+			labelNode.y += label.height;
 			label.alignment = "center";
+			label.x -= label.width/2.0;
 			label.size = 22;
-			add(label);
+			labelNode.add(label);
+			subLabel = new FlxText(0,0,FlxG.width);
+			subLabel.y = label.height;
+			labelNode.add(subLabel);
+			subLabel.x -= subLabel.width/2.0;
+			subLabel.alignment = "center";
+			subLabel.size = 11;
+			add(labelNode);
 			setLabel();
 			
 			// place levels
@@ -110,7 +121,19 @@ package
 				": \n" + currentLevel.name +
 				" \n collect at least " + currentLevel.goal + " presents!";*/
 			label.text = /*"Level " + (currentLevel.index + 1) + ":\n" +*/
-				"Collect at least " + currentLevel.goal + " Presents!"
+				"Collect at least " + currentLevel.goal + " Present" +(currentLevel.goal != 1 ? "s":"") + "!";
+			
+			if (currentLevel.record > 0) {
+				subLabel.text = "\n\n record: " + currentLevel.record + "/" + currentLevel.maxPres;
+			} else {
+				subLabel.text = "";
+			}
+			
+			if (currentLevel.isPerfect()) {
+				subLabel.color = 0xffffff00;
+			} else {
+				subLabel.color = 0xffffffff;
+			}
 		}
 		
 		override protected function updateAnimations():void {

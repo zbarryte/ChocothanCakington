@@ -200,7 +200,9 @@ package
 			}
 			
 			if (deathAnim.frame==7) {
-				refresh();
+				canPause = false;
+				refresh(0.22);
+				fadeToColor(0xff000000,0.22);
 			}
 		}
 		
@@ -326,6 +328,7 @@ package
 				ZAudioHandler.addSound(Glob.selectSound);
 				
 				Glob.setLevelStatusForLevelNum(Glob.levelNum,Glob.kBeaten);
+				Glob.setLevelPresentsCollectedRecord(Glob.levelNum,presentsCollected);
 				
 				//FlxG.log(Glob.levelNum);
 				

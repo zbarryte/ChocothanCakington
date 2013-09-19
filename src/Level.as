@@ -9,6 +9,7 @@ package
 		public var name:String;
 		public var index:uint;
 		public var goal:uint;
+		public var record:uint;
 		
 		private var flag:SprFlag;
 		
@@ -18,6 +19,8 @@ package
 		private const kOpenAnim:String = "OPEN";
 		private const kBeatenAnim:String = "BEATEN";
 		private const kLockedAnim:String = "LOCKED";
+		
+		public var maxPres:uint;
 		
 		public function Level(_levelNum:uint)
 		{
@@ -37,6 +40,8 @@ package
 			//flag.y = height/2.0;
 			flag.y = -flag.height;
 			status = status;
+			record = Glob.getLevelPresentsCollectedRecord(_levelNum);
+			maxPres = Glob.levelMaxPres(_levelNum);
 		}
 		
 		public function curse():void {
@@ -74,6 +79,13 @@ package
 		
 		public function isUnlocked():Boolean {
 			return (status == Glob.kBeaten || status == Glob.kUnlocked);
+		}
+		
+		public function isPerfect():Boolean {
+			if (status == Glob.kBeaten && record == maxPres) {
+				return true;
+			}
+			return false;
 		}
 	}
 }

@@ -22,6 +22,19 @@ package
 			if (loaded && save.data.musicOn == null) {
 				save.data.musicOn = musicOnTmp;
 			}
+			if (loaded && save.data.level01Status == null) {
+				save.data.level01Status = level01StatusTmp;
+			}
+			if (loaded && save.data.level02Status == null) {
+				save.data.level02Status = level02StatusTmp;
+			}
+			if (loaded && save.data.level03Status == null) {
+				save.data.level03Status = level03StatusTmp;
+			}
+			if (loaded && save.data.levelPresentsCollected == null) {
+				save.data.levelPresentsCollected = levelPresentsCollectedTmp;
+			}
+			
 		}
 		// saving sound on
 		private static var soundOnTmp:Boolean = false;
@@ -59,6 +72,24 @@ package
 				soundOnTmp = _musicOn;
 			}
 		}
+		
+		// saving number of presents collected in each level
+		private static var levelPresentsCollectedTmp:Array = [0,0,0];
+		public static function get levelPresentsCollected():Array {
+			if (loaded) {
+				return save.data.levelPresentsCollected;
+			} else {
+				return levelPresentsCollectedTmp;
+			}
+		}
+		public static function set levelPresentsCollected(_levelPresentsCollected:Array):void {
+			if (loaded) {
+				save.data.levelPresentsCollected = _levelPresentsCollected;
+			} else {
+				levelPresentsCollected = _levelPresentsCollected;
+			}
+		}
+		
 		
 		public static const kLocked:String = "LOCKED";
 		public static const kBeaten:String = "BEATEN";
@@ -133,17 +164,19 @@ package
 		}
 		
 		public static function clearAllData():void {
-			soundOn = soundOnTmp;
-			musicOn = musicOnTmp;
 			level01Status = level01StatusTmp;
 			level02Status = level02StatusTmp;
 			level03Status = level03StatusTmp;
+			levelPresentsCollected = levelPresentsCollectedTmp;
 		}
 		
 		public static function cheat():void {
 			level01Status = kBeaten;
 			level02Status = kBeaten;
 			level03Status = kBeaten;
+			for (var i:uint = 0; i < levels.length; i++) {
+				levelPresentsCollected[i] = levelMaxPres(i);
+			}
 		}
 		
 		// Title State
@@ -175,6 +208,13 @@ package
 		[Embed("assets/spr_cake_candle.png")] public static const cakeCandleSheet:Class;
 		[Embed("assets/spr_cake_candle_flame.png")] public static const cakeCandleFlameSheet:Class;
 		[Embed("assets/spr_cake_death_anim.png")] public static const cakeDeathAnimSheet:Class;
+		
+		// icons
+		[Embed("assets/spr_icon_move.png")] public static const iconMoveSheet:Class;
+		[Embed("assets/spr_icon_jump.png")] public static const iconJumpSheet:Class;
+		[Embed("assets/spr_icon_run.png")] public static const iconRunSheet:Class;
+		[Embed("assets/spr_icon_balloon.png")] public static const iconBalloonSheet:Class;
+		
 		
 		// Present sprite
 		[Embed("assets/sprite_present.png")] public static const presentSheet:Class;
@@ -214,9 +254,9 @@ package
 		[Embed("assets/mapCSV_level_002.csv", mimeType = 'application/octet-stream')] public static const level002CSV:Class;
 		[Embed("assets/mapCSV_level_002-front.csv", mimeType = 'application/octet-stream')] public static const level002FrontCSV:Class;
 		
-		public static var levels:Array = [[level000CSV,"name000",1,200,level000FrontCSV,level01StatusFn,level01SetStatusFn],
-									      [level001CSV,"name001",3,180,level001FrontCSV,level02StatusFn,level02SetStatusFn],
-										  [level002CSV,"name002",15,120,level002FrontCSV,level03StatusFn,level03SetStatusFn],
+		public static var levels:Array = [[level000CSV,"name000",1,200,level000FrontCSV,level01StatusFn,level01SetStatusFn,1],
+									      [level001CSV,"name001",3,180,level001FrontCSV,level02StatusFn,level02SetStatusFn,4],
+										  [level002CSV,"name002",15,120,level002FrontCSV,level03StatusFn,level03SetStatusFn,20],
 										  ];
 		public static function get levelCSV():Class {return levels[levelNum][0];}
 		public static function get cosmeticLevelCSV():Class {return levels[levelNum][4];}
@@ -227,6 +267,9 @@ package
 		public static function get nextLevelNum():uint {return (levelNum + 1 < levels.length) ? levelNum + 1 : levelNum;}
 		public static function levelStatus(_levelNum:uint):String {return levels[_levelNum][5]();}
 		public static function setLevelStatusForLevelNum(_levelNum:uint,_status:String):void {levels[_levelNum][6](_status);}
+		public static function getLevelPresentsCollectedRecord(_levelNum:uint):uint {return levelPresentsCollected[_levelNum];}
+		public static function setLevelPresentsCollectedRecord(_levelNum:uint,_record:uint):void {levelPresentsCollected[_levelNum]=_record;}
+		public static function levelMaxPres(_levelNum:uint):uint {return levels[_levelNum][7];}
 		
 		// Titles
 		[Embed("assets/title-01.png")] public static const titleSheet:Class;
