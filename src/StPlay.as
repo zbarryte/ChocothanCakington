@@ -119,6 +119,8 @@ package
 			add(hintJumpGroup);
 			hintBalloonGroup = groupFromSpawn(SPAWN_HINT_BALLOON,SprHintBalloon,level);
 			add(hintBalloonGroup);
+			hintRunGroup = groupFromSpawn(SPAWN_HINT_RUN,SprHintRun,level);
+			add(hintRunGroup);
 			
 			// Flag
 			flag = groupFromSpawn(SPAWN_FLAG,SprFlag,level).members[0];
@@ -150,14 +152,18 @@ package
 			presentsCollectedDisplay.scrollFactor = new FlxPoint(0,0);
 			
 			var presIcon:SprPresent = new SprPresent();
+			presIcon.isIcon = true;
 			presIcon.scale.x = 0.5;
 			presIcon.scale.y = 0.5;
 			presentsCollectedDisplay.add(presIcon);
+			presIcon.x += 5;
+			presIcon.y -= 5;
 			
 			presCollectedLabel = new FlxText(0,0,FlxG.width);//,"You've collected " + presentsCollected + " of " + presentsTotal + " presents!");
 			presCollectedLabel.alignment = "center";
 			presentsCollectedDisplay.add(presCollectedLabel);
 			presCollectedLabel.x -= FlxG.width/2.0 -44;
+			presCollectedLabel.y +=3;
 			
 			rewritePresCollectedText();
 			
@@ -200,6 +206,9 @@ package
 			deathAnim = new FlxSprite();
 			deathAnim.loadGraphic(Glob.cakeDeathAnimSheet,true,false,32,40);
 			deathAnim.addAnimation(kDeathAnim,[0,1,2,3,4,5,6,7],22,false);
+			
+			fadeFromColor(0xff000000,0.22);
+			isTransitioning = true;
 		}
 		
 		override protected function updateAnimations():void {
@@ -222,8 +231,8 @@ package
 			
 			if (deathAnim.frame==7) {
 				canPause = false;
-				refresh(0.22);
 				fadeToColor(0xff000000,0.22);
+				refresh(0.22);
 			}
 		}
 		
@@ -341,7 +350,7 @@ package
 		}
 		
 		private function rewritePresCollectedText():void {
-			presCollectedLabel.text = "    " + presentsCollected +"/"+presentsTotal + ((presentsCollected >= goal)? "":("\n\ncollect "+(goal-presentsCollected)+ " more"));
+			presCollectedLabel.text = "   = " + presentsCollected +"/"+presentsTotal + ((presentsCollected >= goal)? "":("\n\ncollect "+(goal-presentsCollected)+ " more"));
 		}
 		
 		private function completeLevel():void {
@@ -363,8 +372,8 @@ package
 					goBack();
 				} else {
 					Glob.levelNum = Glob.nextLevelNum;
-					goToNoReturn(StPlay,0.22);
 					fadeToColor(0xff000000,0.22);
+					goToNoReturn(StPlay,0.22);
 				}
 			}
 		}

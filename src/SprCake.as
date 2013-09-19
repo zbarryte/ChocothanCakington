@@ -71,7 +71,7 @@ package
 			height = 32;
 			// set up balloon
 			balloon = new SprBalloon();
-			balloon.color = 0xff8888;
+			balloon.color = 0xff4444;
 			add(balloon);
 			// set up feet
 			//feet = new ZNode();

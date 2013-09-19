@@ -117,8 +117,8 @@ package
 			//fadeFromColor(0xffffffff);
 			
 			//transToTime = 2;
-			isTransitioning = true;
 			fadeFromColor(0xffffffff,0.22);
+			isTransitioning = true;
 		}
 		
 		override protected function updateAnimations():void {
@@ -151,8 +151,8 @@ package
 		// Button Reactions
 		private function startReaction():void {
 			//ZAudioHandler.clearAll();
-			goTo(StMap,0.44);
 			fadeToColor(0xffffffff,0.44);
+			goTo(StMap,0.44);
 		}
 		private function optionsReaction():void {
 			goTo(StOptions);

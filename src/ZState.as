@@ -157,6 +157,7 @@ package
 		
 		protected function fadeToColor(_color:Number,_time:Number):void {
 			
+			if (!isTransitioning) {
 			overlay = new FlxSprite(0,0);
 			overlay.makeGraphic(FlxG.width,FlxG.height,_color);
 			overlay.alpha = 0;
@@ -172,9 +173,12 @@ package
 														overlay.alpha += FlxG.elapsed/_time;
 													});
 			addTransitionObject(_fade);
+			}
 		}
 		
 		protected function fadeFromColor(_color:Number,_time:Number):void {
+			if (!isTransitioning) {
+				//FlxG.log("fadin from?");
 			overlay = new FlxSprite(0,0);
 			overlay.makeGraphic(FlxG.width,FlxG.height,_color);
 			overlay.alpha = 1.0;
@@ -189,6 +193,7 @@ package
 														overlay.alpha -= FlxG.elapsed/_time;
 													});
 			addTransitionObject(_fade);
+			}
 		}
 	}
 }

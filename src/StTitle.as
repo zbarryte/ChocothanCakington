@@ -69,8 +69,8 @@ package
 			if (Glob.justPressed(SELECT_KEY)) {
 				ZAudioHandler.clearAll();
 				ZAudioHandler.addMusic(Glob.menuMusic);
-				goTo(StMenu,transToTime);
 				fadeToColor(0xffffffff,transToTime);
+				goTo(StMenu,transToTime);
 				/*addTimedEvent(new ZTimedEvent(transToTime,null,false,true,function():void {
 					brightness.alpha += 0.1;
 				}));*/

@@ -112,8 +112,8 @@ package
 			Glob.leftNode(exitHint);
 			add(exitHint);
 			
-			isTransitioning = true;
 			fadeFromColor(0xffffffff,0.22);
+			isTransitioning = true;
 		}
 		
 		private function setLabel():void {
@@ -241,13 +241,13 @@ package
 		
 		override protected function updateControls():void {
 			if (Glob.justPressed(BACK_KEY) && isIdle) {
-				goBack(0.22);
 				fadeToColor(0xffffffff,0.22);
+				goBack(0.22);
 			} else if (Glob.justPressed(FORWARD_KEY) && isIdle) {
 				ZAudioHandler.clearMusic();
 				ZAudioHandler.addMusic(Glob.levelMusic);
-				goTo(StPlay,0.44);
 				fadeToColor(0xff000000,0.44);
+				goTo(StPlay,0.44);
 			}
 			
 			controlMarker();

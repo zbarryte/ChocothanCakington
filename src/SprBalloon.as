@@ -24,7 +24,7 @@ package
 		public function SprBalloon(_x:Number=0, _y:Number=0, _simpleGraphic:Class=null)
 		{
 			super();
-			loadGraphic(Glob.balloonSheet);
+			loadGraphic(Glob.balloonSheet,true,false,32,64);
 			
 			deflateSudden();
 			deflate();
@@ -79,6 +79,12 @@ package
 			visible = false;
 			if (y < (kInflateY-kAnchorY)/4.0) {
 				visible = true;
+			}
+			
+			if (y <= kInflateY+22) {
+				frame = 0;
+			} else {
+				frame = 1;
 			}
 		}
 	}
