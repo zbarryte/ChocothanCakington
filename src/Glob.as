@@ -267,6 +267,7 @@ package
 		public static function levelGoal(_levelNum:uint):uint {return levels[_levelNum][2];}
 		public static function get goal():uint {return levelGoal(levelNum);}
 		public static function get levelTime():uint {return levels[levelNum][3];}
+		public static function levelTimeWith(_levelNum:uint):uint {return levels[_levelNum][3];}
 		public static function get nextLevelNum():uint {return (levelNum + 1 < levels.length) ? levelNum + 1 : levelNum;}
 		public static function levelStatus(_levelNum:uint):String {return levels[_levelNum][5]();}
 		public static function setLevelStatusForLevelNum(_levelNum:uint,_status:String):void {levels[_levelNum][6](_status);}

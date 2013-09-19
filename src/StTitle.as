@@ -103,6 +103,8 @@ package
 			//brightness.blend = "multiply";
 			brightness.alpha = 0;
 			add(brightness);*/
+			fadeFromColor(0xffffffff,0.22);
+			isTransitioning = true;
 		}
 		
 		override public function update():void {

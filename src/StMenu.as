@@ -129,7 +129,8 @@ package
 		override protected function updateControls():void {
 			if (Glob.justPressed(BACK_KEY)) {
 				ZAudioHandler.clearAll();
-				goBack();
+				fadeToColor(0xffffffff,0.22);
+				goBack(0.22);
 			} else if (Glob.justPressed(CURSE_FORWARD_KEY)) {
 				buttonGroup.curseFoward();
 				//cursor.restart();

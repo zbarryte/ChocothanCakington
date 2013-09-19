@@ -10,6 +10,7 @@ package
 		public var index:uint;
 		public var goal:uint;
 		public var record:uint;
+		public var myTime:uint;
 		
 		private var flag:SprFlag;
 		
@@ -28,6 +29,7 @@ package
 			index = _levelNum;
 			name = Glob.levelName(_levelNum);
 			goal = Glob.levelGoal(_levelNum);
+			myTime = Glob.levelTimeWith(_levelNum);
 			loadGraphic(Glob.mapNodeSheet,true,false,64,64); // this could also be retreived from data
 			addAnimation(kOpenAnim,[0]);
 			addAnimation(kBeatenAnim,[1]);

@@ -10,7 +10,7 @@ package
 	{
 		public function ChocothanCakington()
 		{
-			super(640,480,StTitle,1,60,60,true);
+			super(640,480,StIntro,1,60,60,true);
 			Glob.load();
 			
 			forceDebugger = Glob.DEBUG_ON;

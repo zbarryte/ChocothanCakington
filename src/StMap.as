@@ -137,7 +137,7 @@ package
 				": \n" + currentLevel.name +
 				" \n collect at least " + currentLevel.goal + " presents!";*/
 			label.text = /*"Level " + (currentLevel.index + 1) + ":\n" +*/
-				"Collect at least " + currentLevel.goal + " Present" +(currentLevel.goal != 1 ? "s":"") + "!";
+				"Collect " + currentLevel.goal + " present" +(currentLevel.goal != 1 ? "s":"") + " in " + currentLevel.myTime + " seconds!";
 			
 			if (currentLevel.record > 0) {
 				subLabel.text = "\n\n record: " + currentLevel.record + "/" + currentLevel.maxPres;
